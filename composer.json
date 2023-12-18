@@ -6,5 +6,7 @@
             "Kentaroutakeda\\Foobarbaz\\": "src/"
         }
     },
-    "require": {}
+    "require-dev": {
+        "orchestra/testbench": "^8.17"
+    }
 }
