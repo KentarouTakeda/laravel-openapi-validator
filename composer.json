@@ -3,10 +3,15 @@
     "type": "library",
     "autoload": {
         "psr-4": {
-            "Kentaroutakeda\\Foobarbaz\\": "src/"
+            "KentarouTakeda\\Laravel\\OpenApiValidator\\": "src/"
         }
     },
     "require-dev": {
         "orchestra/testbench": "^8.17"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "KentarouTakeda\\Laravel\\OpenApiValidator\\Tests\\": "tests"
+        }
     }
 }
