@@ -1,0 +1,10 @@
+{
+    "name": "kentaroutakeda/laravel-openapi-validator",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Kentaroutakeda\\Foobarbaz\\": "src/"
+        }
+    },
+    "require": {}
+}
