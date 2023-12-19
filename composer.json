@@ -1,5 +1,7 @@
 {
     "name": "kentaroutakeda/laravel-openapi-validator",
+    "description": "Laravel OpenAPI Validator",
+    "license": "MIT",
     "type": "library",
     "autoload": {
         "psr-4": {
@@ -7,11 +9,22 @@
         }
     },
     "require-dev": {
-        "orchestra/testbench": "^8.17"
+        "orchestra/testbench": "^8.17",
+        "friendsofphp/php-cs-fixer": "^3.41",
+        "phpunit/php-code-coverage": "^10.1",
+        "phpstan/phpstan": "^1.10"
     },
     "autoload-dev": {
         "psr-4": {
             "KentarouTakeda\\Laravel\\OpenApiValidator\\Tests\\": "tests"
+        }
+    },
+    "config": {
+        "process-timeout": 0,
+        "optimize-autoloader": true,
+        "sort-packages": true,
+        "allow-plugins": {
+            "captainhook/captainhook-phar": false
         }
     }
 }
