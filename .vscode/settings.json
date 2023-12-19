@@ -1,0 +1,16 @@
+{
+  "intelephense.environment.phpVersion": "8.3.0",
+  "php-cs-fixer.allowRisky": false,
+  "php-cs-fixer.lastDownload": 0,
+  "php-cs-fixer.executablePath": "${workspaceFolder}/vendor/bin/php-cs-fixer",
+  "[php]": {
+    "editor.defaultFormatter": "junstyle.php-cs-fixer"
+  },
+  "php-cs-fixer.onsave": true,
+  "php.suggest.basic": false,
+  "php.validate.enable": false,
+  "phpstan.enabled": true,
+  "phpstan.enableLanguageServer": true,
+  "phpstan.enableStatusBar": true,
+  "phpstan.configFile": "phpstan.neon.dist",
+}
