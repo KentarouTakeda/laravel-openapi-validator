@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
@@ -13,13 +14,18 @@ use League\OpenAPIValidation\PSR7\Exception\Validation\InvalidBody;
 use League\OpenAPIValidation\PSR7\ValidatorBuilder;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\Test;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ValidateRequestResponseTest extends TestCase
 {
     public function setUp(): void
     {
         parent::setUp();
-        $this->withoutExceptionHandling();
+
+        $this->mock(SchemaRepository::class, fn (MockInterface $mock) => $mock->allows([
+            'getRequestValidator' => $this->mockValidator()->getRequestValidator(),
+            'getResponseValidator' => $this->mockValidator()->getResponseValidator(),
+        ]));
     }
 
     private function mockValidator(): ValidatorBuilder
@@ -28,9 +34,6 @@ class ValidateRequestResponseTest extends TestCase
             'paths' => [
                 '/' => [
                     'post' => [
-                        'responses' => [
-                            '200' => [],
-                        ],
                         'parameters' => [
                             [
                                 'name' => 'foo',
@@ -55,6 +58,23 @@ class ValidateRequestResponseTest extends TestCase
                                 ],
                             ],
                         ],
+                        'responses' => [
+                            '200' => [
+                                'content' => [
+                                    '*/*' => [
+                                        'schema' => [
+                                            'type' => 'object',
+                                            'properties' => [
+                                                'data' => [
+                                                    'type' => 'array',
+                                                    'items' => ['type' => 'integer'],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
                     ],
                 ],
             ],
@@ -67,11 +87,7 @@ class ValidateRequestResponseTest extends TestCase
     #[Test]
     public function requestAndResponse(): void
     {
-        $this->mock(SchemaRepository::class, fn (MockInterface $mock) => $mock->allows([
-            'getRequestValidator' => $this->mockValidator()->getRequestValidator(),
-        ]));
-
-        Route::post('/', fn () => 'Hello')->middleware(ValidateRequestResponse::class);
+        Route::post('/', fn () => ['data' => [42]])->middleware(ValidateRequestResponse::class);
 
         $this->json(
             Request::METHOD_POST,
@@ -82,12 +98,10 @@ class ValidateRequestResponseTest extends TestCase
     #[Test]
     public function throwsPathNotFoundException(): void
     {
+        $this->withoutExceptionHandling();
+
         $this->expectException(PathNotFoundException::class);
         $this->expectExceptionMessage('Path not found: GET /not-found');
-
-        $this->mock(SchemaRepository::class, fn (MockInterface $mock) => $mock->allows([
-            'getRequestValidator' => $this->mockValidator()->getRequestValidator(),
-        ]));
 
         Route::get('/not-found', fn () => 'Hello')->middleware(ValidateRequestResponse::class);
 
@@ -98,10 +112,6 @@ class ValidateRequestResponseTest extends TestCase
     #[Test]
     public function returnsBadRequest(): void
     {
-        $this->mock(SchemaRepository::class, fn (MockInterface $mock) => $mock->allows([
-            'getRequestValidator' => $this->mockValidator()->getRequestValidator(),
-        ]));
-
         Route::post('/', fn () => 'Hello')->middleware(ValidateRequestResponse::class);
 
         $this->json(
@@ -113,5 +123,50 @@ class ValidateRequestResponseTest extends TestCase
             ->assertJsonPath('title', class_basename(InvalidBody::class))
             ->assertJsonPath('breadcrumb', ['hoge', 1])
         ;
+    }
+
+    #[Test]
+    public function returnsInvalidBody(): void
+    {
+        Route::post('/', fn () => ['data' => ['foo']])->middleware(ValidateRequestResponse::class);
+
+        $this->json(
+            Request::METHOD_POST, '/?foo=1',
+            ['hoge' => [1]]
+        )
+            ->assertStatus(Response::HTTP_INTERNAL_SERVER_ERROR)
+            ->assertJsonPath('status', Response::HTTP_INTERNAL_SERVER_ERROR)
+            ->assertJsonPath('title', class_basename(InvalidBody::class))
+            ->assertJsonPath('breadcrumb', ['data', 0])
+        ;
+    }
+
+    #[Test]
+    public function returnsHttpException(): void
+    {
+        Route::post('/', fn () => abort(404, 'foo'))->middleware(ValidateRequestResponse::class);
+
+        $this->json(
+            Request::METHOD_POST, '/?foo=1',
+            ['hoge' => [1]]
+        )
+            ->assertStatus(Response::HTTP_NOT_FOUND)
+            ->assertJsonPath('status', Response::HTTP_NOT_FOUND)
+            ->assertJsonPath('detail', 'foo')
+            ->assertJsonPath('title', class_basename(NotFoundHttpException::class));
+    }
+
+    #[Test]
+    public function returnsModelNotFoundException(): void
+    {
+        Route::post('/', fn () => throw new ModelNotFoundException())->middleware(ValidateRequestResponse::class);
+
+        $this->json(
+            Request::METHOD_POST, '/?foo=1',
+            ['hoge' => [1]]
+        )
+            ->assertStatus(Response::HTTP_NOT_FOUND)
+            ->assertJsonPath('status', Response::HTTP_NOT_FOUND)
+            ->assertJsonPath('title', class_basename(NotFoundHttpException::class));
     }
 }
