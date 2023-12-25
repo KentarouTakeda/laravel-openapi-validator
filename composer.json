@@ -9,10 +9,11 @@
         }
     },
     "require-dev": {
-        "orchestra/testbench": "^8.17",
         "friendsofphp/php-cs-fixer": "^3.41",
-        "phpunit/php-code-coverage": "^10.1",
-        "phpstan/phpstan": "^1.10"
+        "larastan/larastan": "^2.7",
+        "orchestra/testbench": "^8.17",
+        "phpstan/phpstan": "^1.10",
+        "phpunit/php-code-coverage": "^10.1"
     },
     "autoload-dev": {
         "psr-4": {
