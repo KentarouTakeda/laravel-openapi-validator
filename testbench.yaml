@@ -1,0 +1,2 @@
+providers:
+  - KentarouTakeda\Laravel\OpenApiValidator\ServiceProvider
