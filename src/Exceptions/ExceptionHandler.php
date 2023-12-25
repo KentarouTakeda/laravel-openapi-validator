@@ -17,7 +17,7 @@ class ExceptionHandler extends Handler
     ) {
     }
 
-    public function renderWithStatusCode($request, \Throwable $e, int $status): Response
+    public function renderWithStatusCode(\Throwable $e, int $status): Response
     {
         $current = $this->prepareException($e);
         if ($current instanceof HttpException) {

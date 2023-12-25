@@ -43,7 +43,7 @@ class ValidateRequestResponse
         } catch (NoPath $e) {
             throw new PathNotFoundException(request: $psrRequest, previous: $e);
         } catch (ValidationFailed $e) {
-            return $this->exceptionHandler->renderWithStatusCode($request, $e, Response::HTTP_BAD_REQUEST);
+            return $this->exceptionHandler->renderWithStatusCode($e, Response::HTTP_BAD_REQUEST);
         }
 
         $this->eventDispatcher->listen(RequestHandled::class, function (RequestHandled $event) use ($operationAddress, $schemaRepository) {
@@ -51,9 +51,10 @@ class ValidateRequestResponse
             $exception = $response->exception;
 
             if ($exception) {
-                $response = $this->exceptionHandler->renderWithStatusCode($event->request, $exception, Response::HTTP_INTERNAL_SERVER_ERROR);
+                $response = $this->exceptionHandler->renderWithStatusCode($exception, Response::HTTP_INTERNAL_SERVER_ERROR);
+                $this->overrideResponse($event, $response);
 
-                return $this->overrideResponse($event, $response);
+                return;
             }
 
             $psrResponse = $this->psrHttpFactory->createResponse($response);
@@ -61,9 +62,10 @@ class ValidateRequestResponse
             try {
                 $schemaRepository->getResponseValidator()->validate($operationAddress, $psrResponse);
             } catch (ValidationFailed $e) {
-                $response = $this->exceptionHandler->renderWithStatusCode($event->request, $e, Response::HTTP_INTERNAL_SERVER_ERROR);
+                $response = $this->exceptionHandler->renderWithStatusCode($e, Response::HTTP_INTERNAL_SERVER_ERROR);
+                $this->overrideResponse($event, $response);
 
-                return $this->overrideResponse($event, $response);
+                return;
             }
         });
 

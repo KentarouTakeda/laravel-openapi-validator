@@ -21,7 +21,7 @@ class ValidateRequestResponseTest extends TestCase
     {
         parent::setUp();
 
-        $this->app->bind(
+        app()->bind(
             SchemaRepository::class,
             fn () => Mockery::mock(SchemaRepository::class)->allows([
                 'getRequestValidator' => $this->mockValidator()->getRequestValidator(),
