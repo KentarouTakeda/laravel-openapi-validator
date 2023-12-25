@@ -34,7 +34,7 @@ class ValidateRequestResponse
         string $provider = null
     ): Response {
         $provider ??= config('openapi-validator.default');
-        $schemaRepository = app()->makeWith(SchemaRepository::class, ['provider' => $provider]);
+        $schemaRepository = app()->makeWith(SchemaRepository::class, ['providerName' => $provider]);
 
         $psrRequest = $this->psrHttpFactory->createRequest($request);
 

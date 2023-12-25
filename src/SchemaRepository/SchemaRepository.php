@@ -10,11 +10,32 @@ use League\OpenAPIValidation\PSR7\ValidatorBuilder;
 
 class SchemaRepository
 {
-    private ValidatorBuilder $validatorBuilder;
+    public function __construct(
+        string $providerName,
+        private readonly ValidatorBuilder $validatorBuilder,
+        LaravelOpenApiResolver $laravelOpenApiResolver,
+    ) {
+        $provider = config()->get("openapi-validator.providers.{$providerName}");
+        if (!$provider) {
+            throw new \InvalidArgumentException("laravel-openapi-validator: Provider {$providerName} is not defined");
+        }
 
-    public function __construct(string $provider)
-    {
-        $this->validatorBuilder = new ValidatorBuilder();
+        foreach (func_get_args() as $arg) {
+            if (!($arg instanceof ResolverInterface)) {
+                continue;
+            }
+            if ($arg->supports() !== $provider['driver']) {
+                continue;
+            }
+
+            $this->validatorBuilder->fromJson(
+                $arg->setOptions($provider)->getJson()
+            );
+
+            return;
+        }
+
+        throw new \InvalidArgumentException("laravel-openapi-validator: Provider {$providerName} is not supported");
     }
 
     public function getRequestValidator(): RequestValidator
