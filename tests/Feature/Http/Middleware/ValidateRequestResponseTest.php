@@ -6,13 +6,12 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
-use KentarouTakeda\Laravel\OpenApiValidator\Contracts\SchemaRepository;
 use KentarouTakeda\Laravel\OpenApiValidator\Exceptions\PathNotFoundException;
 use KentarouTakeda\Laravel\OpenApiValidator\Http\Middleware\ValidateRequestResponse;
+use KentarouTakeda\Laravel\OpenApiValidator\SchemaRepository\SchemaRepository;
 use KentarouTakeda\Laravel\OpenApiValidator\Tests\Feature\TestCase;
 use League\OpenAPIValidation\PSR7\Exception\Validation\InvalidBody;
 use League\OpenAPIValidation\PSR7\ValidatorBuilder;
-use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -22,10 +21,13 @@ class ValidateRequestResponseTest extends TestCase
     {
         parent::setUp();
 
-        $this->mock(SchemaRepository::class, fn (MockInterface $mock) => $mock->allows([
-            'getRequestValidator' => $this->mockValidator()->getRequestValidator(),
-            'getResponseValidator' => $this->mockValidator()->getResponseValidator(),
-        ]));
+        $this->app->bind(
+            SchemaRepository::class,
+            fn () => Mockery::mock(SchemaRepository::class)->allows([
+                'getRequestValidator' => $this->mockValidator()->getRequestValidator(),
+                'getResponseValidator' => $this->mockValidator()->getResponseValidator(),
+            ])
+        );
     }
 
     private function mockValidator(): ValidatorBuilder
