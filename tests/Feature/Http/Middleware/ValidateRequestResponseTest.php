@@ -36,14 +36,6 @@ class ValidateRequestResponseTest extends TestCase
             'paths' => [
                 '/' => [
                     'post' => [
-                        'parameters' => [
-                            [
-                                'name' => 'foo',
-                                'in' => 'query',
-                                'required' => true,
-                                'schema' => ['type' => 'string'],
-                            ],
-                        ],
                         'requestBody' => [
                             'content' => [
                                 '*/*' => [
@@ -91,10 +83,8 @@ class ValidateRequestResponseTest extends TestCase
     {
         Route::post('/', fn () => ['data' => [42]])->middleware(ValidateRequestResponse::class);
 
-        $this->json(
-            Request::METHOD_POST,
-            '/?foo=1', ['hoge' => [1]]
-        )->assertOk();
+        $this->json(Request::METHOD_POST, '/', ['hoge' => [1]])
+            ->assertOk();
     }
 
     #[Test]
@@ -116,10 +106,7 @@ class ValidateRequestResponseTest extends TestCase
     {
         Route::post('/', fn () => 'Hello')->middleware(ValidateRequestResponse::class);
 
-        $this->json(
-            Request::METHOD_POST, '/?foo=1',
-            ['hoge' => [1, 'foo']]
-        )
+        $this->json(Request::METHOD_POST, '/', ['hoge' => [1, 'foo']])
             ->assertStatus(Response::HTTP_BAD_REQUEST)
             ->assertJsonPath('status', Response::HTTP_BAD_REQUEST)
             ->assertJsonPath('title', class_basename(InvalidBody::class))
@@ -132,9 +119,7 @@ class ValidateRequestResponseTest extends TestCase
     {
         Route::post('/', fn () => ['data' => ['foo']])->middleware(ValidateRequestResponse::class);
 
-        $this->json(
-            Request::METHOD_POST, '/?foo=1',
-            ['hoge' => [1]]
+        $this->json(Request::METHOD_POST, '/', ['hoge' => [1]]
         )
             ->assertStatus(Response::HTTP_INTERNAL_SERVER_ERROR)
             ->assertJsonPath('status', Response::HTTP_INTERNAL_SERVER_ERROR)
@@ -148,10 +133,7 @@ class ValidateRequestResponseTest extends TestCase
     {
         Route::post('/', fn () => abort(404, 'foo'))->middleware(ValidateRequestResponse::class);
 
-        $this->json(
-            Request::METHOD_POST, '/?foo=1',
-            ['hoge' => [1]]
-        )
+        $this->json(Request::METHOD_POST, '/', ['hoge' => [1]])
             ->assertStatus(Response::HTTP_NOT_FOUND)
             ->assertJsonPath('status', Response::HTTP_NOT_FOUND)
             ->assertJsonPath('detail', 'foo')
@@ -163,10 +145,7 @@ class ValidateRequestResponseTest extends TestCase
     {
         Route::post('/', fn () => throw new ModelNotFoundException())->middleware(ValidateRequestResponse::class);
 
-        $this->json(
-            Request::METHOD_POST, '/?foo=1',
-            ['hoge' => [1]]
-        )
+        $this->json(Request::METHOD_POST, '/', ['hoge' => [1]])
             ->assertStatus(Response::HTTP_NOT_FOUND)
             ->assertJsonPath('status', Response::HTTP_NOT_FOUND)
             ->assertJsonPath('title', class_basename(NotFoundHttpException::class));
