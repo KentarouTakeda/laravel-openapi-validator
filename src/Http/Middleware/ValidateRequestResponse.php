@@ -29,8 +29,13 @@ class ValidateRequestResponse
     /**
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, \Closure $next): Response
-    {
+    public function handle(
+        Request $request,
+        \Closure $next,
+        string $provider = null
+    ): Response {
+        $provider ??= config('openapi-validator.default');
+
         $psrRequest = $this->psrHttpFactory->createRequest($request);
 
         try {
