@@ -7,7 +7,7 @@ namespace KentarouTakeda\Laravel\OpenApiValidator\Exceptions;
 use League\OpenAPIValidation\PSR7\Exception\NoPath;
 use Psr\Http\Message\RequestInterface;
 
-class PathNotFoundException extends \LogicException implements ExceptionInterface
+class PathNotFoundException extends \LogicException
 {
     public function __construct(
         public readonly RequestInterface $request,
