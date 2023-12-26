@@ -7,7 +7,7 @@ namespace KentarouTakeda\Laravel\OpenApiValidator\Http\Middleware;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Foundation\Http\Events\RequestHandled;
 use Illuminate\Http\Request;
-use KentarouTakeda\Laravel\OpenApiValidator\Exceptions\ExceptionHandler;
+use KentarouTakeda\Laravel\OpenApiValidator\ErrorRendererInterface;
 use KentarouTakeda\Laravel\OpenApiValidator\Exceptions\PathNotFoundException;
 use KentarouTakeda\Laravel\OpenApiValidator\SchemaRepository\SchemaRepository;
 use League\OpenAPIValidation\PSR7\Exception\NoPath;
@@ -20,7 +20,7 @@ class ValidateRequestResponse
 {
     public function __construct(
         private readonly Dispatcher $eventDispatcher,
-        private readonly ExceptionHandler $exceptionHandler,
+        private readonly ErrorRendererInterface $errorRenderer,
         private readonly PsrHttpFactory $psrHttpFactory,
     ) {
     }
@@ -43,7 +43,7 @@ class ValidateRequestResponse
         } catch (NoPath $e) {
             throw new PathNotFoundException(request: $psrRequest, previous: $e);
         } catch (ValidationFailed $e) {
-            return $this->exceptionHandler->renderWithStatusCode($e, Response::HTTP_BAD_REQUEST);
+            return $this->errorRenderer->render($request, $e, Response::HTTP_BAD_REQUEST);
         }
 
         $this->eventDispatcher->listen(RequestHandled::class, function (RequestHandled $event) use ($operationAddress, $schemaRepository) {
@@ -51,7 +51,7 @@ class ValidateRequestResponse
             $exception = $response->exception;
 
             if ($exception) {
-                $response = $this->exceptionHandler->renderWithStatusCode($exception, Response::HTTP_INTERNAL_SERVER_ERROR);
+                $response = $this->errorRenderer->render($event->request, $exception, Response::HTTP_INTERNAL_SERVER_ERROR);
                 $this->overrideResponse($event, $response);
 
                 return;
@@ -62,7 +62,7 @@ class ValidateRequestResponse
             try {
                 $schemaRepository->getResponseValidator()->validate($operationAddress, $psrResponse);
             } catch (ValidationFailed $e) {
-                $response = $this->exceptionHandler->renderWithStatusCode($e, Response::HTTP_INTERNAL_SERVER_ERROR);
+                $response = $this->errorRenderer->render($event->request, $e, Response::HTTP_INTERNAL_SERVER_ERROR);
                 $this->overrideResponse($event, $response);
 
                 return;

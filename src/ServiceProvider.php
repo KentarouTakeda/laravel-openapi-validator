@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace KentarouTakeda\Laravel\OpenApiValidator;
 
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
+use KentarouTakeda\Laravel\OpenApiValidator\Renderer\ErrorRenderer;
 
 class ServiceProvider extends BaseServiceProvider
 {
@@ -13,6 +14,8 @@ class ServiceProvider extends BaseServiceProvider
     public function register(): void
     {
         $this->mergeConfigFrom(self::CONFIG_PATH, 'openapi-validator');
+
+        $this->app->bind(ErrorRendererInterface::class, ErrorRenderer::class);
     }
 
     public function boot(): void
