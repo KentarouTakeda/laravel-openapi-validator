@@ -95,7 +95,8 @@ class ValidateRequestResponseTest extends TestCase
         Route::post('/', fn () => ['data' => [42]])->middleware(ValidateRequestResponse::class);
 
         $this->json(Request::METHOD_POST, '/', ['hoge' => [1]])
-            ->assertOk();
+            ->assertOk()
+        ;
     }
 
     #[Test]
@@ -106,7 +107,8 @@ class ValidateRequestResponseTest extends TestCase
         $this->get('/not-found')
             ->assertStatus(Response::HTTP_INTERNAL_SERVER_ERROR)
             ->assertJsonPath('status', Response::HTTP_INTERNAL_SERVER_ERROR)
-            ->assertJsonPath('title', class_basename(PathNotFoundException::class));
+            ->assertJsonPath('title', class_basename(PathNotFoundException::class))
+        ;
     }
 
     #[Test]
@@ -147,7 +149,8 @@ class ValidateRequestResponseTest extends TestCase
             ->assertStatus(Response::HTTP_NOT_FOUND)
             ->assertJsonPath('status', Response::HTTP_NOT_FOUND)
             ->assertJsonPath('detail', 'foo')
-            ->assertJsonPath('title', class_basename(NotFoundHttpException::class));
+            ->assertJsonPath('title', class_basename(NotFoundHttpException::class))
+        ;
     }
 
     #[Test]
@@ -158,6 +161,7 @@ class ValidateRequestResponseTest extends TestCase
         $this->json(Request::METHOD_POST, '/', ['hoge' => [1]])
             ->assertStatus(Response::HTTP_NOT_FOUND)
             ->assertJsonPath('status', Response::HTTP_NOT_FOUND)
-            ->assertJsonPath('title', class_basename(NotFoundHttpException::class));
+            ->assertJsonPath('title', class_basename(NotFoundHttpException::class))
+        ;
     }
 }
