@@ -47,7 +47,11 @@ class ValidateRequestResponse
         try {
             $operationAddress = $schemaRepository->getRequestValidator()->validate($psrRequest);
         } catch (NoPath $e) {
-            throw new PathNotFoundException(request: $psrRequest, previous: $e);
+            if ($this->errorOnNoPath) {
+                throw new PathNotFoundException(request: $psrRequest, previous: $e);
+            }
+
+            return $next($request);
         } catch (ValidationFailed $e) {
             return $this->errorRenderer->render($request, $e, Response::HTTP_BAD_REQUEST);
         }
@@ -75,9 +79,7 @@ class ValidateRequestResponse
             }
         });
 
-        $response = $next($request);
-
-        return $response;
+        return $next($request);
     }
 
     private function overrideResponse(RequestHandled $event, Response $response): void
