@@ -63,33 +63,25 @@ class ValidateRequestResponse
         }
 
         $this->eventDispatcher->listen(RequestHandled::class, function (RequestHandled $event) use ($operationAddress, $schemaRepository) {
-            $response = $event->response;
-            $exception = $response->exception;
-
-            if ($exception) {
-                $response = $this->errorRenderer->render(
+            if ($event->response->exception) {
+                $response = $this->renderResponseError(
                     $event->request,
-                    $exception,
-                    Response::HTTP_INTERNAL_SERVER_ERROR,
-                    $this->includeResErrorInResponse,
-                    $this->includeTraceInResponse
+                    $event->response->exception,
                 );
                 $this->overrideResponse($event, $response);
 
                 return;
             }
 
-            $psrResponse = $this->psrHttpFactory->createResponse($response);
+            $psrResponse = $this->psrHttpFactory->createResponse($event->response);
 
             try {
                 $schemaRepository->getResponseValidator()->validate($operationAddress, $psrResponse);
-            } catch (ValidationFailed $e) {
-                $response = $this->errorRenderer->render(
+            } catch (ValidationFailed $validationFailed) {
+                $response = $this->renderResponseError(
                     $event->request,
-                    $e,
-                    Response::HTTP_INTERNAL_SERVER_ERROR,
-                    $this->includeResErrorInResponse,
-                    $this->includeTraceInResponse);
+                    $validationFailed,
+                );
                 $this->overrideResponse($event, $response);
 
                 return;
@@ -107,5 +99,16 @@ class ValidateRequestResponse
             ->setCache(['no_store' => true])
             ->setContent($response->getContent())
             ->setStatusCode($response->getStatusCode());
+    }
+
+    private function renderResponseError(Request $request, \Throwable $error): Response
+    {
+        return $this->errorRenderer->render(
+            $request,
+            $error,
+            Response::HTTP_INTERNAL_SERVER_ERROR,
+            $this->includeResErrorInResponse,
+            $this->includeTraceInResponse
+        );
     }
 }
