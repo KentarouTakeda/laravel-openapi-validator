@@ -10,7 +10,10 @@ return [
     |
     */
 
-    'default' => 'laravel-openapi',
+    'default' => (string) env(
+        'OPENAPI_VALIDATOR_PROVIDER',
+        'laravel-openapi'
+    ),
 
     /*
     |--------------------------------------------------------------------------
@@ -22,7 +25,10 @@ return [
     |
     */
 
-    'error_on_no_path' => true,
+    'error_on_no_path' => (bool) env(
+        'OPENAPI_VALIDATOR_ERROR_ON_NO_PATH',
+        env('APP_DEBUG', false),
+    ),
 
     /*
     |--------------------------------------------------------------------------
@@ -30,7 +36,10 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'include_req_error_in_response' => true,
+    'include_req_error_in_response' => (bool) env(
+        'OPENAPI_VALIDATOR_INCLUDE_REQ_ERROR_IN_RESPONSE',
+        true
+    ),
 
     /*
     |--------------------------------------------------------------------------
@@ -38,7 +47,10 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'include_res_error_in_response' => true,
+    'include_res_error_in_response' => (bool) env(
+        'OPENAPI_VALIDATOR_INCLUDE_RES_ERROR_IN_RESPONSE',
+        env('APP_DEBUG', false),
+    ),
 
     /*
     |--------------------------------------------------------------------------
@@ -46,7 +58,10 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'include_trace_in_response' => true,
+    'include_trace_in_response' => (bool) env(
+        'OPENAPI_VALIDATOR_INCLUDE_TRACE_IN_RESPONSE',
+        env('APP_DEBUG', false),
+    ),
 
     /*
     |--------------------------------------------------------------------------
@@ -61,7 +76,10 @@ return [
     'providers' => [
         'laravel-openapi' => [
             'driver' => 'laravel-openapi',
-            'collection' => 'default',
+            'collection' => (string) env(
+                'OPENAPI_VALIDATOR_COLLECTION_NAME',
+                'default'
+            ),
         ],
     ],
 ];

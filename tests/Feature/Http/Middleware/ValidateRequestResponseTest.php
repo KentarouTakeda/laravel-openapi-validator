@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Illuminate\Contracts\Config\Repository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -28,6 +29,16 @@ class ValidateRequestResponseTest extends TestCase
                 'getResponseValidator' => $this->mockValidator()->getResponseValidator(),
             ])
         );
+    }
+
+    protected function defineEnvironment($app)
+    {
+        tap($app['config'], function (Repository $config) {
+            $config->set('openapi-validator.error_on_no_path', true);
+            $config->set('openapi-validator.include_req_error_in_response', true);
+            $config->set('openapi-validator.include_res_error_in_response', true);
+            $config->set('openapi-validator.include_trace_in_response', true);
+        });
     }
 
     private function mockValidator(): ValidatorBuilder
