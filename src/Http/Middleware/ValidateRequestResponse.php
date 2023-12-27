@@ -52,13 +52,10 @@ class ValidateRequestResponse
             }
 
             return $next($request);
-        } catch (ValidationFailed $e) {
-            return $this->errorRenderer->render(
+        } catch (ValidationFailed $validationFailed) {
+            return $this->renderRequestError(
                 $request,
-                $e,
-                Response::HTTP_BAD_REQUEST,
-                $this->includeReqErrorInResponse,
-                $this->includeTraceInResponse
+                $validationFailed,
             );
         }
 
@@ -108,6 +105,17 @@ class ValidateRequestResponse
             $error,
             Response::HTTP_INTERNAL_SERVER_ERROR,
             $this->includeResErrorInResponse,
+            $this->includeTraceInResponse
+        );
+    }
+
+    private function renderRequestError(Request $request, \Throwable $error): Response
+    {
+        return $this->errorRenderer->render(
+            $request,
+            $error,
+            Response::HTTP_BAD_REQUEST,
+            $this->includeReqErrorInResponse,
             $this->includeTraceInResponse
         );
     }
