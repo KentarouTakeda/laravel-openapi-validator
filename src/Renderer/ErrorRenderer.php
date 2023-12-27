@@ -49,6 +49,7 @@ class ErrorRenderer implements ErrorRendererInterface
 
             if ($current instanceof SchemaMismatch) {
                 $json['pointer'] = $current->dataBreadCrumb()?->buildChain() ?: null;
+                $json['detail'] = $current->getMessage() ?: $error->getMessage() ?: null;
                 break;
             }
         }

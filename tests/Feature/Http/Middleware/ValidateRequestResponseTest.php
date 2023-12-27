@@ -118,6 +118,7 @@ class ValidateRequestResponseTest extends TestCase
             ->assertStatus(Response::HTTP_BAD_REQUEST)
             ->assertJsonPath('status', Response::HTTP_BAD_REQUEST)
             ->assertJsonPath('title', class_basename(InvalidBody::class))
+            ->assertJsonPath('detail', "Value expected to be 'integer', but 'string' given.")
             ->assertJsonPath('pointer', ['hoge', 1])
         ;
     }
@@ -125,13 +126,14 @@ class ValidateRequestResponseTest extends TestCase
     #[Test]
     public function returnsInvalidBody(): void
     {
-        Route::post('/', fn () => ['data' => ['foo']])->middleware(ValidateRequestResponse::class);
+        Route::post('/', fn () => ['data' => [true]])->middleware(ValidateRequestResponse::class);
 
         $this->json(Request::METHOD_POST, '/', ['hoge' => [1]]
         )
             ->assertStatus(Response::HTTP_INTERNAL_SERVER_ERROR)
             ->assertJsonPath('status', Response::HTTP_INTERNAL_SERVER_ERROR)
             ->assertJsonPath('title', class_basename(InvalidBody::class))
+            ->assertJsonPath('detail', "Value expected to be 'integer', but 'boolean' given.")
             ->assertJsonPath('pointer', ['data', 0])
         ;
     }
