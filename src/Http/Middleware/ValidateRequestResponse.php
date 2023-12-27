@@ -19,9 +19,15 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 class ValidateRequestResponse
 {
     public function __construct(
+        // Dependency Injection
         private readonly Dispatcher $eventDispatcher,
         private readonly ErrorRendererInterface $errorRenderer,
         private readonly PsrHttpFactory $psrHttpFactory,
+        // Configuration Injection
+        private readonly bool $errorOnNoPath,
+        private readonly bool $includeReqErrorInResponse,
+        private readonly bool $includeResErrorInResponse,
+        private readonly bool $includeTraceInResponse,
     ) {
     }
 

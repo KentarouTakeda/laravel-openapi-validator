@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Default OpenAPI Schema provider.
@@ -27,25 +26,27 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Include Breadcrumbs when a request error occurs
+    | Whether to include a request validation error pointer in the response
     |--------------------------------------------------------------------------
-    |
-    | Whether to include breadcrumb in the response when a request error occurs
-    |
     */
 
-    'include_breadcrumbs_in_request_error' => true,
+    'include_req_error_in_response' => true,
 
     /*
     |--------------------------------------------------------------------------
-    | Include Breadcrumbs when a response error occurs
+    | Whether to include a response validation error pointer in the response
     |--------------------------------------------------------------------------
-    |
-    | Whether to include breadcrumb in the response when a response error occurs
-    |
     */
 
-    'include_breadcrumbs_in_response_error' => true,
+    'include_res_error_in_response' => true,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Whether to include a stack trace in the response
+    |--------------------------------------------------------------------------
+    */
+
+    'include_trace_in_response' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -58,11 +59,9 @@ return [
     */
 
     'providers' => [
-
         'laravel-openapi' => [
             'driver' => 'laravel-openapi',
             'collection' => 'default',
         ],
-
     ],
 ];
