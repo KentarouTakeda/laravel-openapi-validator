@@ -33,28 +33,41 @@ class ErrorRenderer implements ErrorRendererInterface
         bool $includePointer,
         bool $includeTrace,
     ): Response {
-        $current = $this->prepareException($error);
-        if ($current instanceof HttpException) {
-            $status = $current->getStatusCode();
+        $error = $this->prepareException($error);
+
+        if ($error instanceof HttpException) {
+            $status = $error->getStatusCode();
         }
 
         $json = [
-            'title' => class_basename($current),
-            'detail' => $current->getMessage() ?: null,
+            'title' => class_basename($error),
+            'detail' => $error->getMessage() ?: null,
             'status' => $status,
         ];
 
-        while ($includePointer && $current) {
-            $current = $current->getPrevious();
+        if ($includePointer) {
+            $schemaMismatch = $this->findSchemaMismatch($error);
 
-            if ($current instanceof SchemaMismatch) {
-                $json['pointer'] = $current->dataBreadCrumb()?->buildChain() ?: null;
-                $json['detail'] = $current->getMessage() ?: $error->getMessage() ?: null;
-                break;
+            if ($schemaMismatch) {
+                $json['pointer'] = $schemaMismatch->dataBreadCrumb()?->buildChain() ?: null;
+                $json['detail'] = $schemaMismatch->getMessage() ?: $error->getMessage() ?: null;
             }
         }
 
         return $this->responseFactory->json($json, $status)->setStatusCode($status);
+    }
+
+    private function findSchemaMismatch(\Throwable $error): ?SchemaMismatch
+    {
+        while ($error) {
+            $error = $error->getPrevious();
+
+            if ($error instanceof SchemaMismatch) {
+                return $error;
+            }
+        }
+
+        return null;
     }
 
     /**
