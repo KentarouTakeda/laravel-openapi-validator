@@ -90,15 +90,12 @@ class ValidateRequestResponseTest extends TestCase
     #[Test]
     public function throwsPathNotFoundException(): void
     {
-        $this->withoutExceptionHandling();
-
-        $this->expectException(PathNotFoundException::class);
-        $this->expectExceptionMessage('Path not found: GET /not-found');
-
         Route::get('/not-found', fn () => 'Hello')->middleware(ValidateRequestResponse::class);
 
         $this->get('/not-found')
-            ->assertOk();
+            ->assertStatus(Response::HTTP_INTERNAL_SERVER_ERROR)
+            ->assertJsonPath('status', Response::HTTP_INTERNAL_SERVER_ERROR)
+            ->assertJsonPath('title', class_basename(PathNotFoundException::class));
     }
 
     #[Test]

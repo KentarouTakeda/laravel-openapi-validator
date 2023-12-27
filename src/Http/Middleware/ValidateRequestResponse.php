@@ -48,7 +48,12 @@ class ValidateRequestResponse
             $operationAddress = $schemaRepository->getRequestValidator()->validate($psrRequest);
         } catch (NoPath $e) {
             if ($this->errorOnNoPath) {
-                throw new PathNotFoundException(request: $psrRequest, previous: $e);
+                $pathNotFoundException = new PathNotFoundException(request: $psrRequest, previous: $e);
+
+                return $this->renderResponseError(
+                    $request,
+                    $pathNotFoundException,
+                );
             }
 
             return $next($request);
