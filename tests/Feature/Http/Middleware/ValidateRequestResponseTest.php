@@ -162,6 +162,8 @@ class ValidateRequestResponseTest extends TestCase
             ->assertStatus(Response::HTTP_NOT_FOUND)
             ->assertJsonPath('status', Response::HTTP_NOT_FOUND)
             ->assertJsonPath('title', class_basename(NotFoundHttpException::class))
+            ->assertSeeText(class_basename(ModelNotFoundException::class))
+            ->assertSeeText(class_basename(NotFoundHttpException::class))
         ;
     }
 }

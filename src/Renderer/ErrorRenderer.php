@@ -54,6 +54,10 @@ class ErrorRenderer implements ErrorRendererInterface
             }
         }
 
+        if ($includeTrace) {
+            $json['trace'] = $this->extractTrace($error);
+        }
+
         return $this->responseFactory->json($json, $status)->setStatusCode($status);
     }
 
@@ -68,6 +72,32 @@ class ErrorRenderer implements ErrorRendererInterface
         }
 
         return null;
+    }
+
+    /**
+     * @return array<int, array<string, int|string|object>>
+     */
+    private function extractTrace(\Throwable $error): array
+    {
+        $records = [];
+        while ($error) {
+            $records[] = [
+                'error' => get_class($error),
+                'message' => $error->getMessage(),
+                'code' => $error->getCode(),
+                'file' => $error->getFile(),
+                'line' => $error->getLine(),
+            ];
+
+            foreach ($error->getTrace() as $record) {
+                unset($record['args']);
+                $records[] = $record;
+            }
+
+            $error = $error->getPrevious();
+        }
+
+        return $records;
     }
 
     /**
