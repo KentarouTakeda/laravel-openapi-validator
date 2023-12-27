@@ -53,7 +53,13 @@ class ValidateRequestResponse
 
             return $next($request);
         } catch (ValidationFailed $e) {
-            return $this->errorRenderer->render($request, $e, Response::HTTP_BAD_REQUEST);
+            return $this->errorRenderer->render(
+                $request,
+                $e,
+                Response::HTTP_BAD_REQUEST,
+                $this->includeReqErrorInResponse,
+                $this->includeTraceInResponse
+            );
         }
 
         $this->eventDispatcher->listen(RequestHandled::class, function (RequestHandled $event) use ($operationAddress, $schemaRepository) {
@@ -61,7 +67,13 @@ class ValidateRequestResponse
             $exception = $response->exception;
 
             if ($exception) {
-                $response = $this->errorRenderer->render($event->request, $exception, Response::HTTP_INTERNAL_SERVER_ERROR);
+                $response = $this->errorRenderer->render(
+                    $event->request,
+                    $exception,
+                    Response::HTTP_INTERNAL_SERVER_ERROR,
+                    $this->includeResErrorInResponse,
+                    $this->includeTraceInResponse
+                );
                 $this->overrideResponse($event, $response);
 
                 return;
@@ -72,7 +84,12 @@ class ValidateRequestResponse
             try {
                 $schemaRepository->getResponseValidator()->validate($operationAddress, $psrResponse);
             } catch (ValidationFailed $e) {
-                $response = $this->errorRenderer->render($event->request, $e, Response::HTTP_INTERNAL_SERVER_ERROR);
+                $response = $this->errorRenderer->render(
+                    $event->request,
+                    $e,
+                    Response::HTTP_INTERNAL_SERVER_ERROR,
+                    $this->includeResErrorInResponse,
+                    $this->includeTraceInResponse);
                 $this->overrideResponse($event, $response);
 
                 return;

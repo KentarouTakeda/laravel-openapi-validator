@@ -110,7 +110,7 @@ class ValidateRequestResponseTest extends TestCase
             ->assertStatus(Response::HTTP_BAD_REQUEST)
             ->assertJsonPath('status', Response::HTTP_BAD_REQUEST)
             ->assertJsonPath('title', class_basename(InvalidBody::class))
-            ->assertJsonPath('breadcrumb', ['hoge', 1])
+            ->assertJsonPath('pointer', ['hoge', 1])
         ;
     }
 
@@ -124,7 +124,7 @@ class ValidateRequestResponseTest extends TestCase
             ->assertStatus(Response::HTTP_INTERNAL_SERVER_ERROR)
             ->assertJsonPath('status', Response::HTTP_INTERNAL_SERVER_ERROR)
             ->assertJsonPath('title', class_basename(InvalidBody::class))
-            ->assertJsonPath('breadcrumb', ['data', 0])
+            ->assertJsonPath('pointer', ['data', 0])
         ;
     }
 

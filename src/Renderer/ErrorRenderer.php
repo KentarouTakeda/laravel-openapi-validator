@@ -26,8 +26,13 @@ class ErrorRenderer implements ErrorRendererInterface
     ) {
     }
 
-    public function render(Request $request, \Throwable $error, int $status): Response
-    {
+    public function render(
+        Request $request,
+        \Throwable $error,
+        int $status,
+        bool $includePointer,
+        bool $includeTrace,
+    ): Response {
         $current = $this->prepareException($error);
         if ($current instanceof HttpException) {
             $status = $current->getStatusCode();
@@ -39,11 +44,11 @@ class ErrorRenderer implements ErrorRendererInterface
             'status' => $status,
         ];
 
-        while ($current) {
+        while ($includePointer && $current) {
             $current = $current->getPrevious();
 
             if ($current instanceof SchemaMismatch) {
-                $json['breadcrumb'] = $current->dataBreadCrumb()?->buildChain() ?: null;
+                $json['pointer'] = $current->dataBreadCrumb()?->buildChain() ?: null;
                 break;
             }
         }
