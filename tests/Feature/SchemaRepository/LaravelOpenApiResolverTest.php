@@ -32,7 +32,7 @@ class LaravelOpenApiResolverTest extends TestCase
         ]);
 
         $spec = json_decode($json, true);
-        $this->assertNotFalse($spec);
+        $this->assertNotNull($spec);
 
         $this->assertSame('3.0.2', $spec['openapi']);
         $this->assertSame([
