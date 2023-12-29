@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace KentarouTakeda\Laravel\OpenApiValidator;
 
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
-use KentarouTakeda\Laravel\OpenApiValidator\Console\CacheCommand;
-use KentarouTakeda\Laravel\OpenApiValidator\Console\ClearCommand;
+use KentarouTakeda\Laravel\OpenApiValidator\Console\Commands\CacheCommand;
+use KentarouTakeda\Laravel\OpenApiValidator\Console\Commands\ClearCommand;
 use KentarouTakeda\Laravel\OpenApiValidator\Http\Middleware\ValidateRequestResponse;
 use KentarouTakeda\Laravel\OpenApiValidator\Renderer\ErrorRenderer;
 

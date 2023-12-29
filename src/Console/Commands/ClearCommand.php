@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace KentarouTakeda\Laravel\OpenApiValidator\Console;
+namespace KentarouTakeda\Laravel\OpenApiValidator\Console\Commands;
 
 use Illuminate\Console\Command;
 
