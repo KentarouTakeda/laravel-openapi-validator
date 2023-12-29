@@ -7,6 +7,7 @@ namespace KentarouTakeda\Laravel\OpenApiValidator\Http\Middleware;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Foundation\Http\Events\RequestHandled;
 use Illuminate\Http\Request;
+use KentarouTakeda\Laravel\OpenApiValidator\Config\Config;
 use KentarouTakeda\Laravel\OpenApiValidator\ErrorRendererInterface;
 use KentarouTakeda\Laravel\OpenApiValidator\Exceptions\PathNotFoundException;
 use KentarouTakeda\Laravel\OpenApiValidator\SchemaRepository\SchemaRepository;
@@ -20,6 +21,7 @@ class ValidateRequestResponse
 {
     public function __construct(
         // Dependency Injection
+        private readonly Config $config,
         private readonly Dispatcher $eventDispatcher,
         private readonly ErrorRendererInterface $errorRenderer,
         private readonly PsrHttpFactory $psrHttpFactory,
@@ -39,7 +41,7 @@ class ValidateRequestResponse
         \Closure $next,
         string $provider = null
     ): Response {
-        $provider ??= config('openapi-validator.default');
+        $provider ??= $this->config->getDefaultProviderName();
         $schemaRepository = app()->makeWith(SchemaRepository::class, ['providerName' => $provider]);
 
         $psrRequest = $this->psrHttpFactory->createRequest($request);
