@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace KentarouTakeda\Laravel\OpenApiValidator;
 
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
+use KentarouTakeda\Laravel\OpenApiValidator\Console\CacheCommand;
+use KentarouTakeda\Laravel\OpenApiValidator\Console\ClearCommand;
 use KentarouTakeda\Laravel\OpenApiValidator\Http\Middleware\ValidateRequestResponse;
 use KentarouTakeda\Laravel\OpenApiValidator\Renderer\ErrorRenderer;
 
@@ -40,5 +42,12 @@ class ServiceProvider extends BaseServiceProvider
         $this->publishes([
             self::CONFIG_PATH => config_path('openapi-validator.php'),
         ], 'config');
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                CacheCommand::class,
+                ClearCommand::class,
+            ]);
+        }
     }
 }
