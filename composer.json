@@ -9,6 +9,7 @@
         }
     },
     "require-dev": {
+        "darkaonline/l5-swagger": "^8.5",
         "friendsofphp/php-cs-fixer": "^3.41",
         "larastan/larastan": "^2.7",
         "orchestra/testbench": "^8.17",
