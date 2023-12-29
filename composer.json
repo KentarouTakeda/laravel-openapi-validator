@@ -27,10 +27,7 @@
     "config": {
         "process-timeout": 0,
         "optimize-autoloader": true,
-        "sort-packages": true,
-        "allow-plugins": {
-            "captainhook/captainhook-phar": false
-        }
+        "sort-packages": true
     },
     "require": {
         "laravel/framework": "^9.0|^10.0|^11.0",
