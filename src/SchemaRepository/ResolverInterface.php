@@ -6,8 +6,6 @@ namespace KentarouTakeda\Laravel\OpenApiValidator\SchemaRepository;
 
 interface ResolverInterface
 {
-    public function supports(): string;
-
     /**
      * @param array<string,string> $options
      */

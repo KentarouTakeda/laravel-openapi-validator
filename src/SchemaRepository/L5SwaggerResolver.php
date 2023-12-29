@@ -6,20 +6,22 @@ namespace KentarouTakeda\Laravel\OpenApiValidator\SchemaRepository;
 
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Filesystem\Filesystem;
+use KentarouTakeda\Laravel\OpenApiValidator\Exceptions\LackOfDependenciesException;
 use L5Swagger\GeneratorFactory;
 
 class L5SwaggerResolver implements ResolverInterface
 {
+    private readonly GeneratorFactory $generatorFactory;
+
     public function __construct(
-        private readonly GeneratorFactory $generatorFactory,
         private readonly Repository $repository,
         private readonly Filesystem $filesystem,
     ) {
-    }
+        if (!class_exists(GeneratorFactory::class)) {
+            throw new LackOfDependenciesException(message: 'L5Swagger is not installed.', class: GeneratorFactory::class);
+        }
 
-    public function supports(): string
-    {
-        return 'l5-swagger';
+        $this->generatorFactory = app()->make(GeneratorFactory::class);
     }
 
     public function getJson(array $options): string

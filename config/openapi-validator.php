@@ -1,5 +1,8 @@
 <?php
 
+use KentarouTakeda\Laravel\OpenApiValidator\SchemaRepository\L5SwaggerResolver;
+use KentarouTakeda\Laravel\OpenApiValidator\SchemaRepository\LaravelOpenApiResolver;
+
 return [
     /*
     |--------------------------------------------------------------------------
@@ -72,7 +75,7 @@ return [
     | specifications, you can specify which one to use with the middleware
     | parameter `provider`.
     |
-    | See the sample below for supported drivers and settings.
+    | See the sample below for supported resolvers and settings.
     |
     */
 
@@ -85,7 +88,7 @@ return [
         */
 
         'laravel-openapi' => [
-            'driver' => 'laravel-openapi',
+            'resolver' => LaravelOpenApiResolver::class,
             'collection' => (string) env(
                 'OPENAPI_VALIDATOR_COLLECTION_NAME',
                 'default'
@@ -99,7 +102,7 @@ return [
         */
 
         'l5-swagger' => [
-            'driver' => 'l5-swagger',
+            'resolver' => L5SwaggerResolver::class,
             'documentation' => (string) env(
                 'OPENAPI_VALIDATOR_COLLECTION_NAME',
                 'default'
