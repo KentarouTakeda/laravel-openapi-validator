@@ -11,7 +11,5 @@ interface ResolverInterface
     /**
      * @param array{collection: string} $options
      */
-    public function setOptions(array $options): static;
-
-    public function getJson(): string;
+    public function getJson(array $options): string;
 }

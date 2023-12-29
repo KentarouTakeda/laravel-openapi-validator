@@ -29,7 +29,7 @@ class SchemaRepository
             }
 
             $this->validatorBuilder->fromJson(
-                $arg->setOptions($provider)->getJson()
+                $arg->getJson($provider)
             );
 
             return;

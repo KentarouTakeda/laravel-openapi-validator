@@ -8,8 +8,6 @@ use Vyuldashev\LaravelOpenApi\Generator;
 
 class LaravelOpenApiResolver implements ResolverInterface
 {
-    private string $collection;
-
     public function __construct(
         private readonly Generator $generator,
     ) {
@@ -20,17 +18,10 @@ class LaravelOpenApiResolver implements ResolverInterface
         return 'laravel-openapi';
     }
 
-    public function setOptions(array $options): static
-    {
-        $this->collection = $options['collection'];
-
-        return $this;
-    }
-
-    public function getJson(): string
+    public function getJson(array $options): string
     {
         return $this->generator
-            ->generate($this->collection)
+            ->generate($options['collection'])
             ->toJson(JSON_UNESCAPED_UNICODE);
     }
 }

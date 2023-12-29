@@ -29,7 +29,6 @@ class SchemaRepositoryTest extends TestCase
     {
         $laravelOpenApiResolver = $this->mock(LaravelOpenApiResolver::class, function ($mock) {
             $mock->shouldReceive('supports')->andReturn('laravel-openapi');
-            $mock->shouldReceive('setOptions')->andReturnSelf();
             $mock->shouldReceive('getJson')->andReturn('{"foo":"bar"}');
         });
 

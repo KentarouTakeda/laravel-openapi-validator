@@ -27,9 +27,9 @@ class LaravelOpenApiResolverTest extends TestCase
 
     public function test(): void
     {
-        $json = $this->laravelOpenApiResolver->setOptions([
+        $json = $this->laravelOpenApiResolver->getJson([
             'collection' => 'default',
-        ])->getJson();
+        ]);
 
         $spec = json_decode($json, true);
         $this->assertNotFalse($spec);
