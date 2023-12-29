@@ -38,4 +38,22 @@ class Config
 
         return $defaultProviderName;
     }
+
+    /**
+     * @return array<string, string>
+     */
+    public function getProviderSettings(string $providerName): array
+    {
+        $provider = $this->repository->get("openapi-validator.providers.{$providerName}");
+
+        if (!$provider) {
+            throw new InvalidConfigException(message: "Provider {$providerName} is not defined");
+        }
+
+        if (!is_array($provider)) {
+            throw new InvalidConfigException(message: "Provider {$providerName} must be an array");
+        }
+
+        return $provider;
+    }
 }

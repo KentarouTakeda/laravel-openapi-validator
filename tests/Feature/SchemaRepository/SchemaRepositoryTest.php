@@ -14,21 +14,6 @@ class SchemaRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function exceptionThrownForNonExistentProvider(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(
-            'laravel-openapi-validator: Provider not-found is not defined'
-        );
-
-        app()->makeWith(SchemaRepository::class, [
-            'providerName' => 'not-found',
-        ]);
-    }
-
-    /**
-     * @test
-     */
     public function laravelOpenApiResolverIsUsed(): void
     {
         $laravelOpenApiResolver = $this->mock(LaravelOpenApiResolver::class, function ($mock) {

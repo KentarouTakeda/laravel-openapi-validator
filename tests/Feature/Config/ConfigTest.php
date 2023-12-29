@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace KentarouTakeda\SafeRouting\Tests\Feature\Config;
 
 use KentarouTakeda\Laravel\OpenApiValidator\Config\Config;
+use KentarouTakeda\Laravel\OpenApiValidator\Exceptions\InvalidConfigException;
 use KentarouTakeda\Laravel\OpenApiValidator\Tests\Feature\TestCase;
 
 class ConfigTest extends TestCase
@@ -42,5 +43,30 @@ class ConfigTest extends TestCase
             'laravel-openapi',
             $defaultProviderName
         );
+    }
+
+    /**
+     * @test
+     */
+    public function getProviderSettingsReturnsProviderSettings(): void
+    {
+        $providerNames = $this->config->getProviderNames();
+
+        foreach ($providerNames as $providerName) {
+            $providerSettings = $this->config->getProviderSettings($providerName);
+
+            $this->assertIsArray($providerSettings);
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function getProviderSettingsThrowsInvalidConfigExceptionWhenProviderIsNotDefined(): void
+    {
+        $this->expectException(InvalidConfigException::class);
+        $this->expectExceptionMessage('Provider foo is not defined');
+
+        $this->config->getProviderSettings('foo');
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace KentarouTakeda\Laravel\OpenApiValidator\SchemaRepository;
 
+use KentarouTakeda\Laravel\OpenApiValidator\Config\Config;
 use KentarouTakeda\Laravel\OpenApiValidator\Exceptions\InvalidConfigException;
 use League\OpenAPIValidation\PSR7\RequestValidator;
 use League\OpenAPIValidation\PSR7\ResponseValidator;
@@ -15,12 +16,10 @@ class SchemaRepository
         // Input via the service container during validation execution
         string $providerName,
         // Input external libraries with dependency injection
+        private readonly Config $config,
         private readonly ValidatorBuilder $validatorBuilder,
     ) {
-        $provider = config()->get("openapi-validator.providers.{$providerName}");
-        if (!$provider) {
-            throw new \InvalidArgumentException("laravel-openapi-validator: Provider {$providerName} is not defined");
-        }
+        $provider = $this->config->getProviderSettings($providerName);
 
         $class = $provider['resolver'];
 
