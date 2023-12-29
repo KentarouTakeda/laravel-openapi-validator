@@ -89,7 +89,9 @@ class ValidateRequestResponseTest extends TestCase
         return (new ValidatorBuilder())->fromJson($json);
     }
 
-    #[Test]
+    /**
+     * @test
+     */
     public function requestAndResponse(): void
     {
         Route::post('/', fn () => ['data' => [42]])->middleware(ValidateRequestResponse::class);
@@ -99,7 +101,9 @@ class ValidateRequestResponseTest extends TestCase
         ;
     }
 
-    #[Test]
+    /**
+     * @test
+     */
     public function throwsPathNotFoundException(): void
     {
         Route::get('/not-found', fn () => 'Hello')->middleware(ValidateRequestResponse::class);
@@ -111,7 +115,9 @@ class ValidateRequestResponseTest extends TestCase
         ;
     }
 
-    #[Test]
+    /**
+     * @test
+     */
     public function returnsBadRequest(): void
     {
         Route::post('/', fn () => 'Hello')->middleware(ValidateRequestResponse::class);
@@ -125,7 +131,9 @@ class ValidateRequestResponseTest extends TestCase
         ;
     }
 
-    #[Test]
+    /**
+     * @test
+     */
     public function returnsInvalidBody(): void
     {
         Route::post('/', fn () => ['data' => [true]])->middleware(ValidateRequestResponse::class);
@@ -140,7 +148,9 @@ class ValidateRequestResponseTest extends TestCase
         ;
     }
 
-    #[Test]
+    /**
+     * @test
+     */
     public function returnsHttpException(): void
     {
         Route::post('/', fn () => abort(404, 'foo'))->middleware(ValidateRequestResponse::class);
@@ -153,7 +163,9 @@ class ValidateRequestResponseTest extends TestCase
         ;
     }
 
-    #[Test]
+    /**
+     * @test
+     */
     public function returnsModelNotFoundException(): void
     {
         Route::post('/', fn () => throw new ModelNotFoundException())->middleware(ValidateRequestResponse::class);

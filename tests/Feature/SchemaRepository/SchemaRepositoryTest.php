@@ -11,7 +11,9 @@ use PHPUnit\Framework\Attributes\Test;
 
 class SchemaRepositoryTest extends TestCase
 {
-    #[Test]
+    /**
+     * @test
+     */
     public function exceptionThrownForNonExistentProvider(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -24,7 +26,9 @@ class SchemaRepositoryTest extends TestCase
         ]);
     }
 
-    #[Test]
+    /**
+     * @test
+     */
     public function laravelOpenApiResolverIsUsed(): void
     {
         $laravelOpenApiResolver = $this->mock(LaravelOpenApiResolver::class, function ($mock) {
