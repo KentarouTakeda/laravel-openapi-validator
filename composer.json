@@ -1,6 +1,19 @@
 {
     "name": "kentaroutakeda/laravel-openapi-validator",
     "description": "Laravel OpenAPI Validator",
+    "keywords": [
+        "api",
+        "docs",
+        "documentation",
+        "laravel",
+        "middleware",
+        "openapi",
+        "rest",
+        "specification",
+        "swagger",
+        "validation",
+        "validator"
+    ],
     "license": "MIT",
     "type": "library",
     "autoload": {
