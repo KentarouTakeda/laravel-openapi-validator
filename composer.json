@@ -51,6 +51,10 @@
         "phpunit/phpunit": "^9.0|^10.0",
         "vyuldashev/laravel-openapi": "^1.5"
     },
+    "suggest": {
+        "darkaonline/l5-swagger": "Supported OpenAPI Document Provider.",
+        "vyuldashev/laravel-openapi": "Supported OpenAPI Document Provider."
+    },
     "config": {
         "optimize-autoloader": true,
         "sort-packages": true
