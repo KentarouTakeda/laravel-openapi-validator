@@ -56,4 +56,15 @@ class Config
 
         return $provider;
     }
+
+    public function getCacheDirectory(): string
+    {
+        $cacheDirectory = $this->repository->get('openapi-validator.cache_directory');
+
+        if (!is_string($cacheDirectory)) {
+            throw new InvalidConfigException(message: 'openapi-validator.cache_directory must be a string');
+        }
+
+        return $cacheDirectory;
+    }
 }

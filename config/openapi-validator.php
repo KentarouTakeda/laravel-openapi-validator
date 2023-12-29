@@ -116,6 +116,6 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'cache_file_path' => storage_path('openapi-validator'),
+    'cache_directory' => storage_path('openapi-validator'),
 
 ];

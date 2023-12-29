@@ -69,4 +69,14 @@ class ConfigTest extends TestCase
 
         $this->config->getProviderSettings('foo');
     }
+
+    /**
+     * @test
+     */
+    public function getCacheDirectoryReturnsCacheDirectory(): void
+    {
+        $cacheDirectory = $this->config->getCacheDirectory();
+
+        $this->assertIsString($cacheDirectory);
+    }
 }
