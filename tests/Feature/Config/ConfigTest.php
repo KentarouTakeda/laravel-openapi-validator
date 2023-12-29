@@ -79,4 +79,14 @@ class ConfigTest extends TestCase
 
         $this->assertIsString($cacheDirectory);
     }
+
+    /**
+     * @test
+     */
+    public function getCacheFileNameReturnsCacheFileName(): void
+    {
+        $cacheFileName = $this->config->getCacheFileName('foo');
+
+        $this->assertStringEndsWith(DIRECTORY_SEPARATOR.'foo.json', $cacheFileName);
+    }
 }

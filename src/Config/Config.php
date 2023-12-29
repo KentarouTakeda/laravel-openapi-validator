@@ -67,4 +67,13 @@ class Config
 
         return $cacheDirectory;
     }
+
+    public function getCacheFileName(string $providerName): string
+    {
+        return str($this->getCacheDirectory())
+            ->finish(DIRECTORY_SEPARATOR)
+            ->append($providerName)
+            ->append('.json')
+            ->toString();
+    }
 }
