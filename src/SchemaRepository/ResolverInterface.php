@@ -9,7 +9,7 @@ interface ResolverInterface
     public function supports(): string;
 
     /**
-     * @param array{collection: string} $options
+     * @param array<string,string> $options
      */
     public function getJson(array $options): string;
 }
