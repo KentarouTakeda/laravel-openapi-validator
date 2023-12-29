@@ -65,18 +65,42 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Default OpenAPI Schema provider.
+    | OpenAPI Schema providers.
     |--------------------------------------------------------------------------
     |
-    | * `driver`: currently only supports `laravel-openapi`
-    | * `collection`: Name of schema to use
+    | By default, `default` is used. If your system handles multiple OpenAPI
+    | specifications, you can specify which one to use with the middleware
+    | parameter `provider`.
+    |
+    | See the sample below for supported drivers and settings.
     |
     */
 
     'providers' => [
+
+        /*
+        | Laravel OpenAPI
+        |
+        | https://github.com/vyuldashev/laravel-openapi
+        */
+
         'laravel-openapi' => [
             'driver' => 'laravel-openapi',
             'collection' => (string) env(
+                'OPENAPI_VALIDATOR_COLLECTION_NAME',
+                'default'
+            ),
+        ],
+
+        /*
+        | L5-Swagger
+        |
+        | https://github.com/DarkaOnLine/L5-Swagger
+        */
+
+        'l5-swagger' => [
+            'driver' => 'l5-swagger',
+            'documentation' => (string) env(
                 'OPENAPI_VALIDATOR_COLLECTION_NAME',
                 'default'
             ),
