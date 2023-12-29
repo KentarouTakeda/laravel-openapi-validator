@@ -15,7 +15,8 @@
         "orchestra/testbench": "^8.17",
         "phpstan/phpstan": "^1.10",
         "phpstan/phpstan-mockery": "^1.1",
-        "phpunit/php-code-coverage": "^10.1"
+        "phpunit/php-code-coverage": "^10.1",
+        "vyuldashev/laravel-openapi": "^1.11"
     },
     "autoload-dev": {
         "psr-4": {
@@ -34,7 +35,6 @@
         "laravel/framework": "^10.38",
         "league/openapi-psr7-validator": "^0.21.0",
         "nyholm/psr7": "^1.8",
-        "symfony/psr-http-message-bridge": "^7.0",
-        "vyuldashev/laravel-openapi": "^1.11"
+        "symfony/psr-http-message-bridge": "^7.0"
     }
 }
