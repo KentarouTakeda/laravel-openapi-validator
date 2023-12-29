@@ -11,8 +11,12 @@ use League\OpenAPIValidation\PSR7\ValidatorBuilder;
 class SchemaRepository
 {
     public function __construct(
+        // Input via the service container during validation execution
         string $providerName,
+        // Input external libraries with dependency injection
         private readonly ValidatorBuilder $validatorBuilder,
+        // Input all supported resolvers using dependency injection
+        L5SwaggerResolver $l5SwaggerResolver,
         LaravelOpenApiResolver $laravelOpenApiResolver,
     ) {
         $provider = config()->get("openapi-validator.providers.{$providerName}");
