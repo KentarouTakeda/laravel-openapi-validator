@@ -29,6 +29,13 @@
         "optimize-autoloader": true,
         "sort-packages": true
     },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "KentarouTakeda\\Laravel\\OpenApiValidator\\ServiceProvider"
+            ]
+        }
+    },
     "require": {
         "laravel/framework": "^9.0|^10.0|^11.0",
         "league/openapi-psr7-validator": "^0.21.0",
