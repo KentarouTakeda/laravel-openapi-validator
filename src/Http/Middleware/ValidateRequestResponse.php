@@ -117,7 +117,7 @@ class ValidateRequestResponse
             $error,
             Response::HTTP_BAD_REQUEST,
             $this->config->getIncludeReqErrorInResponse(),
-            $this->config->getIncludeTraceInResponse(),
+            false,
         );
     }
 }
