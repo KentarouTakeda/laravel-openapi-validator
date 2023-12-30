@@ -36,7 +36,7 @@ class ClearCommandTest extends TestCase
             touch($config->getCacheFileName($providerName));
         }
 
-        $command = $this->artisan('openapi-validator:clear');
+        $command = $this->artisan('openapi-validator:clear --all');
         assert($command instanceof PendingCommand);
 
         $command

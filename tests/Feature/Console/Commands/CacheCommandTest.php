@@ -40,7 +40,7 @@ class CacheCommandTest extends TestCase
             ])
         );
 
-        $command = $this->artisan('openapi-validator:cache');
+        $command = $this->artisan('openapi-validator:cache --all');
         assert($command instanceof PendingCommand);
 
         $command

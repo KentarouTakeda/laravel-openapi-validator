@@ -11,7 +11,11 @@ use KentarouTakeda\Laravel\OpenApiValidator\SchemaRepository\SchemaRepository;
 
 class CacheCommand extends Command
 {
-    protected $signature = 'openapi-validator:cache';
+    protected $signature = <<<EOD
+        openapi-validator:cache
+        {provider? : Name of the provider that creates the cache}
+        {--all : Create cache for all providers}
+    EOD;
 
     protected $description = 'Create a validator cache file for faster validation';
 
@@ -21,7 +25,11 @@ class CacheCommand extends Command
     ): int {
         $file->makeDirectory($config->getCacheDirectory(), 0777, true, true);
 
-        foreach ($config->getProviderNames() as $providerName) {
+        $providerNames = $this->option('all') ?
+            $config->getProviderNames() :
+            [(string) $this->argument('provider') ?: $config->getDefaultProviderName()];
+
+        foreach ($providerNames as $providerName) {
             $repository = app()->makeWith(
                 SchemaRepository::class,
                 ['providerName' => $providerName]
@@ -32,6 +40,7 @@ class CacheCommand extends Command
                 $config->getCacheFileName($providerName),
                 $repository->getJson(),
             );
+            $this->components->task("Make cache for {$providerName}");
         }
 
         $this->components->info('OpenAPI validator cached successfully.');
