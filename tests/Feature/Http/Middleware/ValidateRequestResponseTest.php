@@ -37,6 +37,7 @@ class ValidateRequestResponseTest extends TestCase
             'getIncludeReqErrorInResponse' => true,
             'getIncludeResErrorInResponse' => true,
             'getIncludeTraceInResponse' => true,
+            'getNonValidatedResponseCodes' => [],
         ]));
     }
 

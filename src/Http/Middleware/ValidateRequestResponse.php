@@ -67,6 +67,10 @@ class ValidateRequestResponse
     private function dispatchResponseValidation(OperationAddress $operationAddress, SchemaRepository $schemaRepository): void
     {
         $this->eventDispatcher->listen(RequestHandled::class, function (RequestHandled $event) use ($operationAddress, $schemaRepository) {
+            if (in_array($event->response->status(), $this->config->getNonValidatedResponseCodes())) {
+                return;
+            }
+
             if ($event->response->exception) {
                 $response = $this->renderResponseError(
                     $event->request,

@@ -96,4 +96,18 @@ class Config
     {
         return (bool) $this->repository->get('openapi-validator.include_trace_in_response');
     }
+
+    /**
+     * @return array<int, int>
+     */
+    public function getNonValidatedResponseCodes(): array
+    {
+        $codes = $this->repository->get('openapi-validator.non_validated_response_codes');
+
+        if (!is_array($codes)) {
+            throw new InvalidConfigException(message: 'openapi-validator.non_validated_response_codes must be an array');
+        }
+
+        return $codes;
+    }
 }

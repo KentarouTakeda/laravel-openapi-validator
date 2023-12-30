@@ -2,6 +2,7 @@
 
 use KentarouTakeda\Laravel\OpenApiValidator\SchemaRepository\L5SwaggerResolver;
 use KentarouTakeda\Laravel\OpenApiValidator\SchemaRepository\LaravelOpenApiResolver;
+use Symfony\Component\HttpFoundation\Response;
 
 return [
     /*
@@ -118,4 +119,12 @@ return [
 
     'cache_directory' => storage_path('openapi-validator'),
 
+    'non_validated_response_codes' => [
+        Response::HTTP_MOVED_PERMANENTLY,
+        Response::HTTP_FOUND,
+        Response::HTTP_SEE_OTHER,
+        Response::HTTP_NOT_MODIFIED,
+        Response::HTTP_TEMPORARY_REDIRECT,
+        Response::HTTP_PERMANENTLY_REDIRECT,
+    ],
 ];
