@@ -13,6 +13,7 @@ use KentarouTakeda\Laravel\OpenApiValidator\Exceptions\PathNotFoundException;
 use KentarouTakeda\Laravel\OpenApiValidator\SchemaRepository\SchemaRepository;
 use League\OpenAPIValidation\PSR7\Exception\NoPath;
 use League\OpenAPIValidation\PSR7\Exception\ValidationFailed;
+use League\OpenAPIValidation\PSR7\OperationAddress;
 use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
@@ -37,6 +38,7 @@ class ValidateRequestResponse
     ): Response {
         $provider ??= $this->config->getDefaultProviderName();
         $schemaRepository = app()->makeWith(SchemaRepository::class, ['providerName' => $provider]);
+        assert($schemaRepository instanceof SchemaRepository);
 
         $psrRequest = $this->psrHttpFactory->createRequest($request);
 
@@ -60,6 +62,13 @@ class ValidateRequestResponse
             );
         }
 
+        $this->dispatchResponseValidation($operationAddress, $schemaRepository);
+
+        return $next($request);
+    }
+
+    private function dispatchResponseValidation(OperationAddress $operationAddress, SchemaRepository $schemaRepository): void
+    {
         $this->eventDispatcher->listen(RequestHandled::class, function (RequestHandled $event) use ($operationAddress, $schemaRepository) {
             if ($event->response->exception) {
                 $response = $this->renderResponseError(
@@ -85,8 +94,6 @@ class ValidateRequestResponse
                 return;
             }
         });
-
-        return $next($request);
     }
 
     private function overrideResponse(RequestHandled $event, Response $response): void
