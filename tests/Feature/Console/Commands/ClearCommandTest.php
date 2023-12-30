@@ -4,20 +4,15 @@ declare(strict_types=1);
 
 namespace KentarouTakeda\Laravel\OpenApiValidator\Tests\Feature\Console\Commands;
 
-use Illuminate\Contracts\Config\Repository;
+use Illuminate\Testing\PendingCommand;
+use KentarouTakeda\Laravel\OpenApiValidator\Config\Config;
 use KentarouTakeda\Laravel\OpenApiValidator\Tests\Feature\TestCase;
 use KentarouTakeda\Laravel\OpenApiValidator\Tests\Feature\TestWithTemporaryFilesTrait;
+use Mockery\MockInterface;
 
 class ClearCommandTest extends TestCase
 {
     use TestWithTemporaryFilesTrait;
-
-    protected function defineEnvironment($app)
-    {
-        tap($app['config'], function (Repository $config) {
-            $config->set('openapi-validator.cache_directory', $this->getTemporaryDirectory());
-        });
-    }
 
     public function tearDown(): void
     {
@@ -29,7 +24,27 @@ class ClearCommandTest extends TestCase
     /**
      * @test
      */
-    public function test(): void
+    public function removesAllCache(): void
     {
+        $config = $this->partialMock(Config::class, fn (MockInterface $mock) => $mock->allows([
+            'getProviderNames' => ['foo', 'bar', 'baz'],
+            'getCacheDirectory' => $this->getTemporaryDirectory(),
+        ]));
+        assert($config instanceof Config);
+
+        foreach (array_slice($config->getProviderNames(), 1) as $providerName) {
+            touch($config->getCacheFileName($providerName));
+        }
+
+        $command = $this->artisan('openapi-validator:clear');
+        assert($command instanceof PendingCommand);
+
+        $command
+            ->assertOk()
+            ->run();
+
+        foreach ($config->getProviderNames() as $providerName) {
+            $this->assertFileDoesNotExist($config->getCacheFileName($providerName));
+        }
     }
 }

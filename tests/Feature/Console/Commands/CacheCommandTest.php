@@ -4,20 +4,16 @@ declare(strict_types=1);
 
 namespace KentarouTakeda\Laravel\OpenApiValidator\Tests\Feature\Console\Commands;
 
-use Illuminate\Contracts\Config\Repository;
+use Illuminate\Testing\PendingCommand;
+use KentarouTakeda\Laravel\OpenApiValidator\Config\Config;
+use KentarouTakeda\Laravel\OpenApiValidator\SchemaRepository\SchemaRepository;
 use KentarouTakeda\Laravel\OpenApiValidator\Tests\Feature\TestCase;
 use KentarouTakeda\Laravel\OpenApiValidator\Tests\Feature\TestWithTemporaryFilesTrait;
+use Mockery\MockInterface;
 
 class CacheCommandTest extends TestCase
 {
     use TestWithTemporaryFilesTrait;
-
-    protected function defineEnvironment($app)
-    {
-        tap($app['config'], function (Repository $config) {
-            $config->set('openapi-validator.cache_directory', $this->getTemporaryDirectory());
-        });
-    }
 
     public function tearDown(): void
     {
@@ -29,7 +25,30 @@ class CacheCommandTest extends TestCase
     /**
      * @test
      */
-    public function test(): void
+    public function createsAllCache(): void
     {
+        $config = $this->partialMock(Config::class, fn (MockInterface $mock) => $mock->allows([
+            'getProviderNames' => ['foo', 'bar'],
+            'getCacheDirectory' => $this->getTemporaryDirectory(),
+        ]));
+        assert($config instanceof Config);
+
+        app()->bind(
+            SchemaRepository::class,
+            fn () => \Mockery::mock(SchemaRepository::class)->allows([
+                'getJson' => '{"foo": "bar"}',
+            ])
+        );
+
+        $command = $this->artisan('openapi-validator:cache');
+        assert($command instanceof PendingCommand);
+
+        $command
+            ->assertOk()
+            ->run();
+
+        foreach ($config->getProviderNames() as $providerName) {
+            $this->assertFileExists($config->getCacheFileName($providerName));
+        }
     }
 }

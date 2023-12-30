@@ -12,6 +12,8 @@ use League\OpenAPIValidation\PSR7\ValidatorBuilder;
 
 class SchemaRepository
 {
+    private readonly string $json;
+
     public function __construct(
         // Input via the service container during validation execution
         string $providerName,
@@ -21,21 +23,24 @@ class SchemaRepository
     ) {
         $provider = $this->config->getProviderSettings($providerName);
 
-        $class = $provider['resolver'];
+        $resolverClass = $provider['resolver'];
 
-        if (!class_exists($class)) {
+        if (!class_exists($resolverClass)) {
             throw new InvalidConfigException('Unknown resolver class ');
         }
 
-        if (!is_subclass_of($class, ResolverInterface::class)) {
+        if (!is_subclass_of($resolverClass, ResolverInterface::class)) {
             throw new InvalidConfigException('Resolver class must implement ResolverInterface');
         }
 
-        $resolver = app()->make($class);
+        $this->json = app()->make($resolverClass)->getJson($provider);
 
-        $this->validatorBuilder->fromJson(
-            $resolver->getJson($provider)
-        );
+        $this->validatorBuilder->fromJson($this->json);
+    }
+
+    public function getJson(): string
+    {
+        return $this->json;
     }
 
     public function getRequestValidator(): RequestValidator
