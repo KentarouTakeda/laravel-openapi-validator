@@ -7,10 +7,10 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
 use KentarouTakeda\Laravel\OpenApiValidator\Config\Config;
-use KentarouTakeda\Laravel\OpenApiValidator\Exceptions\PathNotFoundException;
 use KentarouTakeda\Laravel\OpenApiValidator\Http\Middleware\ValidateRequestResponse;
 use KentarouTakeda\Laravel\OpenApiValidator\SchemaRepository\SchemaRepository;
 use KentarouTakeda\Laravel\OpenApiValidator\Tests\Feature\TestCase;
+use League\OpenAPIValidation\PSR7\Exception\NoPath;
 use League\OpenAPIValidation\PSR7\Exception\Validation\InvalidBody;
 use League\OpenAPIValidation\PSR7\ValidatorBuilder;
 use Mockery\MockInterface;
@@ -110,7 +110,7 @@ class ValidateRequestResponseTest extends TestCase
         $this->get('/not-found')
             ->assertStatus(Response::HTTP_INTERNAL_SERVER_ERROR)
             ->assertJsonPath('status', Response::HTTP_INTERNAL_SERVER_ERROR)
-            ->assertJsonPath('title', class_basename(PathNotFoundException::class))
+            ->assertJsonPath('title', class_basename(NoPath::class))
         ;
     }
 

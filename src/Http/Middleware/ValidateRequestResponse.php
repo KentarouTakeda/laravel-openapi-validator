@@ -9,7 +9,6 @@ use Illuminate\Foundation\Http\Events\RequestHandled;
 use Illuminate\Http\Request;
 use KentarouTakeda\Laravel\OpenApiValidator\Config\Config;
 use KentarouTakeda\Laravel\OpenApiValidator\ErrorRendererInterface;
-use KentarouTakeda\Laravel\OpenApiValidator\Exceptions\PathNotFoundException;
 use KentarouTakeda\Laravel\OpenApiValidator\SchemaRepository\SchemaRepository;
 use League\OpenAPIValidation\PSR7\Exception\NoPath;
 use League\OpenAPIValidation\PSR7\Exception\ValidationFailed;
@@ -44,13 +43,11 @@ class ValidateRequestResponse
 
         try {
             $operationAddress = $schemaRepository->getRequestValidator()->validate($psrRequest);
-        } catch (NoPath $e) {
+        } catch (NoPath $noPath) {
             if ($this->config->getErrorOnNoPath()) {
-                $pathNotFoundException = new PathNotFoundException(request: $psrRequest, previous: $e);
-
                 return $this->renderResponseError(
                     $request,
-                    $pathNotFoundException,
+                    $noPath,
                 );
             }
 
