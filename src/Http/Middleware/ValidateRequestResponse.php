@@ -94,6 +94,9 @@ class ValidateRequestResponse
         $event->response->headers = new ResponseHeaderBag();
 
         $event->response
+            ->withHeaders([
+                'Content-Type' => 'application/json',
+            ])
             ->setCache(['no_store' => true])
             ->setContent($response->getContent())
             ->setStatusCode($response->getStatusCode());

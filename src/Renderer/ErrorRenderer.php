@@ -58,7 +58,13 @@ class ErrorRenderer implements ErrorRendererInterface
             $json['trace'] = $this->extractTrace($error);
         }
 
-        return $this->responseFactory->json($json, $status)->setStatusCode($status);
+        return $this->responseFactory->json(
+            $json,
+            $status,
+            options: config('app.debug') ?
+                JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE :
+                0
+        );
     }
 
     private function findSchemaMismatch(\Throwable $error): ?SchemaMismatch
