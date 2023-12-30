@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace KentarouTakeda\Laravel\OpenApiValidator\SchemaRepository;
 
 use KentarouTakeda\Laravel\OpenApiValidator\Exceptions\LackOfDependenciesException;
+use KentarouTakeda\Laravel\OpenApiValidator\ResolverInterface;
 use Vyuldashev\LaravelOpenApi\Generator;
 
 class LaravelOpenApiResolver implements ResolverInterface

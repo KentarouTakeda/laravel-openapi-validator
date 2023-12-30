@@ -7,6 +7,7 @@ namespace KentarouTakeda\Laravel\OpenApiValidator\SchemaRepository;
 use Illuminate\Filesystem\Filesystem;
 use KentarouTakeda\Laravel\OpenApiValidator\Config\Config;
 use KentarouTakeda\Laravel\OpenApiValidator\Exceptions\InvalidConfigException;
+use KentarouTakeda\Laravel\OpenApiValidator\ResolverInterface;
 use League\OpenAPIValidation\PSR7\RequestValidator;
 use League\OpenAPIValidation\PSR7\ResponseValidator;
 use League\OpenAPIValidation\PSR7\ValidatorBuilder;

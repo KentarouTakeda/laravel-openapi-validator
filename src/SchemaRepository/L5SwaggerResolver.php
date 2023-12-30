@@ -7,6 +7,7 @@ namespace KentarouTakeda\Laravel\OpenApiValidator\SchemaRepository;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Filesystem\Filesystem;
 use KentarouTakeda\Laravel\OpenApiValidator\Exceptions\LackOfDependenciesException;
+use KentarouTakeda\Laravel\OpenApiValidator\ResolverInterface;
 use L5Swagger\GeneratorFactory;
 
 class L5SwaggerResolver implements ResolverInterface

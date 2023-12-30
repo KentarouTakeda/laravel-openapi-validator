@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace KentarouTakeda\Laravel\OpenApiValidator\SchemaRepository;
+namespace KentarouTakeda\Laravel\OpenApiValidator;
 
 interface ResolverInterface
 {
