@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace KentarouTakeda\Laravel\OpenApiValidator\SchemaRepository;
 
+use Illuminate\Filesystem\Filesystem;
 use KentarouTakeda\Laravel\OpenApiValidator\Config\Config;
 use KentarouTakeda\Laravel\OpenApiValidator\Exceptions\InvalidConfigException;
 use League\OpenAPIValidation\PSR7\RequestValidator;
@@ -20,7 +21,15 @@ class SchemaRepository
         // Input external libraries with dependency injection
         private readonly Config $config,
         private readonly ValidatorBuilder $validatorBuilder,
+        private readonly Filesystem $filesystem,
     ) {
+        if ($this->filesystem->exists($cacheFileName = $this->config->getCacheFileName($providerName))) {
+            $this->json = $this->filesystem->get($cacheFileName);
+            $this->validatorBuilder->fromJson($this->json);
+
+            return;
+        }
+
         $provider = $this->config->getProviderSettings($providerName);
 
         $resolverClass = $provider['resolver'];
