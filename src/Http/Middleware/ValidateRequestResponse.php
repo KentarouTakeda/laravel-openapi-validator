@@ -20,16 +20,10 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 class ValidateRequestResponse
 {
     public function __construct(
-        // Dependency Injection
         private readonly Config $config,
         private readonly Dispatcher $eventDispatcher,
         private readonly ErrorRendererInterface $errorRenderer,
         private readonly PsrHttpFactory $psrHttpFactory,
-        // Configuration Injection
-        private readonly bool $errorOnNoPath,
-        private readonly bool $includeReqErrorInResponse,
-        private readonly bool $includeResErrorInResponse,
-        private readonly bool $includeTraceInResponse,
     ) {
     }
 
@@ -49,7 +43,7 @@ class ValidateRequestResponse
         try {
             $operationAddress = $schemaRepository->getRequestValidator()->validate($psrRequest);
         } catch (NoPath $e) {
-            if ($this->errorOnNoPath) {
+            if ($this->config->getErrorOnNoPath()) {
                 $pathNotFoundException = new PathNotFoundException(request: $psrRequest, previous: $e);
 
                 return $this->renderResponseError(
@@ -111,8 +105,8 @@ class ValidateRequestResponse
             $request,
             $error,
             Response::HTTP_INTERNAL_SERVER_ERROR,
-            $this->includeResErrorInResponse,
-            $this->includeTraceInResponse
+            $this->config->getIncludeResErrorInResponse(),
+            $this->config->getIncludeTraceInResponse(),
         );
     }
 
@@ -122,8 +116,8 @@ class ValidateRequestResponse
             $request,
             $error,
             Response::HTTP_BAD_REQUEST,
-            $this->includeReqErrorInResponse,
-            $this->includeTraceInResponse
+            $this->config->getIncludeReqErrorInResponse(),
+            $this->config->getIncludeTraceInResponse(),
         );
     }
 }

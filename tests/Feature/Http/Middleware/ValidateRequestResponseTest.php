@@ -2,17 +2,18 @@
 
 declare(strict_types=1);
 
-use Illuminate\Contracts\Config\Repository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
+use KentarouTakeda\Laravel\OpenApiValidator\Config\Config;
 use KentarouTakeda\Laravel\OpenApiValidator\Exceptions\PathNotFoundException;
 use KentarouTakeda\Laravel\OpenApiValidator\Http\Middleware\ValidateRequestResponse;
 use KentarouTakeda\Laravel\OpenApiValidator\SchemaRepository\SchemaRepository;
 use KentarouTakeda\Laravel\OpenApiValidator\Tests\Feature\TestCase;
 use League\OpenAPIValidation\PSR7\Exception\Validation\InvalidBody;
 use League\OpenAPIValidation\PSR7\ValidatorBuilder;
+use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -29,16 +30,14 @@ class ValidateRequestResponseTest extends TestCase
                 'getResponseValidator' => $this->mockValidator()->getResponseValidator(),
             ])
         );
-    }
 
-    protected function defineEnvironment($app)
-    {
-        tap($app['config'], function (Repository $config) {
-            $config->set('openapi-validator.error_on_no_path', true);
-            $config->set('openapi-validator.include_req_error_in_response', true);
-            $config->set('openapi-validator.include_res_error_in_response', true);
-            $config->set('openapi-validator.include_trace_in_response', true);
-        });
+        $this->mock(Config::class, fn (MockInterface $mock) => $mock->allows([
+            'getDefaultProviderName' => 'laravel-openapi',
+            'getErrorOnNoPath' => true,
+            'getIncludeReqErrorInResponse' => true,
+            'getIncludeResErrorInResponse' => true,
+            'getIncludeTraceInResponse' => true,
+        ]));
     }
 
     private function mockValidator(): ValidatorBuilder

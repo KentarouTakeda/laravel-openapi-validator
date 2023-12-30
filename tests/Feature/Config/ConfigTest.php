@@ -89,4 +89,44 @@ class ConfigTest extends TestCase
 
         $this->assertStringEndsWith(DIRECTORY_SEPARATOR.'foo.json', $cacheFileName);
     }
+
+    /**
+     * @test
+     */
+    public function getErrorOnNoPathReturnsBool(): void
+    {
+        $errorOnNoPath = $this->config->getErrorOnNoPath();
+
+        $this->assertIsBool($errorOnNoPath);
+    }
+
+    /**
+     * @test
+     */
+    public function getIncludeReqErrorInResponseReturnsBool(): void
+    {
+        $includeReqErrorInResponse = $this->config->getIncludeReqErrorInResponse();
+
+        $this->assertIsBool($includeReqErrorInResponse);
+    }
+
+    /**
+     * @test
+     */
+    public function getIncludeResErrorInResponseReturnsBool(): void
+    {
+        $includeResErrorInResponse = $this->config->getIncludeResErrorInResponse();
+
+        $this->assertIsBool($includeResErrorInResponse);
+    }
+
+    /**
+     * @test
+     */
+    public function getIncludeTraceInResponseReturnsBool(): void
+    {
+        $includeTraceInResponse = $this->config->getIncludeTraceInResponse();
+
+        $this->assertIsBool($includeTraceInResponse);
+    }
 }

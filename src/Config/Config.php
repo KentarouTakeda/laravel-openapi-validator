@@ -76,4 +76,24 @@ class Config
             ->append('.json')
             ->toString();
     }
+
+    public function getErrorOnNoPath(): bool
+    {
+        return (bool) $this->repository->get('openapi-validator.error_on_no_path');
+    }
+
+    public function getIncludeReqErrorInResponse(): bool
+    {
+        return (bool) $this->repository->get('openapi-validator.include_req_error_in_response');
+    }
+
+    public function getIncludeResErrorInResponse(): bool
+    {
+        return (bool) $this->repository->get('openapi-validator.include_res_error_in_response');
+    }
+
+    public function getIncludeTraceInResponse(): bool
+    {
+        return (bool) $this->repository->get('openapi-validator.include_trace_in_response');
+    }
 }
