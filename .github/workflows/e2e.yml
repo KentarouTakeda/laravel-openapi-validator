@@ -42,3 +42,11 @@ jobs:
       - name: Run Unit tests
         run: vendor/bin/phpunit
         working-directory: e2e/${{ matrix.package }}
+
+      - name: Test create cache
+        run: ./artisan openapi-validator:cache --ansi
+        working-directory: e2e/${{ matrix.package }}
+
+      - name: Test clear cache
+        run: ./artisan openapi-validator:clear --ansi
+        working-directory: e2e/${{ matrix.package }}
