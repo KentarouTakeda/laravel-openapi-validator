@@ -1,3 +1,34 @@
+# Laravel OpenAPI Validator
+
+Request and response validators based on the OpenAPI Specification.
+
+Supports
+[Laravel OpenAPI](https://vyuldashev.github.io/laravel-openapi/)
+and [L5 Swagger](https://github.com/DarkaOnLine/L5-Swagger/wiki),
+and you can also use your own schema.
+
+## Installation
+
+You can install the package via composer:
+
+```bash
+composer require kentaroutakeda/laravel-openapi-validator
+```
+
+> [!NOTE]  
+> 
+> Depending on the configuration of your Laravel Application,
+> you may need to downgrade some of the following dependencies:
+>
+> ```bash
+> composer require kentaroutakeda/laravel-openapi-validator --no-update
+> composer update kentaroutakeda/laravel-openapi-validator --with-all-dependencies
+> ```
+>
+> Please see
+> [here](https://github.com/thephpleague/openapi-psr7-validator/pull/213)
+> for details.
+
 ## Customization
 
 ### Default OpenAPI Schema Provider
