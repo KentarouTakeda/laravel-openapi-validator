@@ -7,8 +7,8 @@ use Illuminate\Http\Request;
 use OpenApi\Attributes as OA;
 
 #[OA\Info(
-    title: "Example API",
-    version: "1.0.0",
+    title: 'Example API',
+    version: '1.0.0',
 )]
 class ExampleController
 {
@@ -19,7 +19,7 @@ class ExampleController
                 name: 'status',
                 in: 'query',
                 required: true,
-                schema: new OA\Schema(type: "integer")
+                schema: new OA\Schema(type: 'integer')
             ),
         ],
         responses: [
