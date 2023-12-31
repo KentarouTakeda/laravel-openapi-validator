@@ -7,10 +7,12 @@ use Symfony\Component\HttpFoundation\Response;
 return [
     /*
     |--------------------------------------------------------------------------
-    | Default OpenAPI Schema provider.
+    | Default OpenAPI Schema Provider
     |--------------------------------------------------------------------------
     |
-    | OpenAPI Schema provider used by default
+    | This setting determines the default OpenAPI schema provider to be used. 
+    | The default provider is `laravel-openapi` and can be customized through 
+    | the 'OPENAPI_VALIDATOR_PROVIDER' environment variable.
     |
     */
 
@@ -36,11 +38,13 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Error on no path
+    | Error on No Path
     |--------------------------------------------------------------------------
     |
-    | Whether to respond error when the path corresponding
-    | to the request is not defined.
+    | This setting determines whether to respond with an error when the path 
+    | corresponding to the request is not defined in the OpenAPI schema. 
+    | The default behavior is according to `APP_DEBUG` and can be customized 
+    | through the 'OPENAPI_VALIDATOR_ERROR_ON_NO_PATH' environment variable.
     |
     */
 
@@ -51,8 +55,14 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Whether to include a request validation error pointer in the response
+    | Include Response Validation Error Detail in Response
     |--------------------------------------------------------------------------
+    |
+    | This setting determines whether the OpenAPI validator should include 
+    | details of response validation errors in the response. The default value 
+    | is `true` and can be customized through the
+    | 'OPENAPI_VALIDATOR_INCLUDE_RES_ERROR_IN_RESPONSE' environment variable.
+    |
     */
 
     'include_req_error_detail_in_response' => (bool) env(
@@ -60,21 +70,35 @@ return [
         true
     ),
 
+
     /*
     |--------------------------------------------------------------------------
-    | Whether to include a response validation error pointer in the response
+    | Include Request Validation Error Detail in Response
     |--------------------------------------------------------------------------
+    |
+    | This setting determines whether the OpenAPI validator should include 
+    | details of response validation errors in the response. The default 
+    | behavior is according to `APP`DEBUG`  and can be customized through the
+    | 'OPENAPI_VALIDATOR_INCLUDE_RES_ERROR_IN_RESPONSE' environment variable.
+    |
     */
-
+    
     'include_res_error_detail_in_response' => (bool) env(
         'OPENAPI_VALIDATOR_INCLUDE_RES_ERROR_IN_RESPONSE',
         env('APP_DEBUG', false),
     ),
 
+
     /*
     |--------------------------------------------------------------------------
-    | Whether to include a stack trace in the response
+    | Include Trace Information in Response
     |--------------------------------------------------------------------------
+    |
+    | This setting determines whether the OpenAPI validator should include 
+    | trace information in the error response. The default behavior is
+    | according to `APP`DEBUG` and can be customized through the 
+    | 'OPENAPI_VALIDATOR_INCLUDE_TRACE_IN_RESPONSE' environment variable.
+    |
     */
 
     'include_trace_in_response' => (bool) env(
@@ -91,7 +115,9 @@ return [
     | validator. The default level is 'info'. This can be customized through
     | the 'OPENAPI_VALIDATOR_REQUEST_ERROR_LOG_LEVEL' environment variable.
     |
-    | 'emergency' / 'alert' / 'critical' / 'error' / 'warning' / 'notice' / 'info' / 'debug' / null
+    | Log levels:
+    |   emergency, alert, critical, error, warning, notice, info, debug
+    |
     */
 
     'req_error_log_level' => (string) env(
@@ -108,7 +134,8 @@ return [
     | validator. The default level is 'warning'. This can be customized through
     | the 'OPENAPI_VALIDATOR_RESPONSE_ERROR_LOG_LEVEL' environment variable.
     |
-    | 'emergency' / 'alert' / 'critical' / 'error' / 'warning' / 'notice' / 'info' / 'debug' / null
+    | Log levels:
+    |   emergency, alert, critical, error, warning, notice, info, debug
     |
     */
     'res_error_log_level' => (string) env(
@@ -121,9 +148,9 @@ return [
     | OpenAPI Schema providers.
     |--------------------------------------------------------------------------
     |
-    | By default, `default` is used. If your system handles multiple OpenAPI
-    | specifications, you can specify which one to use with the middleware
-    | parameter `provider`.
+    | By default, `laravel-openapi` is used. If your system handles multiple
+    | OpenAPI specifications, you can specify which one to use with the
+    | middleware parameter `provider`.
     |
     | See the sample below for supported resolvers and settings.
     |
@@ -162,8 +189,12 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Internal settings.
+    | Internal Settings
     |--------------------------------------------------------------------------
+    |
+    | These are internal settings for the OpenAPI validator. You can change 
+    | these if necessary.
+    |
     */
 
     'cache_directory' => storage_path('openapi-validator'),
