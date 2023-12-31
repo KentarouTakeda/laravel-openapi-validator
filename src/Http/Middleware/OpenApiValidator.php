@@ -79,11 +79,13 @@ class OpenApiValidator
 
             if ($event->response->exception) {
                 $this->logResponseError($event->response->exception);
-                $response = $this->renderResponseError(
-                    $event->request,
-                    $event->response->exception,
-                );
-                $this->overrideResponse($event, $response);
+                if ($this->config->getRespondWithErrorOnResponseValidationFailure()) {
+                    $response = $this->renderResponseError(
+                        $event->request,
+                        $event->response->exception,
+                    );
+                    $this->overrideResponse($event, $response);
+                }
 
                 return;
             }
@@ -94,11 +96,13 @@ class OpenApiValidator
                 $schemaRepository->getResponseValidator()->validate($operationAddress, $psrResponse);
             } catch (ValidationFailed $validationFailed) {
                 $this->logResponseError($validationFailed);
-                $response = $this->renderResponseError(
-                    $event->request,
-                    $validationFailed,
-                );
-                $this->overrideResponse($event, $response);
+                if ($this->config->getRespondWithErrorOnResponseValidationFailure()) {
+                    $response = $this->renderResponseError(
+                        $event->request,
+                        $validationFailed,
+                    );
+                    $this->overrideResponse($event, $response);
+                }
 
                 return;
             }

@@ -39,6 +39,7 @@ class OpenApiValidatorTest extends TestCase
             'openapi-validator.non_validated_response_codes' => [],
             'openapi-validator.request_error_log_level' => 'debug',
             'openapi-validator.response_error_log_level' => 'debug',
+            'openapi-validator.respond_with_error_on_response_validation_failure' => true,
         ]);
     }
 
@@ -148,6 +149,21 @@ class OpenApiValidatorTest extends TestCase
             ->assertJsonPath('detail', "Value expected to be 'integer', but 'boolean' given.")
             ->assertJsonPath('pointer', ['data', 0])
         ;
+    }
+
+    /**
+     * @test
+     */
+    public function notReturnsResponseErrorIfTheOptionIsSet(): void
+    {
+        config()->set([
+            'openapi-validator.respond_with_error_on_response_validation_failure' => false,
+        ]);
+
+        Route::post('/', fn () => ['data' => [true]])->middleware(OpenApiValidator::class);
+
+        $this->json(Request::METHOD_POST, '/', ['hoge' => [1]])
+            ->assertOk();
     }
 
     /**
