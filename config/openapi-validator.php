@@ -21,6 +21,21 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Respond with Error on Response Validation Failure
+    |--------------------------------------------------------------------------
+    |
+    | This setting determines whether the OpenAPI validator should respond with 
+    | an error when it fails to validate a response.
+    |
+    */
+
+    'respond_with_error_on_response_validation_failure' => (bool) env(
+        'OPENAPI_VALIDATOR_RESPOND_WITH_ERROR_ON_RESPONSE_VALIDATION_FAILURE',
+        env('APP_DEBUG', false),
+    ),
+
+    /*
+    |--------------------------------------------------------------------------
     | Error on no path
     |--------------------------------------------------------------------------
     |

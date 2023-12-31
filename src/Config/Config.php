@@ -122,6 +122,11 @@ class Config
         return $this->getLogLevelString($this->repository->get('openapi-validator.response_error_log_level'));
     }
 
+    public function getRespondWithErrorOnResponseValidationFailure(): bool
+    {
+        return (bool) $this->repository->get('openapi-validator.respond_with_error_on_response_validation_failure');
+    }
+
     private function getLogLevelString(mixed $logLevel): ?string
     {
         $logLevel ?: null;
