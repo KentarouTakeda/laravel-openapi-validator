@@ -112,12 +112,12 @@ class Config
         return $codes;
     }
 
-    public function getReqErrorLogLevel(): ?string
+    public function getReqErrorLogLevel(): string
     {
         return $this->getLogLevelString($this->repository->get('openapi-validator.req_error_log_level'));
     }
 
-    public function getResErrorLogLevel(): ?string
+    public function getResErrorLogLevel(): string
     {
         return $this->getLogLevelString($this->repository->get('openapi-validator.res_error_log_level'));
     }
@@ -127,12 +127,9 @@ class Config
         return (bool) $this->repository->get('openapi-validator.respond_error_on_res_validation_failure');
     }
 
-    private function getLogLevelString(mixed $logLevel): ?string
+    private function getLogLevelString(mixed $logLevel): string
     {
-        $logLevel = $logLevel ?: null;
-
         if (!in_array($logLevel, [
-            null,
             LogLevel::EMERGENCY,
             LogLevel::ALERT,
             LogLevel::CRITICAL,

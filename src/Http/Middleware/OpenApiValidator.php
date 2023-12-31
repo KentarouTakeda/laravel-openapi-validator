@@ -128,14 +128,8 @@ class OpenApiValidator
 
     private function logRequestError(\Throwable $error): void
     {
-        $logLevel = $this->config->getReqErrorLogLevel();
-
-        if (null === $logLevel) {
-            return;
-        }
-
         $this->logManager->log(
-            $logLevel,
+            $this->config->getReqErrorLogLevel(),
             class_basename(static::class).': Request validation failed: '.$error->getMessage(),
             ['error' => $error],
         );
@@ -143,14 +137,8 @@ class OpenApiValidator
 
     private function logResponseError(\Throwable $error): void
     {
-        $logLevel = $this->config->getResErrorLogLevel();
-
-        if (null === $logLevel) {
-            return;
-        }
-
         $this->logManager->log(
-            $logLevel,
+            $this->config->getResErrorLogLevel(),
             class_basename(static::class).': Request validation failed: '.$error->getMessage(),
             ['error' => $error],
         );
