@@ -154,6 +154,18 @@ class OpenApiValidatorTest extends TestCase
     /**
      * @test
      */
+    public function notReturnsResponseErrorIfTheParameterIsSet(): void
+    {
+        Route::post('/', fn () => ['data' => [true]])
+            ->middleware(OpenApiValidator::config(skipResponseValidation: true));
+
+        $this->json(Request::METHOD_POST, '/', ['hoge' => [1]])
+            ->assertOk();
+    }
+
+    /**
+     * @test
+     */
     public function notReturnsResponseErrorIfTheOptionIsSet(): void
     {
         config()->set([

@@ -30,14 +30,29 @@ class OpenApiValidator
     }
 
     /**
+     * @param string|null $provider if not specified, the default provider will be used
+     * @param bool $skipResponseValidation if true, response validation will be skipped
+     */
+    public static function config(
+        string $provider = null,
+        bool $skipResponseValidation = false
+    ): string {
+        return static::class.':'.implode(',', [
+            $provider ?? '',
+            $skipResponseValidation ? '1' : '0',
+        ]);
+    }
+
+    /**
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
     public function handle(
         Request $request,
         \Closure $next,
-        string $provider = null
+        string $provider = '',
+        bool $skipResponseValidation = false,
     ): Response {
-        $provider ??= $this->config->getDefaultProviderName();
+        $provider = $provider ?: $this->config->getDefaultProviderName();
         $schemaRepository = app()->makeWith(SchemaRepository::class, ['providerName' => $provider]);
         assert($schemaRepository instanceof SchemaRepository);
 
@@ -46,7 +61,7 @@ class OpenApiValidator
         try {
             $operationAddress = $schemaRepository->getRequestValidator()->validate($psrRequest);
         } catch (NoPath $noPath) {
-            if ($this->config->getErrorOnNoPath()) {
+            if ($this->config->getErrorOnNoPath() && !$skipResponseValidation) {
                 $this->logResponseError($noPath);
 
                 return $this->renderResponseError(
@@ -65,7 +80,9 @@ class OpenApiValidator
             );
         }
 
-        $this->dispatchResponseValidation($operationAddress, $schemaRepository);
+        if (!$skipResponseValidation) {
+            $this->dispatchResponseValidation($operationAddress, $schemaRepository);
+        }
 
         return $next($request);
     }
