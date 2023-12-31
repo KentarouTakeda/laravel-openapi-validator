@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\ExampleController;
 use Illuminate\Support\Facades\Route;
-use KentarouTakeda\Laravel\OpenApiValidator\Http\Middleware\ValidateRequestResponse;
+use KentarouTakeda\Laravel\OpenApiValidator\Http\Middleware\OpenApiValidator;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,4 +16,4 @@ use KentarouTakeda\Laravel\OpenApiValidator\Http\Middleware\ValidateRequestRespo
 */
 
 Route::get('/', ExampleController::class)
-    ->middleware(ValidateRequestResponse::class);
+    ->middleware(OpenApiValidator::class);

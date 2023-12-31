@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
 use KentarouTakeda\Laravel\OpenApiValidator\Config\Config;
-use KentarouTakeda\Laravel\OpenApiValidator\Http\Middleware\ValidateRequestResponse;
+use KentarouTakeda\Laravel\OpenApiValidator\Http\Middleware\OpenApiValidator;
 use KentarouTakeda\Laravel\OpenApiValidator\SchemaRepository\SchemaRepository;
 use KentarouTakeda\Laravel\OpenApiValidator\Tests\Feature\TestCase;
 use League\OpenAPIValidation\PSR7\Exception\NoPath;
@@ -17,7 +17,7 @@ use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class ValidateRequestResponseTest extends TestCase
+class OpenApiValidatorTest extends TestCase
 {
     public function setUp(): void
     {
@@ -94,7 +94,7 @@ class ValidateRequestResponseTest extends TestCase
      */
     public function requestAndResponse(): void
     {
-        Route::post('/', fn () => ['data' => [42]])->middleware(ValidateRequestResponse::class);
+        Route::post('/', fn () => ['data' => [42]])->middleware(OpenApiValidator::class);
 
         $this->json(Request::METHOD_POST, '/', ['hoge' => [1]])
             ->assertOk()
@@ -106,7 +106,7 @@ class ValidateRequestResponseTest extends TestCase
      */
     public function throwsPathNotFoundException(): void
     {
-        Route::get('/not-found', fn () => 'Hello')->middleware(ValidateRequestResponse::class);
+        Route::get('/not-found', fn () => 'Hello')->middleware(OpenApiValidator::class);
 
         $this->get('/not-found')
             ->assertStatus(Response::HTTP_INTERNAL_SERVER_ERROR)
@@ -120,7 +120,7 @@ class ValidateRequestResponseTest extends TestCase
      */
     public function returnsBadRequest(): void
     {
-        Route::post('/', fn () => 'Hello')->middleware(ValidateRequestResponse::class);
+        Route::post('/', fn () => 'Hello')->middleware(OpenApiValidator::class);
 
         $this->json(Request::METHOD_POST, '/', ['hoge' => [1, 'foo']])
             ->assertStatus(Response::HTTP_BAD_REQUEST)
@@ -136,7 +136,7 @@ class ValidateRequestResponseTest extends TestCase
      */
     public function returnsInvalidBody(): void
     {
-        Route::post('/', fn () => ['data' => [true]])->middleware(ValidateRequestResponse::class);
+        Route::post('/', fn () => ['data' => [true]])->middleware(OpenApiValidator::class);
 
         $this->json(Request::METHOD_POST, '/', ['hoge' => [1]]
         )
@@ -153,7 +153,7 @@ class ValidateRequestResponseTest extends TestCase
      */
     public function returnsHttpException(): void
     {
-        Route::post('/', fn () => abort(404, 'foo'))->middleware(ValidateRequestResponse::class);
+        Route::post('/', fn () => abort(404, 'foo'))->middleware(OpenApiValidator::class);
 
         $this->json(Request::METHOD_POST, '/', ['hoge' => [1]])
             ->assertStatus(Response::HTTP_NOT_FOUND)
@@ -168,7 +168,7 @@ class ValidateRequestResponseTest extends TestCase
      */
     public function returnsModelNotFoundException(): void
     {
-        Route::post('/', fn () => throw new ModelNotFoundException())->middleware(ValidateRequestResponse::class);
+        Route::post('/', fn () => throw new ModelNotFoundException())->middleware(OpenApiValidator::class);
 
         $this->json(Request::METHOD_POST, '/', ['hoge' => [1]])
             ->assertStatus(Response::HTTP_NOT_FOUND)

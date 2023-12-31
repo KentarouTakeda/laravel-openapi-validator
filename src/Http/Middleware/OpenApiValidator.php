@@ -17,7 +17,7 @@ use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
-class ValidateRequestResponse
+class OpenApiValidator
 {
     public function __construct(
         private readonly Config $config,
