@@ -29,6 +29,68 @@ composer require kentaroutakeda/laravel-openapi-validator
 > [here](https://github.com/thephpleague/openapi-psr7-validator/pull/213)
 > for details.
 
+## Usage
+
+### Configure OpenAPI Specification
+
+If you're using Laravel OpenAPI, you don't need to do anything.
+
+For L5 Swagger, the following settings are required:
+
+```ini
+# .env
+OPENAPI_VALIDATOR_PROVIDER="l5-swagger"
+```
+
+How to load your own schema without using these packages will be
+explained later.
+
+### Register Middleware
+
+```php
+Route::get('/example', ExampleController::class)
+    ->middleware(OpenApiValidator::class); // <- Add this line
+```
+
+> [!NOTE]  
+> This repository's ./e2e directory contains working examples
+> for e2e testing.
+
+### Customize Middleware
+
+If necessary, you can change Middleware behavior for each Route.
+
+```php
+Route::get('/', ExampleController::class)
+  ->middleware(OpenApiValidator::config(
+    provider: 'admin-api', // <- Use spec other than default
+    skipResponseValidation: true // <- Skip Response Validation
+  ));
+```
+
+> [!NOTE]  
+> Response validation for large amounts of data can take a long time.
+> It would be a good idea to switch on/off validation depending on the
+> route and `APP_*` environment variables.
+
+### Deployment
+
+When deploying your application to production, you should make sure
+that you run the `openapi-validator:cache` Artisan command
+during your deployment process:
+
+```bash
+php artisan openapi-validator:cache
+```
+
+This command caches the OpenAPI Spec defined in your application.
+If you change the definition for development, you need to
+clear it as follows:
+
+```bash
+php artisan openapi-validator:clear
+```
+
 ## Customization
 
 ### Default OpenAPI Schema Provider
