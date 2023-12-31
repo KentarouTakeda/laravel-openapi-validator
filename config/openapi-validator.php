@@ -69,6 +69,40 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Request Error Log Level
+    |--------------------------------------------------------------------------
+    |
+    | This setting determines the log level for request errors in the OpenAPI
+    | validator. The default level is 'info'. This can be customized through
+    | the 'OPENAPI_VALIDATOR_REQUEST_ERROR_LOG_LEVEL' environment variable.
+    |
+    | 'emergency' / 'alert' / 'critical' / 'error' / 'warning' / 'notice' / 'info' / 'debug' / null
+    */
+
+    'request_error_log_level' => (string) env(
+        'OPENAPI_VALIDATOR_REQUEST_ERROR_LOG_LEVEL',
+        'info'
+    ),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Response Error Log Level
+    |--------------------------------------------------------------------------
+    |
+    | This setting determines the log level for response errors in the OpenAPI
+    | validator. The default level is 'warning'. This can be customized through
+    | the 'OPENAPI_VALIDATOR_RESPONSE_ERROR_LOG_LEVEL' environment variable.
+    |
+    | 'emergency' / 'alert' / 'critical' / 'error' / 'warning' / 'notice' / 'info' / 'debug' / null
+    |
+    */
+    'response_error_log_level' => (string) env(
+        'OPENAPI_VALIDATOR_RESPONSE_ERROR_LOG_LEVEL',
+        'warning'
+    ),
+
+    /*
+    |--------------------------------------------------------------------------
     | OpenAPI Schema providers.
     |--------------------------------------------------------------------------
     |

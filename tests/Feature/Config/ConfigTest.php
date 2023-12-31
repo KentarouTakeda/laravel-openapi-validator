@@ -129,4 +129,24 @@ class ConfigTest extends TestCase
 
         $this->assertIsBool($includeTraceInResponse);
     }
+
+    /**
+     * @test
+     */
+    public function getRequestErrorLogLevelReturnsLogLevel(): void
+    {
+        $requestErrorLogLevel = $this->config->getRequestErrorLogLevel();
+
+        $this->assertIsString($requestErrorLogLevel);
+    }
+
+    /**
+     * @test
+     */
+    public function getResponseErrorLogLevelReturnsLogLevel(): void
+    {
+        $requestErrorLogLevel = $this->config->getResponseErrorLogLevel();
+
+        $this->assertIsString($requestErrorLogLevel);
+    }
 }

@@ -6,6 +6,7 @@ namespace KentarouTakeda\Laravel\OpenApiValidator\Config;
 
 use Illuminate\Contracts\Config\Repository;
 use KentarouTakeda\Laravel\OpenApiValidator\Exceptions\InvalidConfigException;
+use Psr\Log\LogLevel;
 
 class Config
 {
@@ -109,5 +110,36 @@ class Config
         }
 
         return $codes;
+    }
+
+    public function getRequestErrorLogLevel(): ?string
+    {
+        return $this->getLogLevelString($this->repository->get('openapi-validator.request_error_log_level'));
+    }
+
+    public function getResponseErrorLogLevel(): ?string
+    {
+        return $this->getLogLevelString($this->repository->get('openapi-validator.response_error_log_level'));
+    }
+
+    private function getLogLevelString(mixed $logLevel): ?string
+    {
+        $logLevel ?: null;
+
+        if (!in_array($logLevel, [
+            null,
+            LogLevel::EMERGENCY,
+            LogLevel::ALERT,
+            LogLevel::CRITICAL,
+            LogLevel::ERROR,
+            LogLevel::WARNING,
+            LogLevel::NOTICE,
+            LogLevel::INFO,
+            LogLevel::DEBUG,
+        ], true)) {
+            throw new InvalidConfigException(message: 'openapi-validator.log_level must be a valid LogLevel');
+        }
+
+        return $logLevel;
     }
 }
