@@ -101,6 +101,50 @@ You publish the config file to change behavior.
 php artisan openapi-validator
 ```
 
+### Your own schema
+
+1. If you want to use your own schema, first publish the config.
+
+2. Next, implement a class to retrieve the schema.
+
+   ```php
+   // MyResolver.php
+   
+   // Create a concrete `ResolverInterface`.
+   class MyResolver implements ResolverInterface
+   {
+     // Returns OpenAPI Spec in json format.
+     public function getJson(array $options): string
+     {
+       // This example assumes that the schema exists in the root directory.
+       return File::get(base_path('openapi.json'));
+     }
+   }
+   ```
+
+3. Finally, set it in your config.
+
+   ```php
+   // config/openapi-validator.php
+   
+   // Extract only the necessary parts
+   return [
+   
+     // Set the provider name.
+     'default' => 'my-resolver',
+   
+     // Specify the class you created in the `resolver` parameter.
+     'providers' => [
+       // Set the provider name you created. This is input into `$option`
+       'my-resolver' => [
+         // Specify the class you created in the `resolver` parameter.
+         'resolver' => MyResolver::class,
+         /* If you need additional options, write them here. */
+       ],
+     ],
+   ];
+   ```
+
 ### Environment Variables
 
 Alternatively, most settings can be changed using environment variables:
