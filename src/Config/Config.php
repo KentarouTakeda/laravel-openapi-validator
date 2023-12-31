@@ -129,7 +129,7 @@ class Config
 
     private function getLogLevelString(mixed $logLevel): ?string
     {
-        $logLevel ?: null;
+        $logLevel = $logLevel ?: null;
 
         if (!in_array($logLevel, [
             null,
