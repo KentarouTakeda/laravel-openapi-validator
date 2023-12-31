@@ -1,4 +1,5 @@
 composer.lock
+storage/api-docs/
 
 /.phpunit.cache
 /node_modules

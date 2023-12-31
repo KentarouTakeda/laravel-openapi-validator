@@ -2,18 +2,45 @@
 
 namespace Tests\Feature;
 
-// use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\Response;
 use Tests\TestCase;
 
 class ExampleTest extends TestCase
 {
     /**
-     * A basic test example.
+     * @test
      */
-    public function test_the_application_returns_a_successful_response(): void
+    public function passesValidationAndReturnSuccessfulResponse(): void
     {
-        $response = $this->get('/');
+        $this->get('/?status=200')
+            ->assertOk();
+    }
 
-        $response->assertOk();
+    /**
+     * @test
+     */
+    public function failsRequestValidationAndReturnsBadRequestResponse(): void
+    {
+        $this->get('/')
+            ->assertStatus(Response::HTTP_BAD_REQUEST)
+            ->assertJson([
+                "title" => "InvalidQueryArgs",
+                "detail" => 'Missing required argument "status" for Request [get /]',
+                "status" => Response::HTTP_BAD_REQUEST,
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function failsResponseValidationAndReturnsInternalServerErrorResponse(): void
+    {
+        $this->get('/?status=201')
+            ->assertStatus(Response::HTTP_INTERNAL_SERVER_ERROR)
+            ->assertJson([
+                "title" => "NoResponseCode",
+                "detail" => 'OpenAPI spec contains no such operation [/,get,201]',
+                "status" => Response::HTTP_INTERNAL_SERVER_ERROR,
+            ]);
     }
 }
