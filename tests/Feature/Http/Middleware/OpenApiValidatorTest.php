@@ -2,19 +2,16 @@
 
 declare(strict_types=1);
 
-use Illuminate\Contracts\Config\Repository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
-use KentarouTakeda\Laravel\OpenApiValidator\Config\Config;
 use KentarouTakeda\Laravel\OpenApiValidator\Http\Middleware\OpenApiValidator;
 use KentarouTakeda\Laravel\OpenApiValidator\SchemaRepository\SchemaRepository;
 use KentarouTakeda\Laravel\OpenApiValidator\Tests\Feature\TestCase;
 use League\OpenAPIValidation\PSR7\Exception\NoPath;
 use League\OpenAPIValidation\PSR7\Exception\Validation\InvalidBody;
 use League\OpenAPIValidation\PSR7\ValidatorBuilder;
-use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -32,23 +29,17 @@ class OpenApiValidatorTest extends TestCase
             ])
         );
 
-        $this->mock(Config::class, fn (MockInterface $mock) => $mock->allows([
-            'getDefaultProviderName' => 'laravel-openapi',
-            'getErrorOnNoPath' => true,
-            'getIncludeReqErrorInResponse' => true,
-            'getIncludeResErrorInResponse' => true,
-            'getIncludeTraceInResponse' => true,
-            'getNonValidatedResponseCodes' => [],
-            'getRequestErrorLogLevel' => 'debug',
-            'getResponseErrorLogLevel' => 'debug',
-        ]));
-    }
-
-    protected function defineEnvironment($app)
-    {
-        tap($app['config'], function (Repository $config) {
-            $config->set('logging.default', 'null');
-        });
+        config()->set([
+            'logging.default' => 'null',
+            'get_default_provider_name' => 'laravel-openapi',
+            'openapi-validator.error_on_no_path' => true,
+            'openapi-validator.include_req_error_in_response' => true,
+            'openapi-validator.include_res_error_in_response' => true,
+            'openapi-validator.include_trace_in_response' => true,
+            'openapi-validator.non_validated_response_codes' => [],
+            'openapi-validator.request_error_log_level' => 'debug',
+            'openapi-validator.response_error_log_level' => 'debug',
+        ]);
     }
 
     private function mockValidator(): ValidatorBuilder

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace KentarouTakeda\Laravel\OpenApiValidator\Tests\Feature\SchemaRepository;
 
-use Illuminate\Contracts\Config\Repository;
 use KentarouTakeda\Laravel\OpenApiValidator\SchemaRepository\L5SwaggerResolver;
 use KentarouTakeda\Laravel\OpenApiValidator\Tests\Feature\TestCase;
 use KentarouTakeda\Laravel\OpenApiValidator\Tests\Feature\TestWithTemporaryFilesTrait;
@@ -20,17 +19,14 @@ class L5SwaggerResolverTest extends TestCase
 
     private L5SwaggerResolver $l5SwaggerResolver;
 
-    protected function defineEnvironment($app)
-    {
-        tap($app['config'], function (Repository $config) {
-            $config->set('l5-swagger.defaults.paths.docs', $this->getTemporaryDirectory());
-            $config->set('l5-swagger.documentations.default.paths.annotations', [getcwd().'/tests/Feature']);
-        });
-    }
-
     public function setUp(): void
     {
         parent::setUp();
+
+        config()->set([
+            'l5-swagger.defaults.paths.docs' => $this->getTemporaryDirectory(),
+            'l5-swagger.documentations.default.paths.annotations' => [getcwd().'/tests/Feature'],
+        ]);
 
         $l5SwaggerResolver = app()->make(L5SwaggerResolver::class);
         assert($l5SwaggerResolver instanceof L5SwaggerResolver);
