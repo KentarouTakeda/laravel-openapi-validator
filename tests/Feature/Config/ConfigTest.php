@@ -103,9 +103,9 @@ class ConfigTest extends TestCase
     /**
      * @test
      */
-    public function getIncludeReqErrorInResponseReturnsBool(): void
+    public function getIncludeReqErrorDetailInResponseReturnsBool(): void
     {
-        $includeReqErrorInResponse = $this->config->getIncludeReqErrorInResponse();
+        $includeReqErrorInResponse = $this->config->getIncludeReqErrorDetailInResponse();
 
         $this->assertIsBool($includeReqErrorInResponse);
     }
@@ -113,9 +113,9 @@ class ConfigTest extends TestCase
     /**
      * @test
      */
-    public function getIncludeResErrorInResponseReturnsBool(): void
+    public function getIncludeResErrorDetailInResponseReturnsBool(): void
     {
-        $includeResErrorInResponse = $this->config->getIncludeResErrorInResponse();
+        $includeResErrorInResponse = $this->config->getIncludeResErrorDetailInResponse();
 
         $this->assertIsBool($includeResErrorInResponse);
     }
@@ -133,9 +133,9 @@ class ConfigTest extends TestCase
     /**
      * @test
      */
-    public function getRequestErrorLogLevelReturnsLogLevel(): void
+    public function getReqErrorLogLevelReturnsLogLevel(): void
     {
-        $requestErrorLogLevel = $this->config->getRequestErrorLogLevel();
+        $requestErrorLogLevel = $this->config->getReqErrorLogLevel();
 
         $this->assertIsString($requestErrorLogLevel);
     }
@@ -143,9 +143,9 @@ class ConfigTest extends TestCase
     /**
      * @test
      */
-    public function getResponseErrorLogLevelReturnsLogLevel(): void
+    public function getResErrorLogLevelReturnsLogLevel(): void
     {
-        $requestErrorLogLevel = $this->config->getResponseErrorLogLevel();
+        $requestErrorLogLevel = $this->config->getResErrorLogLevel();
 
         $this->assertIsString($requestErrorLogLevel);
     }

@@ -29,7 +29,7 @@ return [
     |
     */
 
-    'respond_with_error_on_response_validation_failure' => (bool) env(
+    'respond_error_on_res_validation_failure' => (bool) env(
         'OPENAPI_VALIDATOR_RESPOND_WITH_ERROR_ON_RESPONSE_VALIDATION_FAILURE',
         env('APP_DEBUG', false),
     ),
@@ -55,7 +55,7 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'include_req_error_in_response' => (bool) env(
+    'include_req_error_detail_in_response' => (bool) env(
         'OPENAPI_VALIDATOR_INCLUDE_REQ_ERROR_IN_RESPONSE',
         true
     ),
@@ -66,7 +66,7 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'include_res_error_in_response' => (bool) env(
+    'include_res_error_detail_in_response' => (bool) env(
         'OPENAPI_VALIDATOR_INCLUDE_RES_ERROR_IN_RESPONSE',
         env('APP_DEBUG', false),
     ),
@@ -94,7 +94,7 @@ return [
     | 'emergency' / 'alert' / 'critical' / 'error' / 'warning' / 'notice' / 'info' / 'debug' / null
     */
 
-    'request_error_log_level' => (string) env(
+    'req_error_log_level' => (string) env(
         'OPENAPI_VALIDATOR_REQUEST_ERROR_LOG_LEVEL',
         'info'
     ),
@@ -111,7 +111,7 @@ return [
     | 'emergency' / 'alert' / 'critical' / 'error' / 'warning' / 'notice' / 'info' / 'debug' / null
     |
     */
-    'response_error_log_level' => (string) env(
+    'res_error_log_level' => (string) env(
         'OPENAPI_VALIDATOR_RESPONSE_ERROR_LOG_LEVEL',
         'warning'
     ),

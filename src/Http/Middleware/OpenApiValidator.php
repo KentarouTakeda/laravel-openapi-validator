@@ -96,7 +96,7 @@ class OpenApiValidator
 
             if ($event->response->exception) {
                 $this->logResponseError($event->response->exception);
-                if ($this->config->getRespondWithErrorOnResponseValidationFailure()) {
+                if ($this->config->getRespondErrorOnResValidationFailure()) {
                     $response = $this->renderResponseError(
                         $event->request,
                         $event->response->exception,
@@ -113,7 +113,7 @@ class OpenApiValidator
                 $schemaRepository->getResponseValidator()->validate($operationAddress, $psrResponse);
             } catch (ValidationFailed $validationFailed) {
                 $this->logResponseError($validationFailed);
-                if ($this->config->getRespondWithErrorOnResponseValidationFailure()) {
+                if ($this->config->getRespondErrorOnResValidationFailure()) {
                     $response = $this->renderResponseError(
                         $event->request,
                         $validationFailed,
@@ -128,7 +128,7 @@ class OpenApiValidator
 
     private function logRequestError(\Throwable $error): void
     {
-        $logLevel = $this->config->getRequestErrorLogLevel();
+        $logLevel = $this->config->getReqErrorLogLevel();
 
         if (null === $logLevel) {
             return;
@@ -143,7 +143,7 @@ class OpenApiValidator
 
     private function logResponseError(\Throwable $error): void
     {
-        $logLevel = $this->config->getResponseErrorLogLevel();
+        $logLevel = $this->config->getResErrorLogLevel();
 
         if (null === $logLevel) {
             return;
@@ -175,7 +175,7 @@ class OpenApiValidator
             $request,
             $error,
             Response::HTTP_INTERNAL_SERVER_ERROR,
-            $this->config->getIncludeResErrorInResponse(),
+            $this->config->getIncludeResErrorDetailInResponse(),
             $this->config->getIncludeTraceInResponse(),
         );
     }
@@ -186,7 +186,7 @@ class OpenApiValidator
             $request,
             $error,
             Response::HTTP_BAD_REQUEST,
-            $this->config->getIncludeReqErrorInResponse(),
+            $this->config->getIncludeReqErrorDetailInResponse(),
             false,
         );
     }

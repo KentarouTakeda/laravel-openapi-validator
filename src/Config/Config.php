@@ -83,14 +83,14 @@ class Config
         return (bool) $this->repository->get('openapi-validator.error_on_no_path');
     }
 
-    public function getIncludeReqErrorInResponse(): bool
+    public function getIncludeReqErrorDetailInResponse(): bool
     {
-        return (bool) $this->repository->get('openapi-validator.include_req_error_in_response');
+        return (bool) $this->repository->get('openapi-validator.include_req_error_detail_in_response');
     }
 
-    public function getIncludeResErrorInResponse(): bool
+    public function getIncludeResErrorDetailInResponse(): bool
     {
-        return (bool) $this->repository->get('openapi-validator.include_res_error_in_response');
+        return (bool) $this->repository->get('openapi-validator.include_res_error_detail_in_response');
     }
 
     public function getIncludeTraceInResponse(): bool
@@ -112,19 +112,19 @@ class Config
         return $codes;
     }
 
-    public function getRequestErrorLogLevel(): ?string
+    public function getReqErrorLogLevel(): ?string
     {
-        return $this->getLogLevelString($this->repository->get('openapi-validator.request_error_log_level'));
+        return $this->getLogLevelString($this->repository->get('openapi-validator.req_error_log_level'));
     }
 
-    public function getResponseErrorLogLevel(): ?string
+    public function getResErrorLogLevel(): ?string
     {
-        return $this->getLogLevelString($this->repository->get('openapi-validator.response_error_log_level'));
+        return $this->getLogLevelString($this->repository->get('openapi-validator.res_error_log_level'));
     }
 
-    public function getRespondWithErrorOnResponseValidationFailure(): bool
+    public function getRespondErrorOnResValidationFailure(): bool
     {
-        return (bool) $this->repository->get('openapi-validator.respond_with_error_on_response_validation_failure');
+        return (bool) $this->repository->get('openapi-validator.respond_error_on_res_validation_failure');
     }
 
     private function getLogLevelString(mixed $logLevel): ?string

@@ -33,13 +33,13 @@ class OpenApiValidatorTest extends TestCase
             'logging.default' => 'null',
             'get_default_provider_name' => 'laravel-openapi',
             'openapi-validator.error_on_no_path' => true,
-            'openapi-validator.include_req_error_in_response' => true,
-            'openapi-validator.include_res_error_in_response' => true,
+            'openapi-validator.include_req_error_detail_in_response' => true,
+            'openapi-validator.include_res_error_detail_in_response' => true,
             'openapi-validator.include_trace_in_response' => true,
             'openapi-validator.non_validated_response_codes' => [],
-            'openapi-validator.request_error_log_level' => 'debug',
-            'openapi-validator.response_error_log_level' => 'debug',
-            'openapi-validator.respond_with_error_on_response_validation_failure' => true,
+            'openapi-validator.req_error_log_level' => 'debug',
+            'openapi-validator.res_error_log_level' => 'debug',
+            'openapi-validator.respond_error_on_res_validation_failure' => true,
         ]);
     }
 
@@ -169,7 +169,7 @@ class OpenApiValidatorTest extends TestCase
     public function notReturnsResponseErrorIfTheOptionIsSet(): void
     {
         config()->set([
-            'openapi-validator.respond_with_error_on_response_validation_failure' => false,
+            'openapi-validator.respond_error_on_res_validation_failure' => false,
         ]);
 
         Route::post('/', fn () => ['data' => [true]])->middleware(OpenApiValidator::class);
