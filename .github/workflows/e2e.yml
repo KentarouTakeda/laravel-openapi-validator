@@ -50,3 +50,11 @@ jobs:
       - name: Test clear cache
         run: ./artisan openapi-validator:clear --ansi
         working-directory: e2e/${{ matrix.package }}
+
+      - name: Publish config file
+        run: ./artisan openapi-validator:publish --ansi
+        working-directory: e2e/${{ matrix.package }}
+
+      - name: Force publish config file
+        run: ./artisan openapi-validator:publish --force --ansi
+        working-directory: e2e/${{ matrix.package }}
