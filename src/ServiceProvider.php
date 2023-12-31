@@ -7,6 +7,7 @@ namespace KentarouTakeda\Laravel\OpenApiValidator;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use KentarouTakeda\Laravel\OpenApiValidator\Console\Commands\CacheCommand;
 use KentarouTakeda\Laravel\OpenApiValidator\Console\Commands\ClearCommand;
+use KentarouTakeda\Laravel\OpenApiValidator\Console\Commands\PublishCommand;
 use KentarouTakeda\Laravel\OpenApiValidator\Renderer\ErrorRenderer;
 
 class ServiceProvider extends BaseServiceProvider
@@ -30,6 +31,7 @@ class ServiceProvider extends BaseServiceProvider
             $this->commands([
                 CacheCommand::class,
                 ClearCommand::class,
+                PublishCommand::class,
             ]);
         }
     }
