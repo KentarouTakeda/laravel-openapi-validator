@@ -98,7 +98,7 @@ php artisan openapi-validator:clear
 You publish the config file to change behavior.
 
 ```bash
-php artisan openapi-validator
+php artisan openapi-validator:publish
 ```
 
 ### Your own schema
