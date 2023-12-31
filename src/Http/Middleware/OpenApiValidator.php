@@ -7,6 +7,7 @@ namespace KentarouTakeda\Laravel\OpenApiValidator\Http\Middleware;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Foundation\Http\Events\RequestHandled;
 use Illuminate\Http\Request;
+use Illuminate\Log\LogManager;
 use KentarouTakeda\Laravel\OpenApiValidator\Config\Config;
 use KentarouTakeda\Laravel\OpenApiValidator\ErrorRendererInterface;
 use KentarouTakeda\Laravel\OpenApiValidator\SchemaRepository\SchemaRepository;
@@ -23,6 +24,7 @@ class OpenApiValidator
         private readonly Config $config,
         private readonly Dispatcher $eventDispatcher,
         private readonly ErrorRendererInterface $errorRenderer,
+        private readonly LogManager $logManager,
         private readonly PsrHttpFactory $psrHttpFactory,
     ) {
     }
@@ -45,6 +47,8 @@ class OpenApiValidator
             $operationAddress = $schemaRepository->getRequestValidator()->validate($psrRequest);
         } catch (NoPath $noPath) {
             if ($this->config->getErrorOnNoPath()) {
+                $this->logResponseError($noPath);
+
                 return $this->renderResponseError(
                     $request,
                     $noPath,
@@ -53,6 +57,8 @@ class OpenApiValidator
 
             return $next($request);
         } catch (ValidationFailed $validationFailed) {
+            $this->logRequestError($validationFailed);
+
             return $this->renderRequestError(
                 $request,
                 $validationFailed,
@@ -72,6 +78,7 @@ class OpenApiValidator
             }
 
             if ($event->response->exception) {
+                $this->logResponseError($event->response->exception);
                 $response = $this->renderResponseError(
                     $event->request,
                     $event->response->exception,
@@ -86,6 +93,7 @@ class OpenApiValidator
             try {
                 $schemaRepository->getResponseValidator()->validate($operationAddress, $psrResponse);
             } catch (ValidationFailed $validationFailed) {
+                $this->logResponseError($validationFailed);
                 $response = $this->renderResponseError(
                     $event->request,
                     $validationFailed,
@@ -95,6 +103,36 @@ class OpenApiValidator
                 return;
             }
         });
+    }
+
+    private function logRequestError(\Throwable $error): void
+    {
+        $logLevel = $this->config->getRequestErrorLogLevel();
+
+        if (null === $logLevel) {
+            return;
+        }
+
+        $this->logManager->log(
+            $logLevel,
+            class_basename(static::class).': Request validation failed: '.$error->getMessage(),
+            ['error' => $error],
+        );
+    }
+
+    private function logResponseError(\Throwable $error): void
+    {
+        $logLevel = $this->config->getResponseErrorLogLevel();
+
+        if (null === $logLevel) {
+            return;
+        }
+
+        $this->logManager->log(
+            $logLevel,
+            class_basename(static::class).': Request validation failed: '.$error->getMessage(),
+            ['error' => $error],
+        );
     }
 
     private function overrideResponse(RequestHandled $event, Response $response): void

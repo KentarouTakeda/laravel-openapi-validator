@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Illuminate\Contracts\Config\Repository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -38,7 +39,16 @@ class OpenApiValidatorTest extends TestCase
             'getIncludeResErrorInResponse' => true,
             'getIncludeTraceInResponse' => true,
             'getNonValidatedResponseCodes' => [],
+            'getRequestErrorLogLevel' => 'debug',
+            'getResponseErrorLogLevel' => 'debug',
         ]));
+    }
+
+    protected function defineEnvironment($app)
+    {
+        tap($app['config'], function (Repository $config) {
+            $config->set('logging.default', 'null');
+        });
     }
 
     private function mockValidator(): ValidatorBuilder
@@ -120,6 +130,8 @@ class OpenApiValidatorTest extends TestCase
      */
     public function returnsBadRequest(): void
     {
+        $this->withoutExceptionHandling();
+
         Route::post('/', fn () => 'Hello')->middleware(OpenApiValidator::class);
 
         $this->json(Request::METHOD_POST, '/', ['hoge' => [1, 'foo']])
