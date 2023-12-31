@@ -17,8 +17,11 @@ jobs:
         laravel:
           - "^9.0"
           - "^10.0"
+        stability:
+          - lowest
+          - stable
 
-    name: PHP:${{ matrix.php }} / Laravel:${{ matrix.laravel }}
+    name: PHP:${{ matrix.php }} / Laravel:${{ matrix.laravel }} / ${{ matrix.stability }}
 
     steps:
       - name: Checkout
@@ -33,8 +36,8 @@ jobs:
 
       - name: Install Composer dependencies
         run: |
-          composer require "laravel/framework:${{ matrix.laravel }}" --no-interaction --no-update
-          composer update --prefer-stable --no-interaction
+          composer require "laravel/framework:${{ matrix.laravel }}" --no-interaction --no-update --ansi
+          composer update --prefer-${{ matrix.stability }} --no-interaction --no-progress --ansi
 
       - name: Run Code Format Check
         run: vendor/bin/phpstan analyze

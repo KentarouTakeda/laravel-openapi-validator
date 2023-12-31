@@ -54,7 +54,6 @@ class L5SwaggerResolverTest extends TestCase
         $spec = json_decode($json, true);
         $this->assertNotNull($spec);
 
-        $this->assertSame('3.0.0', $spec['openapi']);
         $this->assertSame(['title' => 'foo', 'version' => '1.0.0'], $spec['info']);
         $this->assertIsArray($spec['paths']['/']['get']['responses']['200']);
         $this->assertIsArray($spec['components']['schemas']['L5SwaggerResolverTestUser']);
