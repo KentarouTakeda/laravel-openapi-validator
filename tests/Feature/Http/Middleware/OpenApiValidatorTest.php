@@ -141,8 +141,7 @@ class OpenApiValidatorTest extends TestCase
     {
         Route::post('/', fn () => ['data' => [true]])->middleware(OpenApiValidator::class);
 
-        $this->json(Request::METHOD_POST, '/', ['hoge' => [1]]
-        )
+        $this->json(Request::METHOD_POST, '/', ['hoge' => [1]])
             ->assertStatus(Response::HTTP_INTERNAL_SERVER_ERROR)
             ->assertJsonPath('status', Response::HTTP_INTERNAL_SERVER_ERROR)
             ->assertJsonPath('title', class_basename(InvalidBody::class))
