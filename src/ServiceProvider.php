@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace KentarouTakeda\Laravel\OpenApiValidator;
 
+use Composer\InstalledVersions;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use KentarouTakeda\Laravel\OpenApiValidator\Console\Commands\CacheCommand;
 use KentarouTakeda\Laravel\OpenApiValidator\Console\Commands\ClearCommand;
@@ -33,6 +34,11 @@ class ServiceProvider extends BaseServiceProvider
                 ClearCommand::class,
                 PublishCommand::class,
             ]);
+        }
+
+        if (InstalledVersions::isInstalled('swagger-api/swagger-ui')) {
+            $this->loadRoutesFrom(__DIR__.'/../routes/swagger-ui.php');
+            $this->loadViewsFrom(__DIR__.'/../resources/views', 'openapi-validator');
         }
     }
 }

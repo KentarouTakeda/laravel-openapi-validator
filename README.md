@@ -8,6 +8,8 @@ Request and response validators based on the OpenAPI Specification.
 * Automatically load specs from [Laravel OpenAPI](https://vyuldashev.github.io/laravel-openapi/) or [L5 Swagger](https://github.com/DarkaOnLine/L5-Swagger/wiki).
 * You can also load your own specs without using these libraries.
 * You can customize validation and error logging behavior on a per-route or application-wide basis.
+* Can display [Swagger UI](https://swagger.io/tools/swagger-ui/). You can view the documentation and test the API.
+
 
 ## Requirements
 
@@ -104,6 +106,26 @@ composer require kentaroutakeda/laravel-openapi-validator
    ```bash
    php artisan openapi-validator:clear
    ```
+
+## (Optional) Swagger UI support
+
+You can view the Swagger UI just by installing the package. No additional
+configuration is required.
+
+1. Install package.
+
+   ```bash
+    composer require swagger-api/swagger-ui
+    ```
+
+2. Display `APP_URL/openapi-validator/documents` in browser.
+
+   ```bash
+   open http://localhost:8000/openapi-validator/documents
+   ```
+
+*NOTE:*  
+By default, the Swagger UI can only be displayed when `APP_DEBUG` is enabled.
 
 ## (Optional) Customization
 

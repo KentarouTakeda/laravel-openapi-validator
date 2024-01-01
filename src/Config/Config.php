@@ -127,6 +127,11 @@ class Config
         return (bool) $this->repository->get('openapi-validator.respond_error_on_res_validation_failure');
     }
 
+    public function getIsSwaggerUiEnabled(): bool
+    {
+        return (bool) $this->repository->get('openapi-validator.is_swagger_ui_enabled');
+    }
+
     private function getLogLevelString(mixed $logLevel): string
     {
         if (!in_array($logLevel, [

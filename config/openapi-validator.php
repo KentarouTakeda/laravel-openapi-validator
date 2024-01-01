@@ -70,7 +70,6 @@ return [
         true
     ),
 
-
     /*
     |--------------------------------------------------------------------------
     | Include Request Validation Error Detail in Response
@@ -82,12 +81,11 @@ return [
     | 'OPENAPI_VALIDATOR_INCLUDE_RES_ERROR_IN_RESPONSE' environment variable.
     |
     */
-    
+
     'include_res_error_detail_in_response' => (bool) env(
         'OPENAPI_VALIDATOR_INCLUDE_RES_ERROR_IN_RESPONSE',
         env('APP_DEBUG', false),
     ),
-
 
     /*
     |--------------------------------------------------------------------------
@@ -157,7 +155,6 @@ return [
     */
 
     'providers' => [
-
         /*
         | Laravel OpenAPI
         |
@@ -186,6 +183,22 @@ return [
             ),
         ],
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Enable Swagger UI
+    |--------------------------------------------------------------------------
+    |
+    | This setting controls whether the Swagger UI is enabled or not. It can be 
+    | set via the 'OPENAPI_VALIDATOR_IS_SWAGGER_UI_ENABLED' environment variable. 
+    | The default behavior is according to `APP`DEBUG`
+    |
+    */
+
+    'is_swagger_ui_enabled' => (bool) env(
+        'OPENAPI_VALIDATOR_IS_SWAGGER_UI_ENABLED',
+        env('APP_DEBUG', false),
+    ),
 
     /*
     |--------------------------------------------------------------------------
