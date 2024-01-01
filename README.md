@@ -203,7 +203,7 @@ Here's how to change to a different format:
    {
      $this->app->bind(
        ErrorRendererInterface::class,
-       Rfc7807Renderer::class
+       MyErrorRenderer::class
      );
    }
    ```
