@@ -15,7 +15,7 @@ class LaravelOpenApiResolver implements ResolverInterface
     public function __construct(
     ) {
         if (!class_exists(Generator::class)) {
-            throw new LackOfDependenciesException(message: 'Laravel OpenAPI is not installed.', class: Generator::class);
+            throw new LackOfDependenciesException('Laravel OpenAPI is not installed.', class: Generator::class);
         }
 
         $this->generator = app()->make(Generator::class);

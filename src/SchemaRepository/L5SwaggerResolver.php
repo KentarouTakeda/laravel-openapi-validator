@@ -19,7 +19,7 @@ class L5SwaggerResolver implements ResolverInterface
         private readonly Filesystem $filesystem,
     ) {
         if (!class_exists(GeneratorFactory::class)) {
-            throw new LackOfDependenciesException(message: 'L5Swagger is not installed.', class: GeneratorFactory::class);
+            throw new LackOfDependenciesException('L5Swagger is not installed.', class: GeneratorFactory::class);
         }
 
         $this->generatorFactory = app()->make(GeneratorFactory::class);
