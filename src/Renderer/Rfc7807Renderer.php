@@ -19,7 +19,7 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class ErrorRenderer implements ErrorRendererInterface
+class Rfc7807Renderer implements ErrorRendererInterface
 {
     public function __construct(
         private readonly ResponseFactory $responseFactory,
