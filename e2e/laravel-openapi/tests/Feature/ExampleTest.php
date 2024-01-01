@@ -43,4 +43,14 @@ class ExampleTest extends TestCase
                 'status' => Response::HTTP_INTERNAL_SERVER_ERROR,
             ]);
     }
+
+    /**
+     * @test
+     */
+    public function displaySwaggerUi(): void
+    {
+        $this->get('/openapi-validator/documents/laravel-openapi')
+            ->assertSee('<title>Swagger UI</title>', false)
+            ->assertOk();
+    }
 }
