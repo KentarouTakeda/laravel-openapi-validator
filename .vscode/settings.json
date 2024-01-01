@@ -13,4 +13,5 @@
   "phpstan.enableLanguageServer": true,
   "phpstan.enableStatusBar": true,
   "phpstan.configFile": "phpstan.neon.dist",
+  "bladeFormatter.format.indentSize": 2,
 }

@@ -34,5 +34,9 @@ class ServiceProvider extends BaseServiceProvider
                 PublishCommand::class,
             ]);
         }
+
+        $this->loadRoutesFrom(__DIR__.'/../routes/swagger-ui.php');
+
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'openapi-validator');
     }
 }
