@@ -152,6 +152,62 @@ Check the comments in [config/openapi-validator.php](config/openapi-validator.ph
    ];
    ```
 
+### Error responses and customization
+
+By default, it is formatted according to
+[RFC 7807 - Problem Details for HTTP APIs](https://datatracker.ietf.org/doc/html/rfc7807).
+
+Validation errors and stack traces can also be included depending
+on your settings. For example, it might look like this:
+
+```json
+{
+  "title": "NoResponseCode",
+  "detail": "OpenAPI spec contains no such operation [/,get,201]", // Error reason
+  "status": 500, // Same as HTTP response code
+  "trace": [
+    { "error": "...", "message": "...", "file": "...", "line": ... },
+    ...
+  ]
+}
+```
+
+Here's how to change to a different format:
+
+1. First, implement a class to generate a response. For example:
+
+   ```php
+   class MyErrorRenderer implements ErrorRendererInterface
+   {
+     public function render(
+       Request $request,
+       \Throwable $error,
+       ErrorType $errorType,
+     ): Response {
+       return new Response(
+         match ($errorType) {
+           ErrorType::Request => "Request Error: " . $error->getMessage(),
+           ErrorType::Response => "Response Error: " . $error->getMessage(),
+         }
+       );
+     }
+   }
+   ```
+
+2. Next, register the class to the service container.
+
+   ```php
+   // AppServiceProvider.php
+   
+   public function register(): void
+   {
+     $this->app->bind(
+       ErrorRendererInterface::class,
+       Rfc7807Renderer::class
+     );
+   }
+   ```
+
 ## Contributing and Development
 
 ```bash

@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Log\LogManager;
 use KentarouTakeda\Laravel\OpenApiValidator\Config\Config;
 use KentarouTakeda\Laravel\OpenApiValidator\ErrorRendererInterface;
+use KentarouTakeda\Laravel\OpenApiValidator\ErrorType;
 use KentarouTakeda\Laravel\OpenApiValidator\SchemaRepository\SchemaRepository;
 use League\OpenAPIValidation\PSR7\Exception\NoPath;
 use League\OpenAPIValidation\PSR7\Exception\ValidationFailed;
@@ -162,9 +163,7 @@ class OpenApiValidator
         return $this->errorRenderer->render(
             $request,
             $error,
-            Response::HTTP_INTERNAL_SERVER_ERROR,
-            $this->config->getIncludeResErrorDetailInResponse(),
-            $this->config->getIncludeTraceInResponse(),
+            ErrorType::Response
         );
     }
 
@@ -173,9 +172,7 @@ class OpenApiValidator
         return $this->errorRenderer->render(
             $request,
             $error,
-            Response::HTTP_BAD_REQUEST,
-            $this->config->getIncludeReqErrorDetailInResponse(),
-            false,
+            ErrorType::Request,
         );
     }
 }
