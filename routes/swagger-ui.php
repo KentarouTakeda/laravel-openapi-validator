@@ -10,6 +10,8 @@ assert($config instanceof Config);
 
 Route::prefix('openapi-validator/documents')->name('openapi-validator.')->group(function() use($config){
 
+    Route::get('/', [DocumentController::class, 'redirect'])->name('document.index');
+
     Route::get('_assets/{path}', [DocumentController::class, 'asset'])->name('asset');
 
     foreach($config->getProviderNames() as $providerName) {

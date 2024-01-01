@@ -7,15 +7,25 @@ namespace KentarouTakeda\Laravel\OpenApiValidator\Http\Controllers;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Contracts\View\View;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use KentarouTakeda\Laravel\OpenApiValidator\Config\Config;
 use KentarouTakeda\Laravel\OpenApiValidator\SchemaRepository\SchemaRepository;
 use Symfony\Component\HttpFoundation\Response;
 
 class DocumentController
 {
     public function __construct(
+        private readonly Config $config,
         private readonly Filesystem $filesystem,
     ) {
+    }
+
+    public function redirect(): RedirectResponse
+    {
+        $providerName = $this->config->getDefaultProviderName();
+
+        return redirect()->route("openapi-validator.document.{$providerName}");
     }
 
     public function view(Request $request): View
