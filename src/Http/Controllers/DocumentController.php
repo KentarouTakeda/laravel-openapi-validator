@@ -54,8 +54,8 @@ class DocumentController
         }
 
         $mimeTypes = [
-            'css' => 'text/css',
-            'js' => 'text/javascript',
+            'css' => 'text/css; charset=UTF-8',
+            'js' => 'text/javascript; charset=UTF-8',
         ];
 
         return response()->file($filePath, [
