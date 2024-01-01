@@ -34,6 +34,7 @@ composer require kentaroutakeda/laravel-openapi-validator
 >
 > Please see
 > [here](https://github.com/thephpleague/openapi-psr7-validator/pull/213)
+> and [here](https://github.com/DEVizzent/cebe-php-openapi/pull/15)
 > for details.
 
 <!-- TODO: Delete the note when the issue is closed -->
