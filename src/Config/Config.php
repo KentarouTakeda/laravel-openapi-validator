@@ -23,7 +23,7 @@ class Config
         $providers = $this->repository->get('openapi-validator.providers');
 
         if (!is_array($providers)) {
-            throw new InvalidConfigException(message: 'openapi-validator.providers must be an array');
+            throw new InvalidConfigException('openapi-validator.providers must be an array');
         }
 
         return array_keys($providers);
@@ -34,7 +34,7 @@ class Config
         $defaultProviderName = $this->repository->get('openapi-validator.default');
 
         if (!is_string($defaultProviderName)) {
-            throw new InvalidConfigException(message: 'openapi-validator.default_provider must be a string');
+            throw new InvalidConfigException('openapi-validator.default_provider must be a string');
         }
 
         return $defaultProviderName;
@@ -48,11 +48,11 @@ class Config
         $provider = $this->repository->get("openapi-validator.providers.{$providerName}");
 
         if (!$provider) {
-            throw new InvalidConfigException(message: "Provider {$providerName} is not defined");
+            throw new InvalidConfigException("Provider {$providerName} is not defined");
         }
 
         if (!is_array($provider)) {
-            throw new InvalidConfigException(message: "Provider {$providerName} must be an array");
+            throw new InvalidConfigException("Provider {$providerName} must be an array");
         }
 
         return $provider;
@@ -63,7 +63,7 @@ class Config
         $cacheDirectory = $this->repository->get('openapi-validator.cache_directory');
 
         if (!is_string($cacheDirectory)) {
-            throw new InvalidConfigException(message: 'openapi-validator.cache_directory must be a string');
+            throw new InvalidConfigException('openapi-validator.cache_directory must be a string');
         }
 
         return $cacheDirectory;
@@ -106,7 +106,7 @@ class Config
         $codes = $this->repository->get('openapi-validator.non_validated_response_codes');
 
         if (!is_array($codes)) {
-            throw new InvalidConfigException(message: 'openapi-validator.non_validated_response_codes must be an array');
+            throw new InvalidConfigException('openapi-validator.non_validated_response_codes must be an array');
         }
 
         return $codes;
@@ -139,7 +139,7 @@ class Config
             LogLevel::INFO,
             LogLevel::DEBUG,
         ], true)) {
-            throw new InvalidConfigException(message: 'openapi-validator.log_level must be a valid LogLevel');
+            throw new InvalidConfigException('openapi-validator.log_level must be a valid LogLevel');
         }
 
         return $logLevel;
