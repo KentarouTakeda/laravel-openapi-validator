@@ -1,6 +1,6 @@
 {
     "name": "kentaroutakeda/laravel-openapi-validator",
-    "description": "Laravel OpenAPI Validator",
+    "description": "Laravel OpenAPI Validator - Request and response validators based on the OpenAPI Specification.",
     "keywords": [
         "api",
         "docs",
