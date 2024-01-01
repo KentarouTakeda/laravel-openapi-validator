@@ -2,10 +2,17 @@
 
 Request and response validators based on the OpenAPI Specification.
 
-Supports
-[Laravel OpenAPI](https://vyuldashev.github.io/laravel-openapi/)
-and [L5 Swagger](https://github.com/DarkaOnLine/L5-Swagger/wiki),
-and you can also use your own schema.
+## Summary
+
+* Validate any request and response with a pre-prepared OpenAPI Spec.
+* Automatically load specs from [Laravel OpenAPI](https://vyuldashev.github.io/laravel-openapi/) or [L5 Swagger](https://github.com/DarkaOnLine/L5-Swagger/wiki).
+* You can also load your own specs without using these libraries.
+* You can customize validation and error logging behavior on a per-route or application-wide basis.
+
+## Requirements
+
+* PHP 8.1 or higher
+* Laravel 9.0 or higher
 
 ## Installation
 
@@ -29,91 +36,96 @@ composer require kentaroutakeda/laravel-openapi-validator
 > [here](https://github.com/thephpleague/openapi-psr7-validator/pull/213)
 > for details.
 
+<!-- TODO: Delete the note when the issue is closed -->
+
 ## Usage
 
-### Configure OpenAPI Specification
+1. Configure OpenAPI Specification
 
-If you're using Laravel OpenAPI, you don't need to do anything.
+   If you're using Laravel OpenAPI, you don't need to do anything.
 
-For L5 Swagger, the following settings are required:
+   For L5 Swagger, the following settings are required:
 
-```ini
-# .env
-OPENAPI_VALIDATOR_PROVIDER="l5-swagger"
-```
+   ```ini
+   # .env
+   OPENAPI_VALIDATOR_PROVIDER="l5-swagger"
+   ```
 
-How to load your own schema without using these packages will be
-explained later.
+   How to load your own schema without using these packages will be
+   explained later.
 
-### Register Middleware
+2. Register Middleware
 
-```php
-Route::get('/example', ExampleController::class)
-    ->middleware(OpenApiValidator::class); // <- Add this line
-```
+   ```php
+   Route::get('/example', ExampleController::class)
+       ->middleware(OpenApiValidator::class); // <- Add this line
+   ```
+   
+   Routes with this setting will be validated for all requests including
+   Feature Tests, and depending on the settings, responses as well.
 
-> [!NOTE]  
-> This repository's ./e2e directory contains working examples
-> for e2e testing.
+   *NOTE:*  
+   This repository's [./e2e](./e2e) directory contains working examples
+   for e2e testing. You can see middleware configuration examples in
+   Routing, and actual validations and failures in Tests.
 
-### Customize Middleware
+3. (Optional) Customize Middleware
 
-If necessary, you can change Middleware behavior for each Route.
+   If necessary, you can change Middleware behavior for each route.
+   
+   ```php
+   Route::get('/', ExampleController::class)
+     ->middleware(OpenApiValidator::config(
+       provider: 'admin-api', // <- Use spec other than default
+       skipResponseValidation: true // <- Skip Response Validation
+     ));
+   ```
 
-```php
-Route::get('/', ExampleController::class)
-  ->middleware(OpenApiValidator::config(
-    provider: 'admin-api', // <- Use spec other than default
-    skipResponseValidation: true // <- Skip Response Validation
-  ));
-```
+   *NOTE:*  
+   Response validation for large amounts of data can take a long time.
+   It would be a good idea to switch on/off validation depending on the
+   route and `APP_*` environment variables.
 
-> [!NOTE]  
-> Response validation for large amounts of data can take a long time.
-> It would be a good idea to switch on/off validation depending on the
-> route and `APP_*` environment variables.
+4. Deployment
 
-### Deployment
+   When deploying your application to production, you should make sure
+   that you run the `openapi-validator:cache` Artisan command
+   during your deployment process:
+   
+   ```bash
+   php artisan openapi-validator:cache
+   ```
+   
+   This command caches the OpenAPI Spec defined in your application.
+   If you change the definition for development, you need to
+   clear it as follows:
+   
+   ```bash
+   php artisan openapi-validator:clear
+   ```
 
-When deploying your application to production, you should make sure
-that you run the `openapi-validator:cache` Artisan command
-during your deployment process:
-
-```bash
-php artisan openapi-validator:cache
-```
-
-This command caches the OpenAPI Spec defined in your application.
-If you change the definition for development, you need to
-clear it as follows:
-
-```bash
-php artisan openapi-validator:clear
-```
-
-## Customization
+## (Optional) Customization
 
 ### Publish Configuration
 
-You publish the config file to change behavior.
+You can publish the config file to change behavior.
 
 ```bash
 php artisan openapi-validator:publish
 ```
 
-### Your own schema
+Alternatively, most settings can be changed using environment variables.
+Check the comments in [config/openapi-validator.php](config/openapi-validator.php) for details.
 
-1. If you want to use your own schema, first publish the config.
+### Your own schema providers
+
+1. If you want to use your own schema providers, first publish the config.
 
 2. Next, implement a class to retrieve the schema.
 
    ```php
-   // MyResolver.php
-   
-   // Create a concrete `ResolverInterface`.
    class MyResolver implements ResolverInterface
    {
-     // Returns OpenAPI Spec in json format.
      public function getJson(array $options): string
      {
        // This example assumes that the schema exists in the root directory.
@@ -125,98 +137,38 @@ php artisan openapi-validator:publish
 3. Finally, set it in your config.
 
    ```php
-   // config/openapi-validator.php
-   
-   // Extract only the necessary parts
    return [
-   
      // Set the provider name.
      'default' => 'my-resolver',
-   
-     // Specify the class you created in the `resolver` parameter.
+
      'providers' => [
-       // Set the provider name you created. This is input into `$option`
+       // Set the provider name you created.
        'my-resolver' => [
          // Specify the class you created in the `resolver` parameter.
          'resolver' => MyResolver::class,
-         /* If you need additional options, write them here. */
        ],
      ],
    ];
    ```
 
-### Environment Variables
+## Contributing and Development
 
-Alternatively, most settings can be changed using environment variables:
+```bash
+# Clone this repository and move to the directory.
+git clone https://github.com/KentarouTakeda/laravel-openapi-validator.git
+cd laravel-openapi-validator
 
-#### Default OpenAPI Schema Provider
+# Install dependencies.
+composer install
 
-This setting determines the default OpenAPI schema provider to be used. 
-The default provider is `laravel-openapi` and can be customized through 
-the `OPENAPI_VALIDATOR_PROVIDER` environment variable.
+# (Optional) Install tools: The commit hook automatically formats the code.
+npm install
 
-#### Respond with Error on Response Validation Failure
+# Run tests.
+vendor/bin/phpunit
+```
 
-This setting determines whether the OpenAPI validator should respond with 
-an error when it fails to validate a response.
+## License
 
-#### Error on No Path
-
-This setting determines whether to respond with an error when the path 
-corresponding to the request is not defined in the OpenAPI schema. 
-The default behavior is according to `APP_DEBUG` and can be customized 
-through the `OPENAPI_VALIDATOR_ERROR_ON_NO_PATH` environment variable.
-
-#### Include Response Validation Error Detail in Response
-
-This setting determines whether the OpenAPI validator should include 
-details of response validation errors in the response. The default value 
-is `true` and can be customized through the
-`OPENAPI_VALIDATOR_INCLUDE_RES_ERROR_IN_RESPONSE` environment variable.
-
-#### Include Request Validation Error Detail in Response
-
-This setting determines whether the OpenAPI validator should include 
-details of response validation errors in the response. The default 
-behavior is according to `APP`DEBUG`  and can be customized through the
-`OPENAPI_VALIDATOR_INCLUDE_RES_ERROR_IN_RESPONSE` environment variable.
-
-#### Include Trace Information in Response
-
-This setting determines whether the OpenAPI validator should include 
-trace information in the error response. The default behavior is
-according to `APP`DEBUG` and can be customized through the 
-`OPENAPI_VALIDATOR_INCLUDE_TRACE_IN_RESPONSE` environment variable.
-
-#### Request Error Log Level
-
-This setting determines the log level for request errors in the OpenAPI
-validator. The default level is `info`. This can be customized through
-the `OPENAPI_VALIDATOR_REQUEST_ERROR_LOG_LEVEL` environment variable.
-
-> [!NOTE]  
-> Log levels:  
-> emergency, alert, critical, error, warning, notice, info, debug  
-
-#### Response Error Log Level
-
-This setting determines the log level for response errors in the OpenAPI
-validator. The default level is `warning`. This can be customized through
-the `OPENAPI_VALIDATOR_RESPONSE_ERROR_LOG_LEVEL` environment variable.
-
-> [!NOTE]  
-> Log levels:  
-> emergency, alert, critical, error, warning, notice, info, debug  
-
-#### OpenAPI Schema providers.
-
-By default, `laravel-openapi` is used. If your system handles multiple
-OpenAPI specifications, you can specify which one to use with the
-middleware parameter `provider`.
-
-#### Multiple Documents
-
-laravel-openapi or l5-swagger supports managing multiple documents.
-OpenAPI validator uses those `default` by default. This behavior can be
-customized through the environment variable
-`OPENAPI_VALIDATOR_COLLECTION_NAME`.
+Laravel OpenAPI Validator is open-sourced software licensed under the
+[MIT license](https://opensource.org/licenses/MIT).
