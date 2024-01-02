@@ -111,8 +111,8 @@ class OpenApiValidatorTest extends TestCase
         Route::get('/not-found', fn () => 'Hello')->middleware(OpenApiValidator::class);
 
         $this->get('/not-found')
-            ->assertStatus(Response::HTTP_INTERNAL_SERVER_ERROR)
-            ->assertJsonPath('status', Response::HTTP_INTERNAL_SERVER_ERROR)
+            ->assertStatus(Response::HTTP_BAD_REQUEST)
+            ->assertJsonPath('status', Response::HTTP_BAD_REQUEST)
             ->assertJsonPath('title', class_basename(NoPath::class))
         ;
     }

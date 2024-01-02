@@ -12,7 +12,6 @@ use Illuminate\Routing\Exceptions\BackedEnumCaseNotFoundException;
 use Illuminate\Session\TokenMismatchException;
 use KentarouTakeda\Laravel\OpenApiValidator\Config\Config;
 use KentarouTakeda\Laravel\OpenApiValidator\ErrorRendererInterface;
-use KentarouTakeda\Laravel\OpenApiValidator\ErrorType;
 use League\OpenAPIValidation\Schema\Exception\SchemaMismatch;
 use Symfony\Component\HttpFoundation\Exception\SuspiciousOperationException;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,18 +29,17 @@ class Rfc7807Renderer implements ErrorRendererInterface
     }
 
     public function render(
-        Request $request,
         \Throwable $error,
-        ErrorType $errorType,
+        Request $request,
+        Response $response = null,
     ): Response {
         $error = $this->prepareException($error);
 
         $status = $error instanceof HttpException ?
             $error->getStatusCode() :
-            match ($errorType) {
-                ErrorType::Request => Response::HTTP_BAD_REQUEST,
-                ErrorType::Response => Response::HTTP_INTERNAL_SERVER_ERROR,
-            };
+            ($response ?
+                Response::HTTP_INTERNAL_SERVER_ERROR :
+                Response::HTTP_BAD_REQUEST);
 
         $json = [
             'title' => class_basename($error),
@@ -49,7 +47,11 @@ class Rfc7807Renderer implements ErrorRendererInterface
             'status' => $status,
         ];
 
-        if ($this->shouldIncludePointer($errorType)) {
+        $shouldIncludePointer = $response ?
+            $this->config->getIncludeResErrorDetailInResponse() :
+            $this->config->getIncludeReqErrorDetailInResponse();
+
+        if ($shouldIncludePointer) {
             $schemaMismatch = $this->findSchemaMismatch($error);
 
             if ($schemaMismatch) {
@@ -69,14 +71,6 @@ class Rfc7807Renderer implements ErrorRendererInterface
                 JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE :
                 0
         );
-    }
-
-    private function shouldIncludePointer(ErrorType $errorType): bool
-    {
-        return match ($errorType) {
-            ErrorType::Request => $this->config->getIncludeReqErrorDetailInResponse(),
-            ErrorType::Response => $this->config->getIncludeResErrorDetailInResponse(),
-        };
     }
 
     private function findSchemaMismatch(\Throwable $error): ?SchemaMismatch
