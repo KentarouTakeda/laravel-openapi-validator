@@ -190,8 +190,8 @@ For example, it might look like this:
   "status": 500, // Same as HTTP response code
   "originalResponse": { "status": "201" }, // Original response before validation
   "trace": [
-    { "error": "...", "message": "...", "file": "...", "line": ... },
-    ...
+    { "error": "...", "message": "...", "file": "...", "line": 42 },
+    { "...": "..." }
   ]
 }
 ```
