@@ -114,8 +114,8 @@ configuration is required.
 1. Install package.
 
    ```bash
-    composer require swagger-api/swagger-ui
-    ```
+   composer require swagger-api/swagger-ui
+   ```
 
 2. Display `APP_URL/openapi-validator/documents` in browser.
 
