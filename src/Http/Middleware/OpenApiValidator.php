@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 use Illuminate\Log\LogManager;
 use KentarouTakeda\Laravel\OpenApiValidator\Config\Config;
 use KentarouTakeda\Laravel\OpenApiValidator\ErrorRendererInterface;
-use KentarouTakeda\Laravel\OpenApiValidator\ErrorType;
 use KentarouTakeda\Laravel\OpenApiValidator\SchemaRepository\SchemaRepository;
 use League\OpenAPIValidation\PSR7\Exception\NoPath;
 use League\OpenAPIValidation\PSR7\Exception\ValidationFailed;
@@ -65,9 +64,9 @@ class OpenApiValidator
             if ($this->config->getErrorOnNoPath() && !$skipResponseValidation) {
                 $this->logResponseError($noPath);
 
-                return $this->renderResponseError(
-                    $request,
+                return $this->errorRenderer->render(
                     $noPath,
+                    $request,
                 );
             }
 
@@ -75,9 +74,9 @@ class OpenApiValidator
         } catch (ValidationFailed $validationFailed) {
             $this->logRequestError($validationFailed);
 
-            return $this->renderRequestError(
-                $request,
+            return $this->errorRenderer->render(
                 $validationFailed,
+                $request,
             );
         }
 
@@ -98,9 +97,10 @@ class OpenApiValidator
             if ($event->response->exception) {
                 $this->logResponseError($event->response->exception);
                 if ($this->config->getRespondErrorOnResValidationFailure()) {
-                    $response = $this->renderResponseError(
-                        $event->request,
+                    $response = $this->errorRenderer->render(
                         $event->response->exception,
+                        $event->request,
+                        $event->response,
                     );
                     $this->overrideResponse($event, $response);
                 }
@@ -115,9 +115,10 @@ class OpenApiValidator
             } catch (ValidationFailed $validationFailed) {
                 $this->logResponseError($validationFailed);
                 if ($this->config->getRespondErrorOnResValidationFailure()) {
-                    $response = $this->renderResponseError(
-                        $event->request,
+                    $response = $this->errorRenderer->render(
                         $validationFailed,
+                        $event->request,
+                        $event->response,
                     );
                     $this->overrideResponse($event, $response);
                 }
@@ -156,23 +157,5 @@ class OpenApiValidator
             ->setCache(['no_store' => true])
             ->setContent($response->getContent())
             ->setStatusCode($response->getStatusCode());
-    }
-
-    private function renderResponseError(Request $request, \Throwable $error): Response
-    {
-        return $this->errorRenderer->render(
-            $request,
-            $error,
-            ErrorType::Response
-        );
-    }
-
-    private function renderRequestError(Request $request, \Throwable $error): Response
-    {
-        return $this->errorRenderer->render(
-            $request,
-            $error,
-            ErrorType::Request,
-        );
     }
 }

@@ -13,8 +13,8 @@ interface ErrorRendererInterface
      * Render the exception that occurred during processing as a response
      */
     public function render(
-        Request $request,
         \Throwable $error,
-        ErrorType $errorType,
+        Request $request,
+        Response $response = null,
     ): Response;
 }

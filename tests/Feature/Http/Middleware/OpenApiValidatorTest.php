@@ -36,6 +36,7 @@ class OpenApiValidatorTest extends TestCase
             'openapi-validator.include_req_error_detail_in_response' => true,
             'openapi-validator.include_res_error_detail_in_response' => true,
             'openapi-validator.include_trace_in_response' => true,
+            'openapi-validator.include_original_res_in_response' => true,
             'openapi-validator.non_validated_response_codes' => [],
             'openapi-validator.req_error_log_level' => 'debug',
             'openapi-validator.res_error_log_level' => 'debug',
@@ -111,8 +112,8 @@ class OpenApiValidatorTest extends TestCase
         Route::get('/not-found', fn () => 'Hello')->middleware(OpenApiValidator::class);
 
         $this->get('/not-found')
-            ->assertStatus(Response::HTTP_INTERNAL_SERVER_ERROR)
-            ->assertJsonPath('status', Response::HTTP_INTERNAL_SERVER_ERROR)
+            ->assertStatus(Response::HTTP_BAD_REQUEST)
+            ->assertJsonPath('status', Response::HTTP_BAD_REQUEST)
             ->assertJsonPath('title', class_basename(NoPath::class))
         ;
     }
@@ -140,7 +141,9 @@ class OpenApiValidatorTest extends TestCase
      */
     public function returnsInvalidBody(): void
     {
-        Route::post('/', fn () => ['data' => [true]])->middleware(OpenApiValidator::class);
+        $response = ['data' => [true]];
+
+        Route::post('/', fn () => $response)->middleware(OpenApiValidator::class);
 
         $this->json(Request::METHOD_POST, '/', ['hoge' => [1]])
             ->assertStatus(Response::HTTP_INTERNAL_SERVER_ERROR)
@@ -148,6 +151,7 @@ class OpenApiValidatorTest extends TestCase
             ->assertJsonPath('title', class_basename(InvalidBody::class))
             ->assertJsonPath('detail', "Value expected to be 'integer', but 'boolean' given.")
             ->assertJsonPath('pointer', ['data', 0])
+            ->assertJsonPath('originalResponse', $response)
         ;
     }
 

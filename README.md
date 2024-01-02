@@ -179,14 +179,16 @@ Check the comments in [config/openapi-validator.php](config/openapi-validator.ph
 By default, it is formatted according to
 [RFC 7807 - Problem Details for HTTP APIs](https://datatracker.ietf.org/doc/html/rfc7807).
 
-Validation errors and stack traces can also be included depending
-on your settings. For example, it might look like this:
+Validation errors, stack traces and original response
+can also be included depending on your settings.
+For example, it might look like this:
 
 ```json
 {
   "title": "NoResponseCode",
   "detail": "OpenAPI spec contains no such operation [/,get,201]", // Error reason
   "status": 500, // Same as HTTP response code
+  "originalResponse": { "status": "201" }, // Original response before validation
   "trace": [
     { "error": "...", "message": "...", "file": "...", "line": ... },
     ...
