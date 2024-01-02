@@ -140,7 +140,9 @@ class OpenApiValidatorTest extends TestCase
      */
     public function returnsInvalidBody(): void
     {
-        Route::post('/', fn () => ['data' => [true]])->middleware(OpenApiValidator::class);
+        $response = ['data' => [true]];
+
+        Route::post('/', fn () => $response)->middleware(OpenApiValidator::class);
 
         $this->json(Request::METHOD_POST, '/', ['hoge' => [1]])
             ->assertStatus(Response::HTTP_INTERNAL_SERVER_ERROR)
@@ -148,6 +150,7 @@ class OpenApiValidatorTest extends TestCase
             ->assertJsonPath('title', class_basename(InvalidBody::class))
             ->assertJsonPath('detail', "Value expected to be 'integer', but 'boolean' given.")
             ->assertJsonPath('pointer', ['data', 0])
+            ->assertJsonPath('originalResponse', $response)
         ;
     }
 

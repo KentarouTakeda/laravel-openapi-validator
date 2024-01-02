@@ -60,6 +60,10 @@ class Rfc7807Renderer implements ErrorRendererInterface
             }
         }
 
+        if ($response && $this->config->getIncludeOriginalResInResponse()) {
+            $json['originalResponse'] = $this->extractResponseBody($response);
+        }
+
         if ($this->config->getIncludeTraceInResponse()) {
             $json['trace'] = $this->extractTrace($error);
         }
@@ -84,6 +88,20 @@ class Rfc7807Renderer implements ErrorRendererInterface
         }
 
         return null;
+    }
+
+    private function extractResponseBody(Response $response): mixed
+    {
+        $content = $response->getContent();
+
+        if (!is_string($content)) {
+            return $content;
+        }
+
+        json_decode('null');
+        $object = json_decode($content, true);
+
+        return json_last_error() ? $content : $object;
     }
 
     /**
