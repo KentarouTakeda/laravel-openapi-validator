@@ -22,6 +22,9 @@ class ExampleController
     public function __invoke(Request $request): JsonResponse
     {
         return response()
-            ->json([], $request->query('status'));
+            ->json(
+                ['status' => $request->query('status')],
+                $request->query('status'),
+            );
     }
 }
