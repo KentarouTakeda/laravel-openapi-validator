@@ -30,8 +30,7 @@ composer require kentaroutakeda/laravel-openapi-validator
 > you may need to downgrade some of the following dependencies:
 >
 > ```bash
-> composer require kentaroutakeda/laravel-openapi-validator --no-update
-> composer update kentaroutakeda/laravel-openapi-validator --with-all-dependencies
+> composer require kentaroutakeda/laravel-openapi-validator --with-dependencies
 > ```
 >
 > Please see
