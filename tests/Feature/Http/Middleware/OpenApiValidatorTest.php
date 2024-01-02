@@ -36,6 +36,7 @@ class OpenApiValidatorTest extends TestCase
             'openapi-validator.include_req_error_detail_in_response' => true,
             'openapi-validator.include_res_error_detail_in_response' => true,
             'openapi-validator.include_trace_in_response' => true,
+            'openapi-validator.include_original_res_in_response' => true,
             'openapi-validator.non_validated_response_codes' => [],
             'openapi-validator.req_error_log_level' => 'debug',
             'openapi-validator.res_error_log_level' => 'debug',
