@@ -123,6 +123,16 @@ class ConfigTest extends TestCase
     /**
      * @test
      */
+    public function getIncludeOriginalResInResponseReturnsBool(): void
+    {
+        $includeOriginalResInResponse = $this->config->getIncludeOriginalResInResponse();
+
+        $this->assertIsBool($includeOriginalResInResponse);
+    }
+
+    /**
+     * @test
+     */
     public function getIncludeTraceInResponseReturnsBool(): void
     {
         $includeTraceInResponse = $this->config->getIncludeTraceInResponse();

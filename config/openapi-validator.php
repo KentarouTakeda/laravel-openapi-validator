@@ -106,6 +106,23 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Include Original Response in Error Response
+    |--------------------------------------------------------------------------
+    |
+    | This setting determines whether the OpenAPI validator should include 
+    | the original response in the error response. The default behavior is
+    | according to `APP_DEBUG` and can be customized through the 
+    | 'OPENAPI_VALIDATOR_INCLUDE_ORIGINAL_RES_IN_RESPONSE' environment variable.
+    |
+    */
+
+    'include_original_res_in_response' => (bool) env(
+        'OPENAPI_VALIDATOR_INCLUDE_ORIGINAL_RES_IN_RESPONSE',
+        env('APP_DEBUG', false),
+    ),
+
+    /*
+    |--------------------------------------------------------------------------
     | Request Error Log Level
     |--------------------------------------------------------------------------
     |

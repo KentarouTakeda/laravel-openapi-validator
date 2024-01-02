@@ -93,6 +93,11 @@ class Config
         return (bool) $this->repository->get('openapi-validator.include_res_error_detail_in_response');
     }
 
+    public function getIncludeOriginalResInResponse(): bool
+    {
+        return (bool) $this->repository->get('openapi-validator.include_original_res_in_response');
+    }
+
     public function getIncludeTraceInResponse(): bool
     {
         return (bool) $this->repository->get('openapi-validator.include_trace_in_response');
