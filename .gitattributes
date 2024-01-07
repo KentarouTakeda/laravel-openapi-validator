@@ -1,0 +1,13 @@
+/.editorconfig export-ignore
+/.gitattributes export-ignore
+/.github/ export-ignore
+/.gitignore export-ignore
+/.husky/ export-ignore
+/.php-cs-fixer.php export-ignore
+/.vscode/ export-ignore
+/e2e export-ignore
+/package.json export-ignore
+/phpstan.neon.dist export-ignore
+/phpunit.xml export-ignore
+/testbench.yaml export-ignore
+/tests export-ignore

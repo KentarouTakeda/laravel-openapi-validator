@@ -1,6 +1,16 @@
 {
     "name": "kentaroutakeda/laravel-openapi-validator",
     "description": "Laravel OpenAPI Validator - Request and response validators based on the OpenAPI Specification.",
+    "authors": [
+        {
+            "name": "Kentarou Takeda",
+            "email": "takeda@youmind.jp"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/KentarouTakeda/laravel-openapi-validator/issues",
+        "source": "https://github.com/KentarouTakeda/laravel-openapi-validator"
+    },
     "keywords": [
         "api",
         "docs",

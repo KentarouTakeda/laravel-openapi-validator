@@ -14,4 +14,7 @@
   "phpstan.enableStatusBar": true,
   "phpstan.configFile": "phpstan.neon.dist",
   "bladeFormatter.format.indentSize": 2,
+  "files.exclude": {
+    "e2e/**": true
+  },
 }
