@@ -133,8 +133,6 @@ class OpenApiValidator
                     );
                     $this->overrideResponse($event, $response);
                 }
-
-                return;
             }
         });
     }
