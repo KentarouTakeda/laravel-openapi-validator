@@ -101,12 +101,6 @@ class OpenApiValidator
             }
 
             if ($event->response->exception) {
-                $this->eventDispatcher->dispatch(new ResponseValidationFailed(
-                    $event->response->exception,
-                    $event->request,
-                    $event->response,
-                ));
-
                 if ($this->config->getRespondErrorOnResValidationFailure()) {
                     $response = $this->errorRenderer->render(
                         $event->response->exception,
