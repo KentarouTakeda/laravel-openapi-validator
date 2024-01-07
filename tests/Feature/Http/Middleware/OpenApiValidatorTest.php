@@ -39,6 +39,7 @@ class OpenApiValidatorTest extends TestCase
 
         config()->set([
             'get_default_provider_name' => 'laravel-openapi',
+            'openapi-validator.validate_error_responses' => true,
             'openapi-validator.error_on_no_path' => true,
             'openapi-validator.include_req_error_detail_in_response' => true,
             'openapi-validator.include_res_error_detail_in_response' => true,
@@ -212,6 +213,10 @@ class OpenApiValidatorTest extends TestCase
      */
     public function returnsHttpException(): void
     {
+        config()->set([
+            'openapi-validator.validate_error_responses' => false,
+        ]);
+
         Route::post('/', fn () => abort(404, 'foo'))->middleware(OpenApiValidator::class);
 
         $this->json(Request::METHOD_POST, '/', ['hoge' => [1]])
@@ -230,6 +235,10 @@ class OpenApiValidatorTest extends TestCase
      */
     public function returnsModelNotFoundException(): void
     {
+        config()->set([
+            'openapi-validator.validate_error_responses' => false,
+        ]);
+
         Route::post('/', fn () => throw new ModelNotFoundException())->middleware(OpenApiValidator::class);
 
         $this->json(Request::METHOD_POST, '/', ['hoge' => [1]])
