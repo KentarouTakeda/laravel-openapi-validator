@@ -130,6 +130,8 @@ return [
     | validator. The default level is 'info'. This can be customized through
     | the 'OPENAPI_VALIDATOR_REQUEST_ERROR_LOG_LEVEL' environment variable.
     |
+    | If set to null, no logging will occur.
+    |
     | Log levels:
     |   emergency, alert, critical, error, warning, notice, info, debug
     |
@@ -148,6 +150,8 @@ return [
     | This setting determines the log level for response errors in the OpenAPI
     | validator. The default level is 'warning'. This can be customized through
     | the 'OPENAPI_VALIDATOR_RESPONSE_ERROR_LOG_LEVEL' environment variable.
+    |
+    | If set to null, no logging will occur.
     |
     | Log levels:
     |   emergency, alert, critical, error, warning, notice, info, debug

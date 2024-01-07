@@ -117,14 +117,14 @@ class Config
         return $codes;
     }
 
-    public function getReqErrorLogLevel(): string
+    public function getReqErrorLogLevel(): ?string
     {
-        return $this->getLogLevelString($this->repository->get('openapi-validator.req_error_log_level'));
+        return $this->getLogLevelString($this->repository->get('openapi-validator.req_error_log_level')) ?: null;
     }
 
-    public function getResErrorLogLevel(): string
+    public function getResErrorLogLevel(): ?string
     {
-        return $this->getLogLevelString($this->repository->get('openapi-validator.res_error_log_level'));
+        return $this->getLogLevelString($this->repository->get('openapi-validator.res_error_log_level')) ?: null;
     }
 
     public function getRespondErrorOnResValidationFailure(): bool

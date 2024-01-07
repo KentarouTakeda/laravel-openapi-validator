@@ -5,7 +5,10 @@ declare(strict_types=1);
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
+use KentarouTakeda\Laravel\OpenApiValidator\Events\RequestValidationFailed;
+use KentarouTakeda\Laravel\OpenApiValidator\Events\ResponseValidationFailed;
 use KentarouTakeda\Laravel\OpenApiValidator\Http\Middleware\OpenApiValidator;
 use KentarouTakeda\Laravel\OpenApiValidator\SchemaRepository\SchemaRepository;
 use KentarouTakeda\Laravel\OpenApiValidator\Tests\Feature\TestCase;
@@ -21,6 +24,11 @@ class OpenApiValidatorTest extends TestCase
     {
         parent::setUp();
 
+        Event::fake([
+            RequestValidationFailed::class,
+            ResponseValidationFailed::class,
+        ]);
+
         app()->bind(
             SchemaRepository::class,
             fn () => Mockery::mock(SchemaRepository::class)->allows([
@@ -30,7 +38,6 @@ class OpenApiValidatorTest extends TestCase
         );
 
         config()->set([
-            'logging.default' => 'null',
             'get_default_provider_name' => 'laravel-openapi',
             'openapi-validator.error_on_no_path' => true,
             'openapi-validator.include_req_error_detail_in_response' => true,
@@ -102,6 +109,9 @@ class OpenApiValidatorTest extends TestCase
         $this->json(Request::METHOD_POST, '/', ['hoge' => [1]])
             ->assertOk()
         ;
+
+        Event::assertNotDispatched(RequestValidationFailed::class);
+        Event::assertNotDispatched(ResponseValidationFailed::class);
     }
 
     /**
@@ -116,6 +126,9 @@ class OpenApiValidatorTest extends TestCase
             ->assertJsonPath('status', Response::HTTP_BAD_REQUEST)
             ->assertJsonPath('title', class_basename(NoPath::class))
         ;
+
+        Event::assertDispatched(RequestValidationFailed::class);
+        Event::assertNotDispatched(ResponseValidationFailed::class);
     }
 
     /**
@@ -134,6 +147,9 @@ class OpenApiValidatorTest extends TestCase
             ->assertJsonPath('detail', "Value expected to be 'integer', but 'string' given.")
             ->assertJsonPath('pointer', ['hoge', 1])
         ;
+
+        Event::assertDispatched(RequestValidationFailed::class);
+        Event::assertNotDispatched(ResponseValidationFailed::class);
     }
 
     /**
@@ -153,6 +169,9 @@ class OpenApiValidatorTest extends TestCase
             ->assertJsonPath('pointer', ['data', 0])
             ->assertJsonPath('originalResponse', $response)
         ;
+
+        Event::assertNotDispatched(RequestValidationFailed::class);
+        Event::assertDispatched(ResponseValidationFailed::class);
     }
 
     /**
@@ -165,6 +184,9 @@ class OpenApiValidatorTest extends TestCase
 
         $this->json(Request::METHOD_POST, '/', ['hoge' => [1]])
             ->assertOk();
+
+        Event::assertNotDispatched(RequestValidationFailed::class);
+        Event::assertNotDispatched(ResponseValidationFailed::class);
     }
 
     /**
@@ -180,6 +202,9 @@ class OpenApiValidatorTest extends TestCase
 
         $this->json(Request::METHOD_POST, '/', ['hoge' => [1]])
             ->assertOk();
+
+        Event::assertNotDispatched(RequestValidationFailed::class);
+        Event::assertDispatched(ResponseValidationFailed::class);
     }
 
     /**
@@ -195,6 +220,9 @@ class OpenApiValidatorTest extends TestCase
             ->assertJsonPath('detail', 'foo')
             ->assertJsonPath('title', class_basename(NotFoundHttpException::class))
         ;
+
+        Event::assertNotDispatched(RequestValidationFailed::class);
+        Event::assertDispatched(ResponseValidationFailed::class);
     }
 
     /**
@@ -211,5 +239,8 @@ class OpenApiValidatorTest extends TestCase
             ->assertSeeText(class_basename(ModelNotFoundException::class))
             ->assertSeeText(class_basename(NotFoundHttpException::class))
         ;
+
+        Event::assertNotDispatched(RequestValidationFailed::class);
+        Event::assertDispatched(ResponseValidationFailed::class);
     }
 }

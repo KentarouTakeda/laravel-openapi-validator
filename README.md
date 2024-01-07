@@ -231,6 +231,15 @@ Here's how to change to a different format:
    }
    ```
 
+### Events
+
+If a validation error occurs, an event will be fired
+depending on the type of error.
+
+* `ValidationFailedInterface` - All errors
+  * `RequestValidationFailed` - Request validation error
+  * `ResponseValidationFailed` - Response validation error
+
 ## Contributing and Development
 
 ```bash
