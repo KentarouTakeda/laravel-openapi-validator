@@ -40,6 +40,11 @@ class Config
         return $defaultProviderName;
     }
 
+    public function getValidateErrorResponses(): bool
+    {
+        return (bool) $this->repository->get('openapi-validator.validate_error_responses');
+    }
+
     /**
      * @return array<string, string>
      */
