@@ -7,9 +7,10 @@ namespace KentarouTakeda\Laravel\OpenApiValidator\Http\Middleware;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Foundation\Http\Events\RequestHandled;
 use Illuminate\Http\Request;
-use Illuminate\Log\LogManager;
 use KentarouTakeda\Laravel\OpenApiValidator\Config\Config;
 use KentarouTakeda\Laravel\OpenApiValidator\ErrorRendererInterface;
+use KentarouTakeda\Laravel\OpenApiValidator\Events\RequestValidationFailed;
+use KentarouTakeda\Laravel\OpenApiValidator\Events\ResponseValidationFailed;
 use KentarouTakeda\Laravel\OpenApiValidator\SchemaRepository\SchemaRepository;
 use League\OpenAPIValidation\PSR7\Exception\NoPath;
 use League\OpenAPIValidation\PSR7\Exception\ValidationFailed;
@@ -24,7 +25,6 @@ class OpenApiValidator
         private readonly Config $config,
         private readonly Dispatcher $eventDispatcher,
         private readonly ErrorRendererInterface $errorRenderer,
-        private readonly LogManager $logManager,
         private readonly PsrHttpFactory $psrHttpFactory,
     ) {
     }
@@ -62,7 +62,10 @@ class OpenApiValidator
             $operationAddress = $schemaRepository->getRequestValidator()->validate($psrRequest);
         } catch (NoPath $noPath) {
             if ($this->config->getErrorOnNoPath() && !$skipResponseValidation) {
-                $this->logResponseError($noPath);
+                $this->eventDispatcher->dispatch(new RequestValidationFailed(
+                    $noPath,
+                    $request
+                ));
 
                 return $this->errorRenderer->render(
                     $noPath,
@@ -72,7 +75,10 @@ class OpenApiValidator
 
             return $next($request);
         } catch (ValidationFailed $validationFailed) {
-            $this->logRequestError($validationFailed);
+            $this->eventDispatcher->dispatch(new RequestValidationFailed(
+                $validationFailed,
+                $request
+            ));
 
             return $this->errorRenderer->render(
                 $validationFailed,
@@ -95,7 +101,12 @@ class OpenApiValidator
             }
 
             if ($event->response->exception) {
-                $this->logResponseError($event->response->exception);
+                $this->eventDispatcher->dispatch(new ResponseValidationFailed(
+                    $event->response->exception,
+                    $event->request,
+                    $event->response,
+                ));
+
                 if ($this->config->getRespondErrorOnResValidationFailure()) {
                     $response = $this->errorRenderer->render(
                         $event->response->exception,
@@ -113,7 +124,11 @@ class OpenApiValidator
             try {
                 $schemaRepository->getResponseValidator()->validate($operationAddress, $psrResponse);
             } catch (ValidationFailed $validationFailed) {
-                $this->logResponseError($validationFailed);
+                $this->eventDispatcher->dispatch(new ResponseValidationFailed(
+                    $validationFailed,
+                    $event->request,
+                    $event->response,
+                ));
                 if ($this->config->getRespondErrorOnResValidationFailure()) {
                     $response = $this->errorRenderer->render(
                         $validationFailed,
@@ -126,24 +141,6 @@ class OpenApiValidator
                 return;
             }
         });
-    }
-
-    private function logRequestError(\Throwable $error): void
-    {
-        $this->logManager->log(
-            $this->config->getReqErrorLogLevel(),
-            class_basename(static::class).': Request validation failed: '.$error->getMessage(),
-            ['error' => $error],
-        );
-    }
-
-    private function logResponseError(\Throwable $error): void
-    {
-        $this->logManager->log(
-            $this->config->getResErrorLogLevel(),
-            class_basename(static::class).': Request validation failed: '.$error->getMessage(),
-            ['error' => $error],
-        );
     }
 
     private function overrideResponse(RequestHandled $event, Response $response): void
