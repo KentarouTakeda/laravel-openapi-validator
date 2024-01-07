@@ -13,6 +13,7 @@ use KentarouTakeda\Laravel\OpenApiValidator\Http\Middleware\OpenApiValidator;
 use KentarouTakeda\Laravel\OpenApiValidator\SchemaRepository\SchemaRepository;
 use KentarouTakeda\Laravel\OpenApiValidator\Tests\Feature\TestCase;
 use League\OpenAPIValidation\PSR7\Exception\NoPath;
+use League\OpenAPIValidation\PSR7\Exception\NoResponseCode;
 use League\OpenAPIValidation\PSR7\Exception\Validation\InvalidBody;
 use League\OpenAPIValidation\PSR7\ValidatorBuilder;
 use PHPUnit\Framework\Attributes\Test;
@@ -247,6 +248,24 @@ class OpenApiValidatorTest extends TestCase
             ->assertJsonPath('title', class_basename(NotFoundHttpException::class))
             ->assertSeeText(class_basename(ModelNotFoundException::class))
             ->assertSeeText(class_basename(NotFoundHttpException::class))
+        ;
+
+        Event::assertNotDispatched(RequestValidationFailed::class);
+        Event::assertDispatched(ResponseValidationFailed::class);
+    }
+
+    /**
+     * @test
+     */
+    public function returnsInternalServerErrorIfErrorResponseValidationIsOccurred(): void
+    {
+        Route::post('/', fn () => abort(403))->middleware(OpenApiValidator::class);
+
+        $this->json(Request::METHOD_POST, '/', ['hoge' => [1]])
+            ->assertStatus(Response::HTTP_INTERNAL_SERVER_ERROR)
+            ->assertJsonPath('status', Response::HTTP_INTERNAL_SERVER_ERROR)
+            ->assertJsonPath('title', class_basename(NoResponseCode::class))
+            ->assertJsonPath('detail', 'OpenAPI spec contains no such operation [/,post,403]')
         ;
 
         Event::assertNotDispatched(RequestValidationFailed::class);
