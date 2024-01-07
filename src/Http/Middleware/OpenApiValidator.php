@@ -116,7 +116,9 @@ class OpenApiValidator
                     $this->overrideResponse($event, $response);
                 }
 
-                return;
+                if (!$this->config->getValidateErrorResponses()) {
+                    return;
+                }
             }
 
             $psrResponse = $this->psrHttpFactory->createResponse($event->response);
