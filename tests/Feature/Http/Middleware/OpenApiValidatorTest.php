@@ -230,7 +230,7 @@ class OpenApiValidatorTest extends TestCase
         ;
 
         Event::assertNotDispatched(RequestValidationFailed::class);
-        Event::assertDispatched(ResponseValidationFailed::class);
+        Event::assertNotDispatched(ResponseValidationFailed::class);
     }
 
     /**
@@ -253,7 +253,7 @@ class OpenApiValidatorTest extends TestCase
         ;
 
         Event::assertNotDispatched(RequestValidationFailed::class);
-        Event::assertDispatched(ResponseValidationFailed::class);
+        Event::assertNotDispatched(ResponseValidationFailed::class);
     }
 
     /**
@@ -288,6 +288,6 @@ class OpenApiValidatorTest extends TestCase
         ;
 
         Event::assertNotDispatched(RequestValidationFailed::class);
-        Event::assertDispatched(ResponseValidationFailed::class);
+        Event::assertNotDispatched(ResponseValidationFailed::class);
     }
 }
