@@ -24,21 +24,6 @@ You can install the package via composer:
 composer require kentaroutakeda/laravel-openapi-validator
 ```
 
-> [!NOTE]  
-> 
-> Depending on the configuration of your Laravel Application,
-> you may need to downgrade some of the following dependencies:
->
-> ```bash
-> composer require kentaroutakeda/laravel-openapi-validator --with-dependencies
-> ```
->
-> Please see
-> [here](https://github.com/DEVizzent/cebe-php-openapi/pull/15)
-> for details.
-
-<!-- TODO: Delete the note when the issue is closed -->
-
 ## Usage
 
 1. Configure OpenAPI Specification
