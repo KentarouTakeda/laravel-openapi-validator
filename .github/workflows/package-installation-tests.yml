@@ -30,6 +30,5 @@ jobs:
           coverage: none
 
       - run: composer create-project laravel/laravel:${{ matrix.laravel }} ./
-      # TODO After the dependency issues written in the README are resolved, modify to the normal installation method.
-      - run: composer require kentaroutakeda/laravel-openapi-validator --no-interaction --no-progress  --with-dependencies --ansi
+      - run: composer require kentaroutakeda/laravel-openapi-validator --no-interaction --no-progress --ansi
       - run: vendor/bin/phpunit
