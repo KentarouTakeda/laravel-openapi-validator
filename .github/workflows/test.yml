@@ -50,3 +50,5 @@ jobs:
 
       - name: Run Unit tests
         run: vendor/bin/phpunit
+        env:
+          APP_DEBUG: true
