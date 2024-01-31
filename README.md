@@ -226,6 +226,10 @@ depending on the type of error.
 
 ## Contributing and Development
 
+Feel free to open an Issue or add a Pull request.
+
+When adding a pull request, please refer to the following setup steps.
+
 ```bash
 # Clone this repository and move to the directory.
 git clone https://github.com/KentarouTakeda/laravel-openapi-validator.git
