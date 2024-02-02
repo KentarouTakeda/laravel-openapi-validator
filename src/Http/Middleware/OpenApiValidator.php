@@ -34,7 +34,7 @@ class OpenApiValidator
      * @param bool $skipResponseValidation if true, response validation will be skipped
      */
     public static function config(
-        string $provider = null,
+        ?string $provider = null,
         bool $skipResponseValidation = false
     ): string {
         return static::class.':'.implode(',', [
