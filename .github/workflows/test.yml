@@ -43,6 +43,7 @@ jobs:
           composer update --prefer-${{ matrix.stability }} --no-interaction --no-progress --ansi
 
       - name: Run Code Format Check
+        if: ${{ matrix.stability == 'stable' }}
         run: vendor/bin/php-cs-fixer check
   
       - name: Run Static Analysis
