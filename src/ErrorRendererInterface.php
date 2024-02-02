@@ -15,6 +15,6 @@ interface ErrorRendererInterface
     public function render(
         \Throwable $error,
         Request $request,
-        Response $response = null,
+        ?Response $response = null,
     ): Response;
 }

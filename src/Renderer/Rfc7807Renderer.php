@@ -31,7 +31,7 @@ class Rfc7807Renderer implements ErrorRendererInterface
     public function render(
         \Throwable $error,
         Request $request,
-        Response $response = null,
+        ?Response $response = null,
     ): Response {
         $error = $this->prepareException($error);
 
