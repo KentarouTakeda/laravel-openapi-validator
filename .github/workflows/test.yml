@@ -52,11 +52,11 @@ jobs:
 
       - name: Run Code Format Check
         if: ${{ matrix.current }}
-        run: vendor/bin/php-cs-fixer check
+        run: vendor/bin/php-cs-fixer check --show-progress=none --ansi
   
       - name: Run Static Analysis
         if: ${{ matrix.current }}
-        run: vendor/bin/phpstan analyze
+        run: vendor/bin/phpstan analyze --no-progress --ansi
 
       - name: Run Unit tests
-        run: vendor/bin/phpunit
+        run: vendor/bin/phpunit --colors=always
