@@ -17,12 +17,20 @@ jobs:
           - "8.1"
           - "8.2"
           - "8.3"
+          - "8.4"
         laravel:
           - "^9.0"
           - "^10.0"
         stability:
           - lowest
           - stable
+        include:
+          - current: 1
+            php: "8.3"
+            laravel: "^10.0"
+            stability: stable
+          - option: --ignore-platform-req=php
+            php: "8.4"
 
     name: PHP:${{ matrix.php }} / Laravel:${{ matrix.laravel }} / ${{ matrix.stability }}
 
@@ -40,16 +48,15 @@ jobs:
       - name: Install Composer dependencies
         run: |
           composer require "laravel/framework:${{ matrix.laravel }}" --no-interaction --no-update --ansi
-          composer update --prefer-${{ matrix.stability }} --no-interaction --no-progress --ansi
+          composer update --prefer-${{ matrix.stability }} ${{ matrix.option }} --no-interaction --no-progress --ansi
 
       - name: Run Code Format Check
-        if: ${{ matrix.stability == 'stable' }}
-        run: vendor/bin/php-cs-fixer check
+        if: ${{ matrix.current }}
+        run: vendor/bin/php-cs-fixer check --show-progress=none --ansi
   
       - name: Run Static Analysis
-        run: vendor/bin/phpstan analyze
+        if: ${{ matrix.current }}
+        run: vendor/bin/phpstan analyze --no-progress --ansi
 
       - name: Run Unit tests
-        run: vendor/bin/phpunit
-        env:
-          APP_DEBUG: true
+        run: vendor/bin/phpunit --colors=always
