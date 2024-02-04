@@ -15,16 +15,18 @@ jobs:
       matrix:
         php:
           - "8.3"
-        laravel:
-          - "^10.0"
+          - "8.4"
         stability:
           - lowest
           - stable
         package:
           - l5-swagger
           - laravel-openapi
+        include:
+          - option: --ignore-platform-req=php
+            php: "8.4"
 
-    name: ${{ matrix.package }} / ${{ matrix.stability }}
+    name: PHP:${{ matrix.php }} / ${{ matrix.package }} / ${{ matrix.stability }}
 
     steps:
       - name: Checkout
@@ -39,7 +41,7 @@ jobs:
 
       - name: Install Composer dependencies
         run: |
-          composer update --prefer-${{ matrix.stability }} --no-interaction --no-progress --ansi
+          composer update --prefer-${{ matrix.stability }} ${{ matrix.option }} --no-interaction --no-progress --ansi
         working-directory: e2e/${{ matrix.package }}
 
       - name: Run Unit tests

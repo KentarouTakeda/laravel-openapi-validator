@@ -15,9 +15,13 @@ jobs:
           - "8.1"
           - "8.2"
           - "8.3"
+          - "8.4"
         laravel:
           - "^9.0"
           - "^10.0"
+        include:
+          - option: --ignore-platform-req=php
+            php: "8.4"
 
     name: PHP:${{ matrix.php }} / Laravel:${{ matrix.laravel }}
 
@@ -29,6 +33,6 @@ jobs:
           tools: composer:v2
           coverage: none
 
-      - run: composer create-project laravel/laravel:${{ matrix.laravel }} ./
-      - run: composer require kentaroutakeda/laravel-openapi-validator --no-interaction --no-progress --ansi
+      - run: composer create-project ${{ matrix.option }} laravel/laravel:${{ matrix.laravel }} ./
+      - run: composer require ${{ matrix.option }} kentaroutakeda/laravel-openapi-validator --no-interaction --no-progress --ansi
       - run: vendor/bin/phpunit
