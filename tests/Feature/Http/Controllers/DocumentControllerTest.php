@@ -4,10 +4,18 @@ declare(strict_types=1);
 
 namespace KentarouTakeda\Laravel\OpenApiValidator\Tests\Feature\Http\Controllers;
 
+use Illuminate\Config\Repository;
 use KentarouTakeda\Laravel\OpenApiValidator\Tests\Feature\TestCase;
 
 class DocumentControllerTest extends TestCase
 {
+    protected function defineEnvironment($app)
+    {
+        tap($app['config'], fn (Repository $config) => $config->set(
+            ['openapi-validator.is_swagger_ui_enabled' => true],
+        ));
+    }
+
     /**
      * @test
      */
