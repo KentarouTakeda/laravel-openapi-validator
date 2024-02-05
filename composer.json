@@ -27,6 +27,9 @@
     "license": "MIT",
     "type": "library",
     "autoload": {
+        "files": [
+            "src/helpers.php"
+        ],
         "psr-4": {
             "KentarouTakeda\\Laravel\\OpenApiValidator\\": "src/"
         }
@@ -79,5 +82,6 @@
         ],
         "clear": "@php vendor/bin/testbench package:purge-skeleton --ansi",
         "prepare": "@php vendor/bin/testbench package:discover --ansi"
-    }
+    },
+    "prefer-stable": true
 }

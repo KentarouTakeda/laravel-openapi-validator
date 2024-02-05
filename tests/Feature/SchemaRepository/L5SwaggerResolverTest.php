@@ -13,11 +13,22 @@ use OpenApi\Attributes\Property;
 use OpenApi\Attributes\Response;
 use OpenApi\Attributes\Schema;
 
+use function KentarouTakeda\Laravel\OpenApiValidator\isl5SwaggerInstalled;
+
 class L5SwaggerResolverTest extends TestCase
 {
     use TestWithTemporaryFilesTrait;
 
     private L5SwaggerResolver $l5SwaggerResolver;
+
+    public static function setUpBeforeClass(): void
+    {
+        if (!isl5SwaggerInstalled()) {
+            self::markTestSkipped('L5Swagger is not installed.');
+        }
+
+        parent::setUpBeforeClass();
+    }
 
     public function setUp(): void
     {

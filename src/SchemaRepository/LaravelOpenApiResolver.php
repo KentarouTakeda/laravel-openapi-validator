@@ -8,13 +8,15 @@ use KentarouTakeda\Laravel\OpenApiValidator\Exceptions\LackOfDependenciesExcepti
 use KentarouTakeda\Laravel\OpenApiValidator\ResolverInterface;
 use Vyuldashev\LaravelOpenApi\Generator;
 
+use function KentarouTakeda\Laravel\OpenApiValidator\isLaravelOpenAPIInstalled;
+
 class LaravelOpenApiResolver implements ResolverInterface
 {
     private readonly Generator $generator;
 
     public function __construct(
     ) {
-        if (!class_exists(Generator::class)) {
+        if (!isLaravelOpenAPIInstalled()) {
             throw new LackOfDependenciesException('Laravel OpenAPI is not installed.', class: Generator::class);
         }
 
