@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace KentarouTakeda\Laravel\OpenApiValidator;
 
-use Composer\InstalledVersions;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use KentarouTakeda\Laravel\OpenApiValidator\Config\Config;
@@ -44,7 +43,7 @@ class ServiceProvider extends BaseServiceProvider
             ]);
         }
 
-        if (InstalledVersions::isInstalled('swagger-api/swagger-ui') && $config->getIsSwaggerUiEnabled()) {
+        if (isSwaggerUIInstalled() && $config->getIsSwaggerUiEnabled()) {
             $this->loadRoutesFrom(__DIR__.'/../routes/swagger-ui.php');
             $this->loadViewsFrom(__DIR__.'/../resources/views', 'openapi-validator');
         }

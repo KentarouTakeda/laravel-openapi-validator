@@ -27,6 +27,9 @@
     "license": "MIT",
     "type": "library",
     "autoload": {
+        "files": [
+            "src/helpers.php"
+        ],
         "psr-4": {
             "KentarouTakeda\\Laravel\\OpenApiValidator\\": "src/"
         }

@@ -10,6 +10,8 @@ use KentarouTakeda\Laravel\OpenApiValidator\Exceptions\LackOfDependenciesExcepti
 use KentarouTakeda\Laravel\OpenApiValidator\ResolverInterface;
 use L5Swagger\GeneratorFactory;
 
+use function KentarouTakeda\Laravel\OpenApiValidator\isl5SwaggerInstalled;
+
 class L5SwaggerResolver implements ResolverInterface
 {
     private readonly GeneratorFactory $generatorFactory;
@@ -18,7 +20,7 @@ class L5SwaggerResolver implements ResolverInterface
         private readonly Repository $repository,
         private readonly Filesystem $filesystem,
     ) {
-        if (!class_exists(GeneratorFactory::class)) {
+        if (!isl5SwaggerInstalled()) {
             throw new LackOfDependenciesException('L5Swagger is not installed.', class: GeneratorFactory::class);
         }
 
