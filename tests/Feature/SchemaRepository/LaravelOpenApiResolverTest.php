@@ -10,9 +10,20 @@ use KentarouTakeda\Laravel\OpenApiValidator\Tests\Feature\TestCase;
 use Vyuldashev\LaravelOpenApi\Attributes\Operation;
 use Vyuldashev\LaravelOpenApi\Attributes\PathItem;
 
+use function KentarouTakeda\Laravel\OpenApiValidator\isLaravelOpenAPIInstalled;
+
 class LaravelOpenApiResolverTest extends TestCase
 {
     private LaravelOpenApiResolver $laravelOpenApiResolver;
+
+    public static function setUpBeforeClass(): void
+    {
+        if (!isLaravelOpenAPIInstalled()) {
+            self::markTestSkipped('Laravel OpenAPI is not installed.');
+        }
+
+        parent::setUpBeforeClass();
+    }
 
     public function setUp(): void
     {
