@@ -60,8 +60,8 @@
         "orchestra/testbench": "^7.39|^8.19|^9.0",
         "phpstan/phpstan": "^1.10",
         "phpstan/phpstan-mockery": "^1.1",
-        "phpunit/php-code-coverage": "^9.0|^10.0",
-        "phpunit/phpunit": "^9.0|^10.0",
+        "phpunit/php-code-coverage": "^9.0|^10.0|^11.0",
+        "phpunit/phpunit": "^9.0|^10.0|^11.0",
         "swagger-api/swagger-ui": "^3.18.3|^4.0|^5.0",
         "vyuldashev/laravel-openapi": "^1.5",
         "zircote/swagger-php": "^4.1"
