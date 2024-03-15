@@ -19,14 +19,13 @@ jobs:
         laravel:
           - "^9.0"
           - "^10.0"
-          # TODO This tag will be revised after official release
-          - "^11.x-dev"
+          - "^11.0"
         include:
           - option: --ignore-platform-req=php
             php: "8.4"
         exclude:
           - php: "8.1"
-            laravel: "^11.x-dev"
+            laravel: "^11.0"
 
     name: PHP:${{ matrix.php }} / Laravel:${{ matrix.laravel }}
 
