@@ -60,10 +60,6 @@ jobs:
         if: ${{ matrix.unstable }}
         run: composer config minimum-stability dev --ansi
 
-      - name: Uninstall the package that is not compatible with Laravel 11
-        if: ${{ matrix.unstable }}
-        run: composer remove --dev tartanlegrand/laravel-openapi --no-interaction --no-update
-
       - name: Install Composer dependencies
         run: composer update --prefer-${{ matrix.stability }} ${{ matrix.option }} --no-interaction --no-progress --ansi
 
