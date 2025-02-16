@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace KentarouTakeda\SafeRouting\Tests\Feature\Config;
+namespace KentarouTakeda\Laravel\OpenApiValidator\Tests\Feature\Config;
 
 use KentarouTakeda\Laravel\OpenApiValidator\Config\Config;
 use KentarouTakeda\Laravel\OpenApiValidator\Exceptions\InvalidConfigException;
