@@ -37,6 +37,7 @@ class DocumentController
         ]);
         assert($schemaRepository instanceof SchemaRepository);
 
+        // @phpstan-ignore argument.type
         return view('openapi-validator::documents', [
             'json' => $schemaRepository->getJson(),
         ]);

@@ -40,7 +40,6 @@ class L5SwaggerResolverTest extends TestCase
         ]);
 
         $l5SwaggerResolver = app()->make(L5SwaggerResolver::class);
-        assert($l5SwaggerResolver instanceof L5SwaggerResolver);
 
         $this->l5SwaggerResolver = $l5SwaggerResolver;
     }
