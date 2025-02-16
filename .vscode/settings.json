@@ -10,11 +10,7 @@
   "php.suggest.basic": false,
   "php.validate.enable": false,
   "phpstan.enabled": true,
-  "phpstan.enableLanguageServer": true,
   "phpstan.enableStatusBar": true,
   "phpstan.configFile": "phpstan.neon.dist",
   "bladeFormatter.format.indentSize": 2,
-  "files.exclude": {
-    "e2e/**": true
-  },
 }
