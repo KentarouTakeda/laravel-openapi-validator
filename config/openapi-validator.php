@@ -10,8 +10,8 @@ return [
     | Default OpenAPI Schema Provider
     |--------------------------------------------------------------------------
     |
-    | This setting determines the default OpenAPI schema provider to be used. 
-    | The default provider is `laravel-openapi` and can be customized through 
+    | This setting determines the default OpenAPI schema provider to be used.
+    | The default provider is `laravel-openapi` and can be customized through
     | the 'OPENAPI_VALIDATOR_PROVIDER' environment variable.
     |
     */
@@ -43,7 +43,7 @@ return [
     | Respond with Error on Response Validation Failure
     |--------------------------------------------------------------------------
     |
-    | This setting determines whether the OpenAPI validator should respond with 
+    | This setting determines whether the OpenAPI validator should respond with
     | an error when it fails to validate a response.
     |
     */
@@ -58,9 +58,9 @@ return [
     | Error on No Path
     |--------------------------------------------------------------------------
     |
-    | This setting determines whether to respond with an error when the path 
-    | corresponding to the request is not defined in the OpenAPI schema. 
-    | The default behavior is according to `APP_DEBUG` and can be customized 
+    | This setting determines whether to respond with an error when the path
+    | corresponding to the request is not defined in the OpenAPI schema.
+    | The default behavior is according to `APP_DEBUG` and can be customized
     | through the 'OPENAPI_VALIDATOR_ERROR_ON_NO_PATH' environment variable.
     |
     */
@@ -75,8 +75,8 @@ return [
     | Include Response Validation Error Detail in Response
     |--------------------------------------------------------------------------
     |
-    | This setting determines whether the OpenAPI validator should include 
-    | details of response validation errors in the response. The default value 
+    | This setting determines whether the OpenAPI validator should include
+    | details of response validation errors in the response. The default value
     | is `true` and can be customized through the
     | 'OPENAPI_VALIDATOR_INCLUDE_RES_ERROR_IN_RESPONSE' environment variable.
     |
@@ -92,8 +92,8 @@ return [
     | Include Request Validation Error Detail in Response
     |--------------------------------------------------------------------------
     |
-    | This setting determines whether the OpenAPI validator should include 
-    | details of response validation errors in the response. The default 
+    | This setting determines whether the OpenAPI validator should include
+    | details of response validation errors in the response. The default
     | behavior is according to `APP`DEBUG`  and can be customized through the
     | 'OPENAPI_VALIDATOR_INCLUDE_RES_ERROR_IN_RESPONSE' environment variable.
     |
@@ -109,9 +109,9 @@ return [
     | Include Trace Information in Response
     |--------------------------------------------------------------------------
     |
-    | This setting determines whether the OpenAPI validator should include 
+    | This setting determines whether the OpenAPI validator should include
     | trace information in the error response. The default behavior is
-    | according to `APP`DEBUG` and can be customized through the 
+    | according to `APP`DEBUG` and can be customized through the
     | 'OPENAPI_VALIDATOR_INCLUDE_TRACE_IN_RESPONSE' environment variable.
     |
     */
@@ -126,9 +126,9 @@ return [
     | Include Original Response in Error Response
     |--------------------------------------------------------------------------
     |
-    | This setting determines whether the OpenAPI validator should include 
+    | This setting determines whether the OpenAPI validator should include
     | the original response in the error response. The default behavior is
-    | according to `APP_DEBUG` and can be customized through the 
+    | according to `APP_DEBUG` and can be customized through the
     | 'OPENAPI_VALIDATOR_INCLUDE_ORIGINAL_RES_IN_RESPONSE' environment variable.
     |
     */
@@ -227,8 +227,8 @@ return [
     | Enable Swagger UI
     |--------------------------------------------------------------------------
     |
-    | This setting controls whether the Swagger UI is enabled or not. It can be 
-    | set via the 'OPENAPI_VALIDATOR_IS_SWAGGER_UI_ENABLED' environment variable. 
+    | This setting controls whether the Swagger UI is enabled or not. It can be
+    | set via the 'OPENAPI_VALIDATOR_IS_SWAGGER_UI_ENABLED' environment variable.
     | The default behavior is according to `APP`DEBUG`
     |
     */
@@ -243,7 +243,7 @@ return [
     | Internal Settings
     |--------------------------------------------------------------------------
     |
-    | These are internal settings for the OpenAPI validator. You can change 
+    | These are internal settings for the OpenAPI validator. You can change
     | these if necessary.
     |
     */
