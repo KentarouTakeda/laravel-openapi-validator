@@ -28,7 +28,7 @@ jobs:
         include:
           - current: 1
             php: "8.3"
-            laravel: "^10.0"
+            laravel: "^11.0"
             stability: stable
           - option: --ignore-platform-req=php
             php: "8.4"
