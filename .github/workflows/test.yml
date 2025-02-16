@@ -59,18 +59,18 @@ jobs:
       - name: Set minimum stability
         if: ${{ matrix.unstable }}
         run: composer config minimum-stability dev --ansi
-          
+
       - name: Uninstall the package that is not compatible with Laravel 11
         if: ${{ matrix.unstable }}
         run: composer remove --dev vyuldashev/laravel-openapi --no-interaction --no-update
-          
+
       - name: Install Composer dependencies
         run: composer update --prefer-${{ matrix.stability }} ${{ matrix.option }} --no-interaction --no-progress --ansi
 
       - name: Run Code Format Check
         if: ${{ matrix.current }}
         run: vendor/bin/php-cs-fixer check --show-progress=none --ansi
-  
+
       - name: Run Static Analysis
         if: ${{ matrix.current }}
         run: vendor/bin/phpstan analyze --no-progress --ansi

@@ -20,7 +20,7 @@ class ClearCommand extends Command
 
     public function handle(
         Config $config,
-        Filesystem $file
+        Filesystem $file,
     ): int {
         $providerNames = $this->option('all') ?
             $config->getProviderNames() :

@@ -35,7 +35,7 @@ class OpenApiValidator
      */
     public static function config(
         ?string $provider = null,
-        bool $skipResponseValidation = false
+        bool $skipResponseValidation = false,
     ): string {
         return static::class.':'.implode(',', [
             $provider ?? '',
@@ -44,7 +44,7 @@ class OpenApiValidator
     }
 
     /**
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param  \Closure(Request): (Response)  $next
      */
     public function handle(
         Request $request,

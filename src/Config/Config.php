@@ -11,7 +11,7 @@ use Psr\Log\LogLevel;
 class Config
 {
     public function __construct(
-        private readonly Repository $repository
+        private readonly Repository $repository,
     ) {
     }
 

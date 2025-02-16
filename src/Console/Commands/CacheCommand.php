@@ -21,7 +21,7 @@ class CacheCommand extends Command
 
     public function handle(
         Config $config,
-        Filesystem $file
+        Filesystem $file,
     ): int {
         $file->makeDirectory($config->getCacheDirectory(), 0777, true, true);
 
