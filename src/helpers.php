@@ -13,7 +13,7 @@ function isSwaggerUIInstalled(): bool
 
 function isLaravelOpenAPIInstalled(): bool
 {
-    return InstalledVersions::isInstalled('vyuldashev/laravel-openapi');
+    return InstalledVersions::isInstalled('tartanlegrand/laravel-openapi');
 }
 
 function isl5SwaggerInstalled(): bool

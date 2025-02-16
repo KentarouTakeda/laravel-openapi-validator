@@ -5,7 +5,7 @@ Request and response validators based on the OpenAPI Specification.
 ## Summary
 
 * Validate any request and response with a pre-prepared OpenAPI Spec.
-* Automatically load specs from [Laravel OpenAPI](https://vyuldashev.github.io/laravel-openapi/) or [L5 Swagger](https://github.com/DarkaOnLine/L5-Swagger/wiki).
+* Automatically load specs from [Laravel OpenAPI](https://nova-edge.github.io/laravel-openapi/) or [L5 Swagger](https://github.com/DarkaOnLine/L5-Swagger/wiki).
 * You can also load your own specs without using these libraries.
 * You can customize validation and error logging behavior on a per-route or application-wide basis.
 * Can display [Swagger UI](https://swagger.io/tools/swagger-ui/). You can view the documentation and test the API.
