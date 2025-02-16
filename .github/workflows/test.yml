@@ -60,6 +60,10 @@ jobs:
         if: ${{ matrix.unstable }}
         run: composer config minimum-stability dev --ansi
 
+      - name: Uninstall packages that is not necessary for the current matrix
+        if: ${{ !matrix.current }}
+        run: composer remove --dev friendsofphp/php-cs-fixer larastan/larastan phpstan/phpstan phpstan/phpstan-mockery --no-interaction --no-update
+
       - name: Install Composer dependencies
         run: composer update --prefer-${{ matrix.stability }} ${{ matrix.option }} --no-interaction --no-progress --ansi
 
