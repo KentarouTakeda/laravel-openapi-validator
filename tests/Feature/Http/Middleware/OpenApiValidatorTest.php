@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace KentarouTakeda\Laravel\OpenApiValidator\Tests\Feature\Http\Middleware;
+
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -33,7 +35,7 @@ class OpenApiValidatorTest extends TestCase
 
         app()->bind(
             SchemaRepository::class,
-            fn () => Mockery::mock(SchemaRepository::class)->allows([
+            fn () => \Mockery::mock(SchemaRepository::class)->allows([
                 'getRequestValidator' => $this->mockValidator()->getRequestValidator(),
                 'getResponseValidator' => $this->mockValidator()->getResponseValidator(),
             ])
