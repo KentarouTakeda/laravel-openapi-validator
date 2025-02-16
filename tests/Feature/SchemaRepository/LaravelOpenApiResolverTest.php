@@ -30,7 +30,6 @@ class LaravelOpenApiResolverTest extends TestCase
         parent::setUp();
 
         $laravelOpenApiResolver = app()->make(LaravelOpenApiResolver::class);
-        assert($laravelOpenApiResolver instanceof LaravelOpenApiResolver);
 
         $this->laravelOpenApiResolver = $laravelOpenApiResolver;
         Route::get('/', LaravelOpenApiResolverTestController::class);

@@ -55,7 +55,7 @@ class ConfigTest extends TestCase
         foreach ($providerNames as $providerName) {
             $providerSettings = $this->config->getProviderSettings($providerName);
 
-            $this->assertIsArray($providerSettings);
+            $this->assertIsArray($providerSettings); // @phpstan-ignore method.alreadyNarrowedType
         }
     }
 
@@ -77,7 +77,7 @@ class ConfigTest extends TestCase
     {
         $cacheDirectory = $this->config->getCacheDirectory();
 
-        $this->assertIsString($cacheDirectory);
+        $this->assertIsString($cacheDirectory); // @phpstan-ignore method.alreadyNarrowedType
     }
 
     /**
@@ -97,7 +97,7 @@ class ConfigTest extends TestCase
     {
         $errorOnNoPath = $this->config->getErrorOnNoPath();
 
-        $this->assertIsBool($errorOnNoPath);
+        $this->assertIsBool($errorOnNoPath); // @phpstan-ignore method.alreadyNarrowedType
     }
 
     /**
@@ -107,7 +107,7 @@ class ConfigTest extends TestCase
     {
         $includeReqErrorInResponse = $this->config->getIncludeReqErrorDetailInResponse();
 
-        $this->assertIsBool($includeReqErrorInResponse);
+        $this->assertIsBool($includeReqErrorInResponse); // @phpstan-ignore method.alreadyNarrowedType
     }
 
     /**
@@ -117,7 +117,7 @@ class ConfigTest extends TestCase
     {
         $includeResErrorInResponse = $this->config->getIncludeResErrorDetailInResponse();
 
-        $this->assertIsBool($includeResErrorInResponse);
+        $this->assertIsBool($includeResErrorInResponse); // @phpstan-ignore method.alreadyNarrowedType
     }
 
     /**
@@ -127,7 +127,7 @@ class ConfigTest extends TestCase
     {
         $includeOriginalResInResponse = $this->config->getIncludeOriginalResInResponse();
 
-        $this->assertIsBool($includeOriginalResInResponse);
+        $this->assertIsBool($includeOriginalResInResponse); // @phpstan-ignore method.alreadyNarrowedType
     }
 
     /**
@@ -137,7 +137,7 @@ class ConfigTest extends TestCase
     {
         $includeTraceInResponse = $this->config->getIncludeTraceInResponse();
 
-        $this->assertIsBool($includeTraceInResponse);
+        $this->assertIsBool($includeTraceInResponse); // @phpstan-ignore method.alreadyNarrowedType
     }
 
     /**

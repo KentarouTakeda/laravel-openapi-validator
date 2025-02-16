@@ -68,10 +68,8 @@ class SchemaRepositoryTest extends TestCase
         ]));
 
         $config = app()->make(Config::class);
-        assert($config instanceof Config);
 
         $filesystem = app()->make(Filesystem::class);
-        assert($filesystem instanceof Filesystem);
 
         $filesystem->put(
             $config->getCacheFileName('foo'),

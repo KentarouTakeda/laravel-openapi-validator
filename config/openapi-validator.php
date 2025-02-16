@@ -196,7 +196,7 @@ return [
         /*
         | Laravel OpenAPI
         |
-        | https://github.com/vyuldashev/laravel-openapi
+        | https://github.com/tartanlegrand/laravel-openapi
         */
 
         'laravel-openapi' => [
