@@ -14,9 +14,10 @@ class DocumentControllerTest extends TestCase
 {
     protected function defineEnvironment($app)
     {
-        tap($app['config'], fn (Repository $config) => $config->set(
-            ['openapi-validator.is_swagger_ui_enabled' => true],
-        ));
+        tap($app['config'], fn (Repository $config) => $config->set([
+            'openapi-validator.is_swagger_ui_enabled' => true,
+            'app.key' => 'base64:'.base64_encode(random_bytes(32)),
+        ]));
     }
 
     public static function setUpBeforeClass(): void
