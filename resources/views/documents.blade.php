@@ -22,6 +22,17 @@
     window.onload = function() {
       window.ui = SwaggerUIBundle({
         spec: {!! $json !!},
+        requestInterceptor: async (request) => {
+          const cookie = await window.cookieStore?.get('XSRF-TOKEN');
+
+          if (!cookie) {
+            return request;
+          }
+
+          request.headers['X-XSRF-TOKEN'] = unescape(cookie.value);
+
+          return request;
+        },
         dom_id: '#swagger-ui',
         deepLinking: true,
         presets: [

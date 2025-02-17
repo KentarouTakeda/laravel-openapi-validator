@@ -15,7 +15,7 @@ Route::prefix('openapi-validator/documents')->name('openapi-validator.')->group(
     Route::get('_assets/{path}', [DocumentController::class, 'asset'])->name('asset');
 
     foreach($config->getProviderNames() as $providerName) {
-        Route::get($providerName, [DocumentController::class, 'view'])->name("document.{$providerName}");
+        Route::middleware('web')->get($providerName, [DocumentController::class, 'view'])->name("document.{$providerName}");
     }
 
 });
