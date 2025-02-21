@@ -216,9 +216,10 @@ class OpenApiValidatorTest extends TestCase
     /**
      * @test
      */
-    public function returnsHttpException(): void
+    public function returnsHttpExceptionWithEnableRenderer(): void
     {
         config()->set([
+            'openapi-validator.enable_renderer_for_non_validation_errors' => true,
             'openapi-validator.validate_error_responses' => false,
         ]);
 
@@ -238,9 +239,33 @@ class OpenApiValidatorTest extends TestCase
     /**
      * @test
      */
-    public function returnsModelNotFoundException(): void
+    public function returnsHttpExceptionWithoutEnableRenderer(): void
     {
         config()->set([
+            'openapi-validator.enable_renderer_for_non_validation_errors' => false,
+            'openapi-validator.validate_error_responses' => false,
+        ]);
+
+        Route::post('/', fn () => abort(404, 'foo'))->middleware(OpenApiValidator::class);
+
+        $this->json(Request::METHOD_POST, '/', ['hoge' => [1]])
+            ->assertStatus(Response::HTTP_NOT_FOUND)
+            ->assertJsonMissingPath('status')
+            ->assertJsonMissingPath('detail')
+            ->assertJsonMissingPath('title')
+        ;
+
+        Event::assertNotDispatched(RequestValidationFailed::class);
+        Event::assertNotDispatched(ResponseValidationFailed::class);
+    }
+
+    /**
+     * @test
+     */
+    public function returnsModelNotFoundExceptionWithEnableRenderer(): void
+    {
+        config()->set([
+            'openapi-validator.enable_renderer_for_non_validation_errors' => true,
             'openapi-validator.validate_error_responses' => false,
         ]);
 
@@ -252,6 +277,28 @@ class OpenApiValidatorTest extends TestCase
             ->assertJsonPath('title', class_basename(NotFoundHttpException::class))
             ->assertSeeText(class_basename(ModelNotFoundException::class))
             ->assertSeeText(class_basename(NotFoundHttpException::class))
+        ;
+
+        Event::assertNotDispatched(RequestValidationFailed::class);
+        Event::assertNotDispatched(ResponseValidationFailed::class);
+    }
+
+    /**
+     * @test
+     */
+    public function returnsModelNotFoundExceptionWithoutEnableRenderer(): void
+    {
+        config()->set([
+            'openapi-validator.enable_renderer_for_non_validation_errors' => false,
+            'openapi-validator.validate_error_responses' => false,
+        ]);
+
+        Route::post('/', fn () => throw new ModelNotFoundException())->middleware(OpenApiValidator::class);
+
+        $this->json(Request::METHOD_POST, '/', ['hoge' => [1]])
+            ->assertStatus(Response::HTTP_NOT_FOUND)
+            ->assertJsonMissingPath('status')
+            ->assertJsonMissingPath('title')
         ;
 
         Event::assertNotDispatched(RequestValidationFailed::class);
@@ -279,14 +326,39 @@ class OpenApiValidatorTest extends TestCase
     /**
      * @test
      */
-    public function returnsOriginalErrorIfErrorResponseValidationIsPassed(): void
+    public function returnsOriginalErrorIfErrorResponseValidationIsPassedWithEnableRenderer(): void
     {
+        config()->set([
+            'openapi-validator.enable_renderer_for_non_validation_errors' => true,
+        ]);
+
         Route::post('/', fn () => throw new UnauthorizedHttpException(''))->middleware(OpenApiValidator::class);
 
         $this->json(Request::METHOD_POST, '/', ['hoge' => [1]])
             ->assertStatus(Response::HTTP_UNAUTHORIZED)
             ->assertJsonPath('status', Response::HTTP_UNAUTHORIZED)
             ->assertJsonPath('title', class_basename(UnauthorizedHttpException::class))
+        ;
+
+        Event::assertNotDispatched(RequestValidationFailed::class);
+        Event::assertNotDispatched(ResponseValidationFailed::class);
+    }
+
+    /**
+     * @test
+     */
+    public function returnsOriginalErrorIfErrorResponseValidationIsPassedWithoutEnableRenderer(): void
+    {
+        config()->set([
+            'openapi-validator.enable_renderer_for_non_validation_errors' => false,
+        ]);
+
+        Route::post('/', fn () => throw new UnauthorizedHttpException(''))->middleware(OpenApiValidator::class);
+
+        $this->json(Request::METHOD_POST, '/', ['hoge' => [1]])
+            ->assertStatus(Response::HTTP_UNAUTHORIZED)
+            ->assertJsonMissingPath('status')
+            ->assertJsonMissingPath('title')
         ;
 
         Event::assertNotDispatched(RequestValidationFailed::class);

@@ -72,6 +72,23 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Enable Renderer for Non-Validation Errors
+    |--------------------------------------------------------------------------
+    |
+    | This setting determines whether the OpenAPI Validator should intercept
+    | and re-render errors that are not related to request/response validation.
+    | If set to true, these non-validation errors will use this package's
+    | renderer instead of the default Laravel exception handler (or any other
+    | custom handler you may have).
+    |
+    */
+    'enable_renderer_for_non_validation_errors' => (bool) env(
+        'OPENAPI_VALIDATOR_ENABLE_RENDERER_FOR_NON_VALIDATION_ERRORS',
+        false
+    ),
+
+    /*
+    |--------------------------------------------------------------------------
     | Include Response Validation Error Detail in Response
     |--------------------------------------------------------------------------
     |
