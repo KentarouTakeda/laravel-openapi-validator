@@ -23,6 +23,10 @@
       window.ui = SwaggerUIBundle({
         spec: {!! $json !!},
         requestInterceptor: async (request) => {
+          if (['GET', 'HEAD'].includes(request.method)) {
+            return request;
+          }
+
           const cookie = await window.cookieStore?.get('XSRF-TOKEN');
 
           if (!cookie) {
