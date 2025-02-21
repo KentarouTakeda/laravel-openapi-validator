@@ -88,6 +88,11 @@ class Config
         return (bool) $this->repository->get('openapi-validator.error_on_no_path');
     }
 
+    public function getEnableRendererForNonValidationErrors(): bool
+    {
+        return (bool) $this->repository->get('openapi-validator.enable_renderer_for_non_validation_errors');
+    }
+
     public function getIncludeReqErrorDetailInResponse(): bool
     {
         return (bool) $this->repository->get('openapi-validator.include_req_error_detail_in_response');

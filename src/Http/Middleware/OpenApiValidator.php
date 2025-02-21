@@ -101,12 +101,13 @@ class OpenApiValidator
             }
 
             if ($event->response->exception) {
-                if ($this->config->getRespondErrorOnResValidationFailure()) {
+                if ($this->config->getEnableRendererForNonValidationErrors()) {
                     $response = $this->errorRenderer->render(
                         $event->response->exception,
                         $event->request,
                         $event->response,
                     );
+
                     $this->overrideResponse($event, $response);
                 }
 
