@@ -70,5 +70,8 @@ jobs:
         if: ${{ matrix.current }}
         run: vendor/bin/phpstan analyze --no-progress --ansi
 
+      - name: Build workbench before running tests
+        run: vendor/bin/testbench workbench:build
+
       - name: Run Unit tests
         run: vendor/bin/phpunit --colors=always

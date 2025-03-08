@@ -7,9 +7,6 @@ namespace KentarouTakeda\Laravel\OpenApiValidator\Tests\Feature\Http\Controllers
 use Illuminate\Config\Repository;
 use KentarouTakeda\Laravel\OpenApiValidator\Tests\Feature\TestCase;
 
-use function KentarouTakeda\Laravel\OpenApiValidator\isLaravelOpenAPIInstalled;
-use function KentarouTakeda\Laravel\OpenApiValidator\isSwaggerUIInstalled;
-
 class DocumentControllerTest extends TestCase
 {
     protected function defineEnvironment($app)
@@ -18,15 +15,6 @@ class DocumentControllerTest extends TestCase
             'openapi-validator.is_swagger_ui_enabled' => true,
             'app.key' => 'base64:'.base64_encode(random_bytes(32)),
         ]));
-    }
-
-    public static function setUpBeforeClass(): void
-    {
-        if (!isSwaggerUIInstalled()) {
-            self::markTestSkipped('Swagger UI is not installed.');
-        }
-
-        parent::setUpBeforeClass();
     }
 
     /**
@@ -43,10 +31,6 @@ class DocumentControllerTest extends TestCase
      */
     public function viewShouldReturnDocument(): void
     {
-        if (!isLaravelOpenAPIInstalled()) {
-            $this->markTestSkipped('Laravel OpenAPI is not installed.');
-        }
-
         $this->get(route('openapi-validator.document.laravel-openapi'))
             ->assertOk()
             ->assertViewIs('openapi-validator::documents')
