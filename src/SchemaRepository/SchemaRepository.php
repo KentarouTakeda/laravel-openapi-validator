@@ -24,8 +24,12 @@ class SchemaRepository
         private readonly ValidatorBuilder $validatorBuilder,
         private readonly Filesystem $filesystem,
     ) {
-        if ($this->filesystem->exists($cacheFileName = $this->config->getCacheFileName($providerName))) {
-            $this->json = $this->filesystem->get($cacheFileName);
+        $cacheFileName = $this->config->getCacheFileName($providerName);
+
+        clearstatcache(true, $cacheFileName);
+
+        if ($this->filesystem->exists($cacheFileName)) {
+            $this->json = $this->filesystem->sharedGet($cacheFileName);
             $this->validatorBuilder->fromJson($this->json);
 
             return;
