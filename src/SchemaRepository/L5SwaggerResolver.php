@@ -36,6 +36,6 @@ class L5SwaggerResolver implements ResolverInterface
         $generator = $this->generatorFactory->make($name);
         $generator->generateDocs();
 
-        return $this->filesystem->get($path.'/'.$file);
+        return $this->filesystem->sharedGet($path.'/'.$file);
     }
 }
