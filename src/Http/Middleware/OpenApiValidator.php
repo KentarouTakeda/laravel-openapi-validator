@@ -54,7 +54,6 @@ class OpenApiValidator
     ): Response {
         $provider = $provider ?: $this->config->getDefaultProviderName();
         $schemaRepository = app()->makeWith(SchemaRepository::class, ['providerName' => $provider]);
-        assert($schemaRepository instanceof SchemaRepository);
 
         $psrRequest = $this->psrHttpFactory->createRequest($request);
 

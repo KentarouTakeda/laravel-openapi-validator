@@ -34,7 +34,6 @@ class CacheCommand extends Command
                 SchemaRepository::class,
                 ['providerName' => $providerName]
             );
-            assert($repository instanceof SchemaRepository);
 
             $file->put(
                 $config->getCacheFileName($providerName),

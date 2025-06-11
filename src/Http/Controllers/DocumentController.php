@@ -35,7 +35,6 @@ class DocumentController
         $schemaRepository = app()->makeWith(SchemaRepository::class, [
             'providerName' => $providerName,
         ]);
-        assert($schemaRepository instanceof SchemaRepository);
 
         // @phpstan-ignore argument.type
         return view('openapi-validator::documents', [

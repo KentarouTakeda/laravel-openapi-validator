@@ -79,7 +79,6 @@ class SchemaRepositoryTest extends TestCase
         $schemaRepository = app()->makeWith(SchemaRepository::class, [
             'providerName' => 'foo',
         ]);
-        assert($schemaRepository instanceof SchemaRepository);
 
         $this->assertSame('{}', $schemaRepository->getJson());
     }
