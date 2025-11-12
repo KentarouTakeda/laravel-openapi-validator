@@ -9,6 +9,7 @@ use KentarouTakeda\Laravel\OpenApiValidator\Config\Config;
 use KentarouTakeda\Laravel\OpenApiValidator\Tests\Feature\TestCase;
 use KentarouTakeda\Laravel\OpenApiValidator\Tests\Feature\TestWithTemporaryFilesTrait;
 use Mockery\MockInterface;
+use PHPUnit\Framework\Attributes\Test;
 
 class ClearCommandTest extends TestCase
 {
@@ -21,9 +22,7 @@ class ClearCommandTest extends TestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removesAllCache(): void
     {
         $config = $this->partialMock(Config::class, fn (MockInterface $mock) => $mock->allows([

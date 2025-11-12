@@ -3,22 +3,19 @@
 namespace Tests\Feature;
 
 use Illuminate\Http\Response;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class ExampleTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function passesValidationAndReturnSuccessfulResponse(): void
     {
         $this->get('/?status=200')
             ->assertOk();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function failsRequestValidationAndReturnsBadRequestResponse(): void
     {
         $this->get('/')
@@ -30,9 +27,7 @@ class ExampleTest extends TestCase
             ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function failsResponseValidationAndReturnsInternalServerErrorResponse(): void
     {
         $this->get('/?status=201')
@@ -44,9 +39,7 @@ class ExampleTest extends TestCase
             ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function displaySwaggerUi(): void
     {
         $this->get('/openapi-validator/documents/laravel-openapi')

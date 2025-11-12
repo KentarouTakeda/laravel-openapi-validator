@@ -105,9 +105,7 @@ class OpenApiValidatorTest extends TestCase
         return (new ValidatorBuilder())->fromJson($json);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function requestAndResponse(): void
     {
         Route::post('/', fn () => ['data' => [42]])->middleware(OpenApiValidator::class);
@@ -120,9 +118,7 @@ class OpenApiValidatorTest extends TestCase
         Event::assertNotDispatched(ResponseValidationFailed::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function throwsPathNotFoundException(): void
     {
         Route::get('/not-found', fn () => 'Hello')->middleware(OpenApiValidator::class);
@@ -137,9 +133,7 @@ class OpenApiValidatorTest extends TestCase
         Event::assertNotDispatched(ResponseValidationFailed::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsBadRequest(): void
     {
         $this->withoutExceptionHandling();
@@ -158,9 +152,7 @@ class OpenApiValidatorTest extends TestCase
         Event::assertNotDispatched(ResponseValidationFailed::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsInvalidBody(): void
     {
         $response = ['data' => [true]];
@@ -180,9 +172,7 @@ class OpenApiValidatorTest extends TestCase
         Event::assertDispatched(ResponseValidationFailed::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notReturnsResponseErrorIfTheParameterIsSet(): void
     {
         Route::post('/', fn () => ['data' => [true]])
@@ -195,9 +185,7 @@ class OpenApiValidatorTest extends TestCase
         Event::assertNotDispatched(ResponseValidationFailed::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notReturnsResponseErrorIfTheOptionIsSet(): void
     {
         config()->set([
@@ -213,9 +201,7 @@ class OpenApiValidatorTest extends TestCase
         Event::assertDispatched(ResponseValidationFailed::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsHttpExceptionWithEnableRenderer(): void
     {
         config()->set([
@@ -236,9 +222,7 @@ class OpenApiValidatorTest extends TestCase
         Event::assertNotDispatched(ResponseValidationFailed::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsHttpExceptionWithoutEnableRenderer(): void
     {
         config()->set([
@@ -259,9 +243,7 @@ class OpenApiValidatorTest extends TestCase
         Event::assertNotDispatched(ResponseValidationFailed::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsModelNotFoundExceptionWithEnableRenderer(): void
     {
         config()->set([
@@ -283,9 +265,7 @@ class OpenApiValidatorTest extends TestCase
         Event::assertNotDispatched(ResponseValidationFailed::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsModelNotFoundExceptionWithoutEnableRenderer(): void
     {
         config()->set([
@@ -305,9 +285,7 @@ class OpenApiValidatorTest extends TestCase
         Event::assertNotDispatched(ResponseValidationFailed::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsInternalServerErrorIfErrorResponseValidationIsOccurred(): void
     {
         Route::post('/', fn () => abort(403))->middleware(OpenApiValidator::class);
@@ -323,9 +301,7 @@ class OpenApiValidatorTest extends TestCase
         Event::assertDispatched(ResponseValidationFailed::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsOriginalErrorIfErrorResponseValidationIsPassedWithEnableRenderer(): void
     {
         config()->set([
@@ -344,9 +320,7 @@ class OpenApiValidatorTest extends TestCase
         Event::assertNotDispatched(ResponseValidationFailed::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsOriginalErrorIfErrorResponseValidationIsPassedWithoutEnableRenderer(): void
     {
         config()->set([

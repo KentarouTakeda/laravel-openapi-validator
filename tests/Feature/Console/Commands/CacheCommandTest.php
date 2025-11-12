@@ -10,6 +10,7 @@ use KentarouTakeda\Laravel\OpenApiValidator\SchemaRepository\SchemaRepository;
 use KentarouTakeda\Laravel\OpenApiValidator\Tests\Feature\TestCase;
 use KentarouTakeda\Laravel\OpenApiValidator\Tests\Feature\TestWithTemporaryFilesTrait;
 use Mockery\MockInterface;
+use PHPUnit\Framework\Attributes\Test;
 
 class CacheCommandTest extends TestCase
 {
@@ -22,9 +23,7 @@ class CacheCommandTest extends TestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createsAllCache(): void
     {
         $config = $this->partialMock(Config::class, fn (MockInterface $mock) => $mock->allows([

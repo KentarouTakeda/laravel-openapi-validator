@@ -25,9 +25,7 @@ class SchemaRepositoryTest extends TestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function laravelOpenApiResolverIsUsed(): void
     {
         $laravelOpenApiResolver = $this->mock(LaravelOpenApiResolver::class, function ($mock) {
@@ -41,9 +39,7 @@ class SchemaRepositoryTest extends TestCase
         $laravelOpenApiResolver->shouldHaveReceived('getJson')->once();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function L5SwaggerResolverIsUsed(): void
     {
         $l5SwaggerResolver = $this->mock(L5SwaggerResolver::class, function ($mock) {
@@ -57,9 +53,7 @@ class SchemaRepositoryTest extends TestCase
         $l5SwaggerResolver->shouldHaveReceived('getJson')->once();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function anyResolverIsUotUsedWhenCacheIsExists(): void
     {
         $this->partialMock(Config::class, fn (MockInterface $mock) => $mock->allows([
