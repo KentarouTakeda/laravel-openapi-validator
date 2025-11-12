@@ -6,6 +6,7 @@ namespace KentarouTakeda\Laravel\OpenApiValidator\Tests\Feature\Http\Controllers
 
 use Illuminate\Config\Repository;
 use KentarouTakeda\Laravel\OpenApiValidator\Tests\Feature\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class DocumentControllerTest extends TestCase
 {
@@ -17,18 +18,14 @@ class DocumentControllerTest extends TestCase
         ]));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function indexShouldRedirectToDefaultProvider(): void
     {
         $this->get(route('openapi-validator.document.index'))
             ->assertRedirect(route('openapi-validator.document.laravel-openapi'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function viewShouldReturnDocument(): void
     {
         $this->get(route('openapi-validator.document.laravel-openapi'))
@@ -38,18 +35,14 @@ class DocumentControllerTest extends TestCase
             ->assertSee('<title>Swagger UI</title>', false);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function assetShouldReturnsNotFoundWhenFileNotFound(): void
     {
         $this->get(route('openapi-validator.asset', ['path' => 'not-found.css']))
             ->assertNotFound();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function assetShouldReturnsAssetWithJsMimeType(): void
     {
         $this->get(route('openapi-validator.asset', ['path' => 'swagger-ui-bundle.js']))
@@ -57,9 +50,7 @@ class DocumentControllerTest extends TestCase
             ->assertHeader('Content-Type', 'text/javascript; charset=UTF-8');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function assetShouldReturnsAssetWithCssMimeType(): void
     {
         $this->get(route('openapi-validator.asset', ['path' => 'swagger-ui.css']))

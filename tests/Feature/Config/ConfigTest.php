@@ -7,6 +7,7 @@ namespace KentarouTakeda\Laravel\OpenApiValidator\Tests\Feature\Config;
 use KentarouTakeda\Laravel\OpenApiValidator\Config\Config;
 use KentarouTakeda\Laravel\OpenApiValidator\Exceptions\InvalidConfigException;
 use KentarouTakeda\Laravel\OpenApiValidator\Tests\Feature\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class ConfigTest extends TestCase
 {
@@ -19,9 +20,7 @@ class ConfigTest extends TestCase
         $this->config = app()->make(Config::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getProviderNamesReturnsAllProviderNames(): void
     {
         $providerNames = $this->config->getProviderNames();
@@ -32,9 +31,7 @@ class ConfigTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDefaultProviderNameReturnsDefaultProviderName(): void
     {
         $defaultProviderName = $this->config->getDefaultProviderName();
@@ -45,9 +42,7 @@ class ConfigTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getProviderSettingsReturnsProviderSettings(): void
     {
         $providerNames = $this->config->getProviderNames();
@@ -59,9 +54,7 @@ class ConfigTest extends TestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getProviderSettingsThrowsInvalidConfigExceptionWhenProviderIsNotDefined(): void
     {
         $this->expectException(InvalidConfigException::class);
@@ -70,9 +63,7 @@ class ConfigTest extends TestCase
         $this->config->getProviderSettings('foo');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getCacheDirectoryReturnsCacheDirectory(): void
     {
         $cacheDirectory = $this->config->getCacheDirectory();
@@ -80,9 +71,7 @@ class ConfigTest extends TestCase
         $this->assertIsString($cacheDirectory); // @phpstan-ignore method.alreadyNarrowedType
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getCacheFileNameReturnsCacheFileName(): void
     {
         $cacheFileName = $this->config->getCacheFileName('foo');
@@ -90,9 +79,7 @@ class ConfigTest extends TestCase
         $this->assertStringEndsWith(DIRECTORY_SEPARATOR.'foo.json', $cacheFileName);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getErrorOnNoPathReturnsBool(): void
     {
         $errorOnNoPath = $this->config->getErrorOnNoPath();
@@ -100,9 +87,7 @@ class ConfigTest extends TestCase
         $this->assertIsBool($errorOnNoPath); // @phpstan-ignore method.alreadyNarrowedType
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getIncludeReqErrorDetailInResponseReturnsBool(): void
     {
         $includeReqErrorInResponse = $this->config->getIncludeReqErrorDetailInResponse();
@@ -110,9 +95,7 @@ class ConfigTest extends TestCase
         $this->assertIsBool($includeReqErrorInResponse); // @phpstan-ignore method.alreadyNarrowedType
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getIncludeResErrorDetailInResponseReturnsBool(): void
     {
         $includeResErrorInResponse = $this->config->getIncludeResErrorDetailInResponse();
@@ -120,9 +103,7 @@ class ConfigTest extends TestCase
         $this->assertIsBool($includeResErrorInResponse); // @phpstan-ignore method.alreadyNarrowedType
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getIncludeOriginalResInResponseReturnsBool(): void
     {
         $includeOriginalResInResponse = $this->config->getIncludeOriginalResInResponse();
@@ -130,9 +111,7 @@ class ConfigTest extends TestCase
         $this->assertIsBool($includeOriginalResInResponse); // @phpstan-ignore method.alreadyNarrowedType
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getIncludeTraceInResponseReturnsBool(): void
     {
         $includeTraceInResponse = $this->config->getIncludeTraceInResponse();
@@ -140,9 +119,7 @@ class ConfigTest extends TestCase
         $this->assertIsBool($includeTraceInResponse); // @phpstan-ignore method.alreadyNarrowedType
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getReqErrorLogLevelReturnsLogLevel(): void
     {
         $requestErrorLogLevel = $this->config->getReqErrorLogLevel();
@@ -150,9 +127,7 @@ class ConfigTest extends TestCase
         $this->assertIsString($requestErrorLogLevel);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getResErrorLogLevelReturnsLogLevel(): void
     {
         $requestErrorLogLevel = $this->config->getResErrorLogLevel();
