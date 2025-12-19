@@ -1,6 +1,8 @@
 /.php-cs-fixer.cache
 /.phpunit.result.cache
 /composer.lock
+/e2e/l5-swagger/composer.lock
+/e2e/laravel-openapi/composer.lock
 /node_modules/
 /package-lock.json
 /vendor/
