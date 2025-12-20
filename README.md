@@ -61,10 +61,10 @@ composer require kentaroutakeda/laravel-openapi-validator
    
    ```php
    Route::get('/', ExampleController::class)
-     ->middleware(OpenApiValidator::config(
-       provider: 'admin-api', // <- Use spec other than default
-       skipResponseValidation: true // <- Skip Response Validation
-     ));
+       ->middleware(OpenApiValidator::config(
+           provider: 'admin-api', // <- Use spec other than default
+           skipResponseValidation: true // <- Skip Response Validation
+       ));
    ```
 
    *NOTE:*  
@@ -132,11 +132,11 @@ Check the comments in [config/openapi-validator.php](config/openapi-validator.ph
    ```php
    class MyResolver implements ResolverInterface
    {
-     public function getJson(array $options): string
-     {
-       // This example assumes that the schema exists in the root directory.
-       return File::get(base_path('openapi.json'));
-     }
+       public function getJson(array $options): string
+       {
+           // This example assumes that the schema exists in the root directory.
+           return File::get(base_path('openapi.json'));
+       }
    }
    ```
 
@@ -144,16 +144,16 @@ Check the comments in [config/openapi-validator.php](config/openapi-validator.ph
 
    ```php
    return [
-     // Set the provider name.
-     'default' => 'my-resolver',
-
-     'providers' => [
-       // Set the provider name you created.
-       'my-resolver' => [
-         // Specify the class you created in the `resolver` parameter.
-         'resolver' => MyResolver::class,
+       // Set the provider name.
+       'default' => 'my-resolver',
+  
+       'providers' => [
+           // Set the provider name you created.
+           'my-resolver' => [
+               // Specify the class you created in the `resolver` parameter.
+               'resolver' => MyResolver::class,
+           ],
        ],
-     ],
    ];
    ```
 
@@ -186,18 +186,18 @@ Here's how to change to a different format:
    ```php
    class MyErrorRenderer implements ErrorRendererInterface
    {
-     public function render(
-       \Throwable $error,
-       Request $request,
-       ?Response $response = null,
-     ): Response {
-       return new Response(
-         match ($response === null) {
-           ErrorType::Request => "Request Error: " . $error->getMessage(),
-           ErrorType::Response => "Response Error: " . $error->getMessage(),
-         }
-       );
-     }
+       public function render(
+           \Throwable $error,
+           Request $request,
+           ?Response $response = null,
+       ): Response {
+           return new Response(
+               match ($response === null) {
+                   ErrorType::Request => "Request Error: " . $error->getMessage(),
+                   ErrorType::Response => "Response Error: " . $error->getMessage(),
+               }
+           );
+       }
    }
    ```
 
@@ -208,10 +208,10 @@ Here's how to change to a different format:
    
    public function register(): void
    {
-     $this->app->bind(
-       ErrorRendererInterface::class,
-       MyErrorRenderer::class
-     );
+       $this->app->bind(
+           ErrorRendererInterface::class,
+           MyErrorRenderer::class
+       );
    }
    ```
 
