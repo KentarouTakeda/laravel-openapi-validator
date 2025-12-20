@@ -13,4 +13,25 @@
   "phpstan.enableStatusBar": true,
   "phpstan.configFile": "phpstan.neon.dist",
   "bladeFormatter.format.indentSize": 2,
+  "intelephense.rename.exclude": [
+    "**/vendor/**",
+    "**/e2e/**"
+  ],
+  "intelephense.references.exclude": [
+    "**/vendor/**",
+    "**/e2e/**"
+  ],
+  "intelephense.files.exclude": [
+    "**/.git/**",
+    "**/.svn/**",
+    "**/.hg/**",
+    "**/CVS/**",
+    "**/.DS_Store/**",
+    "**/node_modules/**",
+    "**/bower_components/**",
+    "**/vendor/**/{Tests,tests}/**",
+    "**/.history/**",
+    "**/vendor/**/vendor/**",
+    "**/e2e/**"
+  ],
 }
