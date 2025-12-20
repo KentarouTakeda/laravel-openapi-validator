@@ -78,10 +78,12 @@
     "scripts": {
         "post-autoload-dump": [
             "@clear",
-            "@prepare"
+            "@prepare",
+            "@setup"
         ],
         "clear": "@php vendor/bin/testbench package:purge-skeleton --ansi",
-        "prepare": "@php vendor/bin/testbench package:discover --ansi"
+        "prepare": "@php vendor/bin/testbench package:discover --ansi",
+        "setup": "@php vendor/bin/testbench workbench:build"
     },
     "prefer-stable": true
 }

@@ -238,9 +238,6 @@ cd laravel-openapi-validator
 # Install dependencies.
 composer install
 
-# Setup Testbench.
-vendor/bin/testbench workbench:build
-
 # (Optional) Install tools: The commit hook automatically formats the code.
 npm install
 
