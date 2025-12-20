@@ -187,12 +187,12 @@ Here's how to change to a different format:
    class MyErrorRenderer implements ErrorRendererInterface
    {
      public function render(
-       Request $request,
        \Throwable $error,
-       ErrorType $errorType,
+       Request $request,
+       ?Response $response = null,
      ): Response {
        return new Response(
-         match ($errorType) {
+         match ($response === null) {
            ErrorType::Request => "Request Error: " . $error->getMessage(),
            ErrorType::Response => "Response Error: " . $error->getMessage(),
          }
