@@ -41,6 +41,15 @@ class ServiceProvider extends BaseServiceProvider
                 ClearCommand::class,
                 PublishCommand::class,
             ]);
+
+            // @phpstan-ignore function.alreadyNarrowedType
+            if (method_exists($this, 'optimizes')) {
+                $this->optimizes(
+                    CacheCommand::class,
+                    ClearCommand::class,
+                    'laravel-openapi-validator'
+                );
+            }
         }
 
         if (isSwaggerUIInstalled() && $config->getIsSwaggerUiEnabled()) {
