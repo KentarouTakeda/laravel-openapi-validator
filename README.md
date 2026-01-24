@@ -46,7 +46,7 @@ composer require kentaroutakeda/laravel-openapi-validator
    Route::get('/example', ExampleController::class)
        ->middleware(OpenApiValidator::class); // <- Add this line
    ```
-   
+
    Routes with this setting will be validated for all requests including
    Feature Tests, and depending on the settings, responses as well.
 
@@ -58,7 +58,7 @@ composer require kentaroutakeda/laravel-openapi-validator
 3. (Optional) Customize Middleware
 
    If necessary, you can change Middleware behavior for each route.
-   
+
    ```php
    Route::get('/', ExampleController::class)
        ->middleware(OpenApiValidator::config(
@@ -77,15 +77,15 @@ composer require kentaroutakeda/laravel-openapi-validator
    When deploying your application to production, you should make sure
    that you run the `openapi-validator:cache` Artisan command
    during your deployment process:
-   
+
    ```bash
    php artisan openapi-validator:cache
    ```
-   
+
    This command caches the OpenAPI Spec defined in your application.
    If you change the definition for development, you need to
    clear it as follows:
-   
+
    ```bash
    php artisan openapi-validator:clear
    ```
@@ -154,7 +154,7 @@ Check the comments in [config/openapi-validator.php](config/openapi-validator.ph
    return [
        // Set the provider name.
        'default' => 'my-resolver',
-  
+
        'providers' => [
            // Set the provider name you created.
            'my-resolver' => [
@@ -213,7 +213,7 @@ Here's how to change to a different format:
 
    ```php
    // AppServiceProvider.php
-   
+
    public function register(): void
    {
        $this->app->bind(
