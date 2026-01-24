@@ -90,6 +90,14 @@ composer require kentaroutakeda/laravel-openapi-validator
    php artisan openapi-validator:clear
    ```
 
+   Alternatively, these commands are automatically executed when running
+   Laravel's built-in optimization commands:
+
+   ```bash
+   php artisan optimize        # Includes openapi-validator:cache
+   php artisan optimize:clear  # Includes openapi-validator:clear
+   ```
+
 ## (Optional) Swagger UI support
 
 You can view the Swagger UI just by installing the package. No additional
