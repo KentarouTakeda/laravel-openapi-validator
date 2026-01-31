@@ -1,0 +1,21 @@
+{
+    "agents": [
+        "claude_code",
+        "codex",
+        "cursor",
+        "gemini",
+        "copilot",
+        "junie",
+        "opencode"
+    ],
+    "guidelines": true,
+    "herd_mcp": false,
+    "mcp": true,
+    "packages": [
+        "kentaroutakeda/laravel-openapi-validator"
+    ],
+    "sail": false,
+    "skills": [
+        "openapi-validator"
+    ]
+}
