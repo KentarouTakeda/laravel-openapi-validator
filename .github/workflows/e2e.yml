@@ -42,6 +42,14 @@ jobs:
           composer update --prefer-${{ matrix.stability }} --no-interaction --no-progress --ansi
         working-directory: e2e/${{ matrix.package }}
 
+      - name: Create an empty SQLite database file
+        run: touch database/database.sqlite
+        working-directory: e2e/${{ matrix.package }}
+
+      - name: Setup Laravel Boost
+        run: ./artisan boost:update
+        working-directory: e2e/${{ matrix.package }}
+
       - name: Run Unit tests
         run: vendor/bin/phpunit
         working-directory: e2e/${{ matrix.package }}
