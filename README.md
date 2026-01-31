@@ -62,8 +62,10 @@ composer require kentaroutakeda/laravel-openapi-validator
    ```php
    Route::get('/', ExampleController::class)
        ->middleware(OpenApiValidator::config(
-           provider: 'admin-api', // <- Use spec other than default
-           skipResponseValidation: true // <- Skip Response Validation
+           // // Provider name from config
+           provider: 'my-provider',
+           // For performance, skip response validation in production
+           skipResponseValidation: app()->isProduction(),
        ));
    ```
 
