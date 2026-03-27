@@ -53,8 +53,6 @@ class LogValidationFailedTest extends TestCase
             $mock->shouldReceive('getResponse')->andReturn(new Response());
         });
 
-        assert($validationFailed instanceof ValidationFailedInterface);
-
         $logValidationFailed->handle($validationFailed);
     }
 }
