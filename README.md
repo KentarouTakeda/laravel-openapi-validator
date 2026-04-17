@@ -74,7 +74,33 @@ composer require kentaroutakeda/laravel-openapi-validator
    It would be a good idea to switch on/off validation depending on the
    route and `APP_*` environment variables.
 
-4. Deployment
+4. (Optional) Vite Dev Server
+
+   When using Vite (`npm run dev`) with the L5 Swagger provider,
+   `L5SwaggerResolver` calls `generateDocs()` which writes to
+   `storage/api-docs/api-docs.json` on every request (when the
+   `openapi-validator:cache` has not been generated). This file write
+   triggers Vite's file watcher, causing an infinite full-page reload
+   loop.
+
+   To prevent this, add `storage/api-docs` to Vite's watch ignore list:
+
+   ```js
+   // vite.config.js
+   export default defineConfig({
+       server: {
+           watch: {
+               ignored: ['**/storage/api-docs/**'],
+           },
+       },
+       // ...
+   });
+   ```
+
+   Alternatively, running `php artisan openapi-validator:cache` will
+   bypass `L5SwaggerResolver` entirely, avoiding the file write.
+
+5. Deployment
 
    When deploying your application to production, you should make sure
    that you run the `openapi-validator:cache` Artisan command
