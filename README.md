@@ -74,7 +74,7 @@ composer require kentaroutakeda/laravel-openapi-validator
    It would be a good idea to switch on/off validation depending on the
    route and `APP_*` environment variables.
 
-4. Vite Dev Server
+4. (Optional) Vite Dev Server
 
    When using Vite (`npm run dev`) with the L5 Swagger provider,
    `L5SwaggerResolver` calls `generateDocs()` which writes to
