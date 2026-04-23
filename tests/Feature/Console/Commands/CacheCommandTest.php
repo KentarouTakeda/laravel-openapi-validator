@@ -30,8 +30,6 @@ class CacheCommandTest extends TestCase
             'getProviderNames' => ['foo', 'bar'],
             'getCacheDirectory' => $this->getTemporaryDirectory(),
         ]));
-        assert($config instanceof Config);
-
         app()->bind(
             SchemaRepository::class,
             fn () => \Mockery::mock(SchemaRepository::class)->allows([
