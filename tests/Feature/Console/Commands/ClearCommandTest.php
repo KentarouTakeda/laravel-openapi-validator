@@ -29,8 +29,6 @@ class ClearCommandTest extends TestCase
             'getProviderNames' => ['foo', 'bar', 'baz'],
             'getCacheDirectory' => $this->getTemporaryDirectory(),
         ]));
-        assert($config instanceof Config);
-
         foreach (array_slice($config->getProviderNames(), 1) as $providerName) {
             touch($config->getCacheFileName($providerName));
         }
