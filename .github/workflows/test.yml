@@ -23,6 +23,7 @@ jobs:
           - "^10.0"
           - "^11.0"
           - "^12.0"
+          - "^13.0"
         stability:
           - lowest
           - stable
@@ -36,6 +37,10 @@ jobs:
             php: "8.1"
           - laravel: "^12.0"
             php: "8.1"
+          - laravel: "^13.0"
+            php: "8.1"
+          - laravel: "^13.0"
+            php: "8.2"
           - laravel: "^10.0"
             stability: lowest
           - laravel: "^11.0"
@@ -60,6 +65,42 @@ jobs:
       - name: Allow installing end-of-life Laravel versions
         if: ${{ matrix.laravel == '^10.0' || matrix.laravel == '^11.0' }}
         run: composer config policy.advisories.ignore laravel/framework
+
+      # Remove once tartanlegrand/laravel-openapi releases a version that supports Laravel 13
+      # https://github.com/Nova-Edge/laravel-openapi/pull/52
+      - name: Allow installing Laravel OpenAPI with Laravel 13
+        if: ${{ matrix.laravel == '^13.0' }}
+        run: |
+          composer config repositories.laravel-openapi '{
+            "type": "package",
+            "package": {
+              "name": "tartanlegrand/laravel-openapi",
+              "version": "2.1.2.1",
+              "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Nova-Edge/laravel-openapi/zipball/v2.1.2"
+              },
+              "require": {
+                "php": "^8.0",
+                "ext-json": "*",
+                "goldspecdigital/oooas": "^2.7.1",
+                "laravel/framework": "^11.0|^12.0|^13.0",
+                "phpdocumentor/reflection-docblock": "^5.0"
+              },
+              "autoload": {
+                "psr-4": {
+                  "Vyuldashev\\LaravelOpenApi\\": "src/"
+                }
+              },
+              "extra": {
+                "laravel": {
+                  "providers": [
+                    "Vyuldashev\\LaravelOpenApi\\OpenApiServiceProvider"
+                  ]
+                }
+              }
+            }
+          }'
 
       - name: Uninstall packages that is not necessary for the current matrix
         if: ${{ !matrix.current }}
