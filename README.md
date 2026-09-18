@@ -14,7 +14,7 @@ Request and response validators based on the OpenAPI Specification.
 ## Requirements
 
 * PHP 8.1 or higher
-* Laravel 10.0 - 12.x
+* Laravel 10.0 - 13.x
 
 ## Installation
 
