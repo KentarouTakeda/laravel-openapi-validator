@@ -89,13 +89,13 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Include Response Validation Error Detail in Response
+    | Include Request Validation Error Detail in Response
     |--------------------------------------------------------------------------
     |
     | This setting determines whether the OpenAPI validator should include
-    | details of response validation errors in the response. The default value
+    | details of request validation errors in the response. The default value
     | is `true` and can be customized through the
-    | 'OPENAPI_VALIDATOR_INCLUDE_RES_ERROR_IN_RESPONSE' environment variable.
+    | 'OPENAPI_VALIDATOR_INCLUDE_REQ_ERROR_IN_RESPONSE' environment variable.
     |
     */
 
@@ -106,12 +106,12 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Include Request Validation Error Detail in Response
+    | Include Response Validation Error Detail in Response
     |--------------------------------------------------------------------------
     |
     | This setting determines whether the OpenAPI validator should include
     | details of response validation errors in the response. The default
-    | behavior is according to `APP`DEBUG`  and can be customized through the
+    | behavior is according to `APP_DEBUG` and can be customized through the
     | 'OPENAPI_VALIDATOR_INCLUDE_RES_ERROR_IN_RESPONSE' environment variable.
     |
     */
@@ -128,7 +128,7 @@ return [
     |
     | This setting determines whether the OpenAPI validator should include
     | trace information in the error response. The default behavior is
-    | according to `APP`DEBUG` and can be customized through the
+    | according to `APP_DEBUG` and can be customized through the
     | 'OPENAPI_VALIDATOR_INCLUDE_TRACE_IN_RESPONSE' environment variable.
     |
     */
@@ -213,7 +213,7 @@ return [
         /*
         | Laravel OpenAPI
         |
-        | https://github.com/tartanlegrand/laravel-openapi
+        | https://github.com/Nova-Edge/laravel-openapi
         */
 
         'laravel-openapi' => [
@@ -246,7 +246,7 @@ return [
     |
     | This setting controls whether the Swagger UI is enabled or not. It can be
     | set via the 'OPENAPI_VALIDATOR_IS_SWAGGER_UI_ENABLED' environment variable.
-    | The default behavior is according to `APP`DEBUG`
+    | The default behavior is according to `APP_DEBUG`
     |
     */
 
