@@ -34,7 +34,7 @@ class Config
         $defaultProviderName = $this->repository->get('openapi-validator.default');
 
         if (!is_string($defaultProviderName)) {
-            throw new InvalidConfigException('openapi-validator.default_provider must be a string');
+            throw new InvalidConfigException('openapi-validator.default must be a string');
         }
 
         return $defaultProviderName;
