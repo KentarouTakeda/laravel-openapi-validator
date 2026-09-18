@@ -29,6 +29,8 @@ composer require kentaroutakeda/laravel-openapi-validator
 1. Configure OpenAPI Specification
 
    If you're using Laravel OpenAPI, you don't need to do anything.
+   The official `tartanlegrand/laravel-openapi` does not support Laravel 13
+   yet; a fork that keeps the `Vyuldashev\LaravelOpenApi` namespace works.
 
    For L5 Swagger, the following settings are required:
 
