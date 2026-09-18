@@ -52,9 +52,10 @@ class ServiceProvider extends BaseServiceProvider
             }
         }
 
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'openapi-validator');
+
         if (isSwaggerUIInstalled() && $config->getIsSwaggerUiEnabled()) {
             $this->loadRoutesFrom(__DIR__.'/../routes/swagger-ui.php');
-            $this->loadViewsFrom(__DIR__.'/../resources/views', 'openapi-validator');
         }
 
         $config->getReqErrorLogLevel() && $eventDispatcher->listen(
