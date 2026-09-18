@@ -37,6 +37,10 @@ jobs:
           tools: composer:v2
           coverage: none
 
+      - name: Allow installing end-of-life Laravel versions
+        if: ${{ matrix.laravel == '^10.0' || matrix.laravel == '^11.0' }}
+        run: composer config --global policy.advisories.ignore laravel/framework
+
       - run: composer create-project laravel/laravel:${{ matrix.laravel }} ./
       - run: composer require kentaroutakeda/laravel-openapi-validator --no-interaction --no-progress --ansi
       - run: vendor/bin/phpunit

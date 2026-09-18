@@ -57,6 +57,10 @@ jobs:
       - name: Install Composer dependencies
         run: composer require "laravel/framework:${{ matrix.laravel }}" --no-interaction --no-update --ansi
 
+      - name: Allow installing end-of-life Laravel versions
+        if: ${{ matrix.laravel == '^10.0' || matrix.laravel == '^11.0' }}
+        run: composer config policy.advisories.ignore laravel/framework
+
       - name: Uninstall packages that is not necessary for the current matrix
         if: ${{ !matrix.current }}
         run: composer remove --dev friendsofphp/php-cs-fixer larastan/larastan phpstan/phpstan phpstan/phpstan-mockery --no-interaction --no-update

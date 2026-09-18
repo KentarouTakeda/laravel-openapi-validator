@@ -36,7 +36,6 @@ class DocumentController
             'providerName' => $providerName,
         ]);
 
-        // @phpstan-ignore argument.type
         return view('openapi-validator::documents', [
             'json' => $schemaRepository->getJson(),
         ]);
